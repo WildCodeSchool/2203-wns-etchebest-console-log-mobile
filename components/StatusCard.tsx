@@ -1,15 +1,32 @@
 import React from "react";
-import { Text, StyleSheet, SafeAreaView } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  FlatList,
+  ListRenderItem,
+} from "react-native";
+import { Ticket } from "../screens/TicketsScreen";
+import TicketCard from "./TicketCard";
 
 interface Props {
   title: string;
-  tickets?: any[];
+  tickets: Ticket[];
 }
 
 const StatusCard: React.FC<Props> = ({ title, tickets }) => {
+  const renderTicket: ListRenderItem<Ticket> = ({ item }) => (
+    <TicketCard ticket={item} />
+  );
   return (
     <SafeAreaView style={styles.container}>
       <Text>{title}</Text>
+      <FlatList
+        data={tickets}
+        renderItem={renderTicket}
+        keyExtractor={(item) => item.id.toString()}
+        style={styles.listContainer}
+      />
     </SafeAreaView>
   );
 };
@@ -29,8 +46,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 5,
+  },
+  listContainer: {
+    padding: 8,
   },
 });
 

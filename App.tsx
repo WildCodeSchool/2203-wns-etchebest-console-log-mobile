@@ -8,11 +8,14 @@ import TicketsScreen from "./screens/TicketsScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Icon } from "@expo/vector-icons/build/createIconSet";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { useEffect, useState } from "react";
+
+const cache = new InMemoryCache();
 
 const client = new ApolloClient({
-  uri: "localhost:4000/graphql",
-
-  cache: new InMemoryCache(),
+  uri: "http://192.168.1.195:4000/graphql",
+  cache,
+  defaultOptions: { watchQuery: { fetchPolicy: "cache-and-network" } },
 });
 
 const Tab = createBottomTabNavigator();
