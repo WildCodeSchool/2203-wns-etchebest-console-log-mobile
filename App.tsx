@@ -1,55 +1,68 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet } from 'react-native';
-import HomeScreen from './screens/HomeScreen';
-import LoginScreen from './screens/LoginScreen';
-import ProjectsScreen from './screens/ProjectsScreen';
-import TicketsScreen from './screens/TicketsScreen';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import "react-native-gesture-handler";
+import React from "react";
+import HomeScreen from "./screens/HomeScreen";
+import LoginScreen from "./screens/LoginScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import TicketsScreen from "./screens/TicketsScreen";
+import ProjectsScreen from "./screens/ProjectsScreen";
 
-type Props = {
-  IoniconName: keyof typeof Ionicons.glyphMap;
-}
+export type RootStackParamList = {
+  Home: { initialRouteName: string };
+  Login: { name: string };
+  Projects: { name: string };
+  Tickets: { name: string };
+};
 
-const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator<RootStackParamList>();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName: Props['IoniconName'] | undefined;
-            if (route.name === 'Home') {
-              iconName = focused ? 'home' : 'home-outline';
-            } else if (route.name === 'Login') {
-              iconName = focused ? 'log-in' : 'log-in-outline';
-            } else if (route.name === 'Projects') {
-              iconName = focused ? 'bookmarks' : 'bookmarks-outline';
-            } else if (route.name === 'Tickets') {
-              iconName = focused ? 'clipboard' : 'clipboard-outline';
-            }
-            if (iconName) {
-              return <Ionicons name={iconName} size={size} color={color} />;
-            }
-          },
-          tabBarStyle: { position: 'absolute' },
-        })}
+      <Drawer.Navigator
+        screenOptions={{ headerTintColor: "#146b70" }}
+        initialRouteName="Home"
       >
-        <Tab.Screen
+        <Drawer.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: "#F6FDFE",
+            },
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
           name="Home"
           component={HomeScreen}
         />
-        <Tab.Screen name="Login" component={LoginScreen} />
-        <Tab.Screen name="Projects" component={ProjectsScreen} />
-        <Tab.Screen name="Tickets" component={TicketsScreen} />
-      </Tab.Navigator>
+        <Drawer.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: "#F6FDFE",
+            },
+          }}
+          name="Login"
+          component={LoginScreen}
+        />
+        <Drawer.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: "#F6FDFE",
+            },
+          }}
+          name="Tickets"
+          component={TicketsScreen}
+        />
+        <Drawer.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: "#F6FDFE",
+            },
+          }}
+          name="Projects"
+          component={ProjectsScreen}
+        />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
