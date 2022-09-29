@@ -6,9 +6,12 @@ import {
   StyleSheet,
   Button,
   ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import StatusCard from "../components/StatusCard";
 import { gql, useQuery } from "@apollo/client";
+import { GET_ALL_TICKETS } from "../utils/ticketRequests";
 
 export interface Ticket {
   id: number;
@@ -16,17 +19,6 @@ export interface Ticket {
   description: string;
   status: string;
 }
-
-const GET_ALL_TICKETS = gql`
-  query Tickets {
-    tickets {
-      id
-      title
-      description
-      status
-    }
-  }
-`;
 
 const TicketsScreen = () => {
   const { data, error, loading } = useQuery(GET_ALL_TICKETS);
@@ -41,13 +33,19 @@ const TicketsScreen = () => {
   const doneTickets = tickets.filter((ticket) => ticket.status === "DONE");
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView horizontal={true}>
-        <StatusCard title="TO DO" tickets={toDoTickets} />
-        <StatusCard title="IN PROGRESS" tickets={inProgressTickets} />
-        <StatusCard title="DONE" tickets={doneTickets} />
-      </ScrollView>
-    </SafeAreaView>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        // Keyboard.dismiss();
+      }}
+    >
+      <SafeAreaView style={styles.container}>
+        <ScrollView horizontal={true}>
+          <StatusCard title="TO DO" tickets={toDoTickets} />
+          <StatusCard title="IN PROGRESS" tickets={inProgressTickets} />
+          <StatusCard title="DONE" tickets={doneTickets} />
+        </ScrollView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -56,7 +54,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    backgroundColor: "#e8e8e8",
+    backgroundColor: "#2da7be",
     paddingTop: 20,
     paddingBottom: 20,
     height: "100%",

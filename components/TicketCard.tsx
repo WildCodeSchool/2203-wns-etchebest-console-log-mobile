@@ -33,7 +33,7 @@ const TicketCard: React.FC<Props> = ({ ticket }) => {
           <TouchableOpacity onPress={() => setShowModal(false)}>
             <AntDesign name="close" size={24} color="black" />
           </TouchableOpacity>
-          <View style={styles.textWrapper}>
+          <View style={styles.textContainer}>
             <Text style={styles.title}>{ticket.title}</Text>
             <Text style={styles.description}>{ticket.description}</Text>
             <View>
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: "600",
   },
-  textWrapper: {
+  textContainer: {
     marginTop: 15,
   },
   description: {
