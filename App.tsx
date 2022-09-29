@@ -7,7 +7,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import TicketsScreen from "./screens/TicketsScreen";
 import ProjectsScreen from "./screens/ProjectsScreen";
 
-type RootStackParamList = {
+export type RootStackParamList = {
   Home: { initialRouteName: string };
   Login: { name: string };
   Projects: { name: string };

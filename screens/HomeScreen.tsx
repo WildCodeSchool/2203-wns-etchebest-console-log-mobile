@@ -1,7 +1,12 @@
+import { NavigationProp } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, View, Image, Button } from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native";
 
-const HomeScreen = ({ navigation }: any) => {
+interface RouterProps {
+  navigation: NavigationProp<any, any>;
+}
+
+const HomeScreen = ({ navigation }: RouterProps) => {
   return (
     <View style={[styles.container, { flexDirection: "column" }]}>
       <Image
@@ -12,12 +17,13 @@ const HomeScreen = ({ navigation }: any) => {
           borderRadius: 20,
         }}
       />
-      <View style={styles.button}>
-        <Button
-          title="Se connecter"
-          color="#031011"
+      <View>
+        <TouchableOpacity
+          style={styles.button}
           onPress={() => navigation.navigate("Login")}
-        />
+        >
+          <Text style={styles.textInButton}>Authentificate</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -33,8 +39,13 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#F6FDFE",
     borderRadius: 10,
-    padding: 10,
+    padding: 20,
+    paddingHorizontal: 30,
     marginTop: 40,
+  },
+  textInButton: {
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 export default HomeScreen;

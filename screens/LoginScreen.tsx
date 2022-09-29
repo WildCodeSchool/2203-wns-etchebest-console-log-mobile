@@ -1,10 +1,17 @@
 import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }: any) => {
   return (
     <View style={[styles.container]}>
-      <Text>Login</Text>
+      <View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Home")}
+        >
+          <Text style={styles.textInButton}>▶︎ Back to home ◀︎ </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -16,6 +23,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#146b70",
     alignItems: "center",
     justifyContent: "center",
+  },
+  button: {
+    backgroundColor: "#F6FDFE",
+    borderRadius: 10,
+    padding: 20,
+    paddingHorizontal: 30,
+    marginTop: 40,
+  },
+  textInButton: {
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 
