@@ -1,13 +1,21 @@
 import React from "react";
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 
 const LoginScreen = () => {
-  return <Text>Login</Text>;
+  return (
+    <View style={[styles.container]}>
+      <Text>Login</Text>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: "column",
     flex: 1,
+    backgroundColor: "#146b70",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
