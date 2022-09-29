@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   StyleSheet,
   SafeAreaView,
   FlatList,
   ListRenderItem,
+  View,
+  Button,
+  TextInput,
+  TouchableOpacity,
 } from "react-native";
 import { Ticket } from "../screens/TicketsScreen";
 import TicketCard from "./TicketCard";
+import { AntDesign } from "@expo/vector-icons";
 
 interface Props {
   title: string;
@@ -15,18 +20,41 @@ interface Props {
 }
 
 const StatusCard: React.FC<Props> = ({ title, tickets }) => {
+  const [isCreateTicket, setIsCreateTicket] = useState(false);
+  const [ticket, setTicket] = useState({
+    title: "",
+    description: "",
+    status: "",
+  });
+
+  const onPressAddTicket = () => {
+    setIsCreateTicket(true);
+  };
+
   const renderTicket: ListRenderItem<Ticket> = ({ item }) => (
     <TicketCard ticket={item} />
   );
   return (
     <SafeAreaView style={styles.container}>
-      <Text>{title}</Text>
+      <View>
+        <Text>{title}</Text>
+      </View>
       <FlatList
         data={tickets}
         renderItem={renderTicket}
         keyExtractor={(item) => item.id.toString()}
         style={styles.listContainer}
       />
+      {isCreateTicket ? (
+        <View style={styles.inputContainer}>
+          <TextInput style={styles.input} value={ticket.title} />
+          <TouchableOpacity onPress={() => setIsCreateTicket(false)}>
+            <AntDesign name="close" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <Button title="+ Ajouter une carte" onPress={onPressAddTicket} />
+      )}
     </SafeAreaView>
   );
 };
@@ -50,6 +78,19 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     padding: 8,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 8,
+    marginLeft: 8,
+    marginBottom: 12,
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    borderWidth: 1,
+    padding: 10,
   },
 });
 

@@ -33,7 +33,7 @@ const TicketsScreen = () => {
 
   if (error) return <Text>Error</Text>;
 
-  const tickets: Ticket[] = data?.tickets;
+  const tickets: Ticket[] = data?.tickets || [];
   const toDoTickets = tickets.filter((ticket) => ticket.status === "TODO");
   const inProgressTickets = tickets.filter(
     (ticket) => ticket.status === "IN_PROGRESS"
