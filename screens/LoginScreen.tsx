@@ -1,11 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import React from "react";
+import { Text, StyleSheet } from "react-native";
 
 const LoginScreen = () => {
-  return (
-      <Text>Login
-      </Text>
-  );
+  return <Text>Login</Text>;
 };
 
 const styles = StyleSheet.create({
@@ -14,4 +11,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen
+export default LoginScreen;
