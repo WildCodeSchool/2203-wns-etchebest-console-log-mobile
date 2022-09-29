@@ -1,68 +1,42 @@
-import "react-native-gesture-handler";
-import React from "react";
-import HomeScreen from "./screens/HomeScreen";
-import LoginScreen from "./screens/LoginScreen";
-import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import TicketsScreen from "./screens/TicketsScreen";
-import ProjectsScreen from "./screens/ProjectsScreen";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from "@apollo/client";
+import { AuthProvider } from "./context/AuthContext";
+import { setContext } from "@apollo/client/link/context";
+import AppNav from "./navigation/AppNav";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export type RootStackParamList = {
-  Home: { initialRouteName: string };
-  Login: { name: string };
-  Projects: { name: string };
-  Tickets: { name: string };
+const App = () => {
+  const httpLink = createHttpLink({
+    uri: "http://192.168.1.13:4000/graphql",
+  });
+
+  const authLink = setContext((_, { headers }) => {
+    const token = AsyncStorage.getItem("token");
+    return {
+      headers: {
+        ...headers,
+        authorization: token,
+      },
+    };
+  });
+
+  const client = new ApolloClient({
+    uri: "http://176.158.169.136:4000/graphql",
+    cache: new InMemoryCache(),
+    link: authLink.concat(httpLink),
+  });
+
+  return (
+    <ApolloProvider client={client}>
+      <AuthProvider>
+        <AppNav />
+      </AuthProvider>
+    </ApolloProvider>
+  );
 };
 
-const Drawer = createDrawerNavigator<RootStackParamList>();
-
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Drawer.Navigator
-        screenOptions={{ headerTintColor: "#146b70" }}
-        initialRouteName="Home"
-      >
-        <Drawer.Screen
-          options={{
-            headerStyle: {
-              backgroundColor: "#F6FDFE",
-            },
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-          }}
-          name="Home"
-          component={HomeScreen}
-        />
-        <Drawer.Screen
-          options={{
-            headerStyle: {
-              backgroundColor: "#F6FDFE",
-            },
-          }}
-          name="Login"
-          component={LoginScreen}
-        />
-        <Drawer.Screen
-          options={{
-            headerStyle: {
-              backgroundColor: "#F6FDFE",
-            },
-          }}
-          name="Tickets"
-          component={TicketsScreen}
-        />
-        <Drawer.Screen
-          options={{
-            headerStyle: {
-              backgroundColor: "#F6FDFE",
-            },
-          }}
-          name="Projects"
-          component={ProjectsScreen}
-        />
-      </Drawer.Navigator>
-    </NavigationContainer>
-  );
-}
+export default App;

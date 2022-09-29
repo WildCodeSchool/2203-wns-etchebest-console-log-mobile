@@ -1,12 +1,19 @@
 import { NavigationProp } from "@react-navigation/native";
-import React from "react";
-import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native";
-
+import { useContext } from "react";
+import {StyleSheet, View, Image, TouchableOpacity, Text } from "react-native";
+import { AuthContext } from "../context/AuthContext";
 interface RouterProps {
   navigation: NavigationProp<any, any>;
 }
 
 const HomeScreen = ({ navigation }: RouterProps) => {
+    const { signOut } = useContext(AuthContext);
+
+  const onSignOutPress = () => {
+    console.log("Logged-out");
+    signOut();
+  };
+
   return (
     <View style={[styles.container, { flexDirection: "column" }]}>
       <Image
@@ -17,6 +24,9 @@ const HomeScreen = ({ navigation }: RouterProps) => {
           borderRadius: 20,
         }}
       />
+      <TouchableOpacity style={styles.logoutBtn} onPress={onSignOutPress}>
+        <Text style={styles.logoutText}>Log out</Text>
+      </TouchableOpacity>
       <View>
         <TouchableOpacity
           style={styles.button}
@@ -46,6 +56,20 @@ const styles = StyleSheet.create({
   textInButton: {
     fontSize: 18,
     fontWeight: "bold",
+  },
+  logoutBtn: {
+    borderRadius: 5,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    fontWeight: "bold",
+    backgroundColor: "#146B70",
+    marginVertical: 10,
+    marginHorizontal: 10,
+    paddingHorizontal: 10,
+  },
+  logoutText: {
+    color: "white",
   },
 });
 export default HomeScreen;
