@@ -53,7 +53,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.detailsWrapper}>
+        <View style={styles.textWrapper}>
           <View style={styles.titleWrapper}>
             <Text style={styles.title}>{ticket.title}</Text>
             <TouchableOpacity>
@@ -64,7 +64,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
             <View style={styles.wrapper}>
               <Ionicons
                 name="bookmarks-outline"
-                size={16}
+                size={24}
                 color="black"
                 style={styles.iconDetail}
               />
@@ -106,7 +106,8 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    backgroundColor: "#edf2f3",
+    paddingTop: 20,
   },
   detailsWrapper: {
     flex: 1,
@@ -117,21 +118,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     blockSize: "fit-content",
-    backgroundColor: "pink",
+    backgroundColor: "white",
     borderColor: "gray",
-    borderWidth: 2,
+    marginBottom: 10,
+    paddingLeft: 15,
   },
   titleWrapper: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingRight: 20,
+    paddingLeft: 20,
   },
   title: {
     fontSize: 30,
     fontWeight: "600",
     marginRight: 10,
   },
-  detailsWrapper: {
+  textWrapper: {
     flex: 4,
     marginTop: 15,
   },
@@ -152,5 +156,7 @@ const styles = StyleSheet.create({
     flex: 1 / 6,
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 });
