@@ -10,6 +10,9 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Ticket } from "../screens/TicketsScreen";
 import TicketCard from "./TicketCard";
@@ -65,7 +68,12 @@ const StatusCard: React.FC<Props> = ({ title, tickets }) => {
     <TicketCard ticket={item} />
   );
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        title === "DONE" ? styles.lastContainer : undefined,
+      ]}
+    >
       <View>
         <Text style={styles.cardTitle}>{title}</Text>
       </View>
@@ -92,7 +100,12 @@ const StatusCard: React.FC<Props> = ({ title, tickets }) => {
               setTicket((current) => ({ ...current, title: "" }));
             }}
           >
-            <AntDesign name="close" size={24} color="black" />
+            <AntDesign
+              name="close"
+              size={24}
+              color="black"
+              style={styles.closeInputButton}
+            />
           </TouchableOpacity>
         </View>
       ) : (
@@ -105,11 +118,14 @@ const StatusCard: React.FC<Props> = ({ title, tickets }) => {
 };
 
 const styles = StyleSheet.create({
+  globalContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: "#e2e2e2",
+    backgroundColor: "#edf2f3",
     width: 250,
-    height: 550,
+    height: 580,
     marginLeft: 20,
     borderRadius: 10,
     shadowColor: "#000",
@@ -124,6 +140,9 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     paddingTop: 8,
     paddingBottom: 10,
+  },
+  lastContainer: {
+    marginRight: 20,
   },
   inputContainer: {
     flexDirection: "row",
@@ -160,6 +179,9 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     letterSpacing: 1,
     fontSize: 15,
+  },
+  closeInputButton: {
+    marginLeft: 5,
   },
 });
 

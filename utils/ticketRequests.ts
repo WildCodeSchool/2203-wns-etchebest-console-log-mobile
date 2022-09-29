@@ -21,3 +21,11 @@ export const CREATE_ONE_TICKET = gql`
     }
   }
 `;
+
+export const DELETE_ONE_TICKET = gql`
+  mutation DeleteOneTicket($data: Ticket) {
+    deleteOneTicket(data: $data) {
+      id
+    }
+  }
+`;

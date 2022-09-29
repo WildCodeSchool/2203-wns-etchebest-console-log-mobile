@@ -8,13 +8,15 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
 } from "react-native";
 import StatusCard from "../components/StatusCard";
 import { gql, useQuery } from "@apollo/client";
 import { GET_ALL_TICKETS } from "../utils/ticketRequests";
+import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
 
 export interface Ticket {
-  id: number;
+  id: string;
   title: string;
   description: string;
   status: string;
@@ -28,24 +30,18 @@ const TicketsScreen = () => {
   const tickets: Ticket[] = data?.tickets || [];
   const toDoTickets = tickets.filter((ticket) => ticket.status === "TODO");
   const inProgressTickets = tickets.filter(
-    (ticket) => ticket.status === "IN_PROGRESS"
+    (ticket) => ticket.status === "DOING"
   );
   const doneTickets = tickets.filter((ticket) => ticket.status === "DONE");
 
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        // Keyboard.dismiss();
-      }}
-    >
-      <SafeAreaView style={styles.container}>
-        <ScrollView horizontal={true}>
-          <StatusCard title="TO DO" tickets={toDoTickets} />
-          <StatusCard title="IN PROGRESS" tickets={inProgressTickets} />
-          <StatusCard title="DONE" tickets={doneTickets} />
-        </ScrollView>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+    <SafeAreaView style={styles.container}>
+      <ScrollView horizontal={true}>
+        <StatusCard title="TO DO" tickets={toDoTickets} />
+        <StatusCard title="IN PROGRESS" tickets={inProgressTickets} />
+        <StatusCard title="DONE" tickets={doneTickets} />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
