@@ -12,6 +12,9 @@ import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { useMutation } from "@apollo/client";
 import { DELETE_ONE_TICKET, GET_ALL_TICKETS } from "../utils/ticketRequests";
+import { FontAwesome } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 interface Props {
   show: boolean;
@@ -40,7 +43,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
       animationType="slide"
       onRequestClose={() => setShow(false)}
     >
-      <View style={styles.modalContainer}>
+      <View style={styles.container}>
         <View style={styles.actionIcons}>
           <TouchableOpacity onPress={() => setShow(false)} activeOpacity={0.1}>
             <AntDesign name="close" size={24} color="black" />
@@ -50,12 +53,49 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{ticket.title}</Text>
-          <Text style={styles.description}>{ticket.description}</Text>
-          <View>
-            <AntDesign name="user" size={36} color="black" />
-            <Text>Username</Text>
+        <View style={styles.detailsWrapper}>
+          <View style={styles.titleWrapper}>
+            <Text style={styles.title}>{ticket.title}</Text>
+            <TouchableOpacity>
+              <FontAwesome name="pencil" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.detailsWrapper}>
+            <View style={styles.wrapper}>
+              <Ionicons
+                name="bookmarks-outline"
+                size={16}
+                color="black"
+                style={styles.iconDetail}
+              />
+              <Text>Project</Text>
+            </View>
+
+            <View style={styles.wrapper}>
+              <MaterialCommunityIcons
+                name="list-status"
+                size={24}
+                color="black"
+                style={styles.iconDetail}
+              />
+              <Text>Status</Text>
+            </View>
+            <View style={styles.wrapper}>
+              <Text>Created by </Text>
+              <AntDesign name="user" size={16} color="black" />
+              <Text>Username</Text>
+              <Text> - 10/10/1994</Text>
+            </View>
+            <View style={styles.wrapper}>
+              <Text>Assigned to </Text>
+              <AntDesign name="user" size={16} color="black" />
+              <Text>Username</Text>
+            </View>
+            <View style={[styles.wrapper, styles.descriptionWrapper]}>
+              <Text style={styles.description}>
+                {ticket.description ? ticket.description : "No description"}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -64,26 +104,53 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
 };
 
 const styles = StyleSheet.create({
-  modalContainer: {
+  container: {
     flex: 1,
     padding: 20,
   },
-  title: {
-    fontSize: 40,
-    fontWeight: "600",
+  detailsWrapper: {
+    flex: 1,
+    marginTop: 20,
   },
-  textContainer: {
+  wrapper: {
+    flex: 1 / 10,
+    flexDirection: "row",
+    alignItems: "center",
+    blockSize: "fit-content",
+    backgroundColor: "pink",
+    borderColor: "gray",
+    borderWidth: 2,
+  },
+  titleWrapper: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: "600",
+    marginRight: 10,
+  },
+  detailsWrapper: {
     flex: 4,
     marginTop: 15,
   },
+  iconDetail: {
+    marginRight: 10,
+  },
+  descriptionWrapper: {
+    flex: 1 / 4,
+  },
   description: {
-    fontSize: 25,
-    marginTop: 10,
+    fontSize: 15,
+    fontStyle: "italic",
+    color: "#4C4C4C",
+    marginTop: 20,
+    marginBottom: 15,
   },
   actionIcons: {
     flex: 1 / 6,
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  icon: {},
 });
