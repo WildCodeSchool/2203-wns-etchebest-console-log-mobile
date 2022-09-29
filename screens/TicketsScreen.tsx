@@ -13,7 +13,6 @@ import {
 import StatusCard from "../components/StatusCard";
 import { gql, useQuery } from "@apollo/client";
 import { GET_ALL_TICKETS } from "../utils/ticketRequests";
-import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
 
 export interface Ticket {
   id: string;

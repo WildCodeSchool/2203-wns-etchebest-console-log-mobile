@@ -20,19 +20,17 @@ interface Props {
 }
 
 export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
-  console.log("ticket :>> ", ticket);
-  const [deleteTicket, { data, error }] = useMutation(DELETE_ONE_TICKET, {
+  const [deleteOneTicket, { data, error }] = useMutation(DELETE_ONE_TICKET, {
     refetchQueries: () => [{ query: GET_ALL_TICKETS }],
   });
 
   const onDeleteTicket = () => {
-    deleteTicket({
+    deleteOneTicket({
       variables: {
-        data: {
-          id: ticket.id,
-        },
+        where: { id: ticket.id },
       },
     });
+    setShow(false);
   };
 
   return (
@@ -47,13 +45,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
           <TouchableOpacity onPress={() => setShow(false)} activeOpacity={0.1}>
             <AntDesign name="close" size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              onDeleteTicket();
-              setShow(false);
-            }}
-            activeOpacity={0.1}
-          >
+          <TouchableOpacity onPress={onDeleteTicket} activeOpacity={0.1}>
             <Feather name="trash-2" size={24} color="black" />
           </TouchableOpacity>
         </View>

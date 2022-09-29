@@ -43,8 +43,6 @@ const StatusCard: React.FC<Props> = ({ title, tickets }) => {
   };
 
   const onSubmitEditing = () => {
-    console.log("Submit ");
-    console.log("ticket", ticket);
     createOneticket({
       variables: {
         data: {
