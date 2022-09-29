@@ -22,6 +22,17 @@ export const CREATE_ONE_TICKET = gql`
   }
 `;
 
+export const UPDATE_ONE_TICKET = gql`
+  mutation UpdateOneTicket(
+    $where: TicketWhereUniqueInput!
+    $data: TicketUpdateInput!
+  ) {
+    updateOneTicket(where: $where, data: $data) {
+      id
+    }
+  }
+`;
+
 export const DELETE_ONE_TICKET = gql`
   mutation DeleteOneTicket($where: TicketWhereUniqueInput!) {
     deleteOneTicket(where: $where) {

@@ -24,7 +24,6 @@ const TicketCard: React.FC<Props> = ({ ticket }) => {
   return (
     <>
       <TicketModal show={showModal} setShow={setShowModal} ticket={ticket} />
-
       <TouchableOpacity onPress={onPress} style={styles.container}>
         <Text>{ticket.title}</Text>
         <Text>{ticket.description}</Text>

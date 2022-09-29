@@ -15,7 +15,6 @@ const cache = new InMemoryCache();
 const client = new ApolloClient({
   uri: "http://192.168.1.195:4000/graphql",
   cache,
-  defaultOptions: { watchQuery: { fetchPolicy: "cache-and-network" } },
 });
 
 const Tab = createBottomTabNavigator();

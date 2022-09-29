@@ -27,38 +27,37 @@ interface Props {
 }
 
 const StatusCard: React.FC<Props> = ({ title, tickets }) => {
-  const [createOneticket, { data, error }] = useMutation(CREATE_ONE_TICKET, {
-    refetchQueries: () => [{ query: GET_ALL_TICKETS }],
-  });
   const ticketStatus = getTicketStatus(title);
-  const [isCreateTicket, setIsCreateTicket] = useState(false);
+  const [isAddingTicket, setIsAddingTicket] = useState(false);
   const [ticket, setTicket] = useState({
     title: "",
-    description: "",
     status: ticketStatus,
   });
 
-  const onPressAddTicket = () => {
-    setIsCreateTicket(true);
-  };
+  const [createOneticket, { data, error }] = useMutation(CREATE_ONE_TICKET, {
+    refetchQueries: () => [{ query: GET_ALL_TICKETS }],
+  });
 
+  const onPressAddTicket = () => {
+    setIsAddingTicket(true);
+  };
   const onSubmitEditing = () => {
+    console.log("ticket", ticket);
     createOneticket({
       variables: {
         data: {
           title: ticket.title,
-          description: ticket.description,
           status: ticket.status,
         },
       },
     });
-    setTicket({ title: "", status: ticketStatus, description: "" });
-    setIsCreateTicket(false);
+    setTicket({ title: "", status: ticketStatus });
+    setIsAddingTicket(false);
   };
 
   const onBlur = () => {
     Keyboard.dismiss();
-    setIsCreateTicket(false);
+    setIsAddingTicket(false);
     setTicket((current) => ({ ...current, title: "" }));
   };
 
@@ -80,7 +79,7 @@ const StatusCard: React.FC<Props> = ({ title, tickets }) => {
         renderItem={renderTicket}
         keyExtractor={(item) => item.id.toString()}
       />
-      {isCreateTicket ? (
+      {isAddingTicket ? (
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -94,8 +93,8 @@ const StatusCard: React.FC<Props> = ({ title, tickets }) => {
           />
           <TouchableOpacity
             onPress={() => {
-              setIsCreateTicket(false);
               setTicket((current) => ({ ...current, title: "" }));
+              setIsAddingTicket(false);
             }}
           >
             <AntDesign
