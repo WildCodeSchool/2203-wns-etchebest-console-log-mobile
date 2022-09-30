@@ -9,6 +9,16 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Icon } from "@expo/vector-icons/build/createIconSet";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { useEffect, useState } from "react";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+
+export type RootStackParamList = {
+  Home: { initialRouteName: string };
+  Login: { name: string };
+  Projects: { name: string };
+  Tickets: { name: string };
+};
+
+const Drawer = createDrawerNavigator<RootStackParamList>();
 
 const cache = new InMemoryCache();
 
@@ -23,37 +33,50 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              if (route.name === "Home") {
-                iconName = focused ? "home" : "home-outline";
-              } else if (route.name === "Login") {
-                iconName = focused ? "log-in" : "log-in-outline";
-              } else if (route.name === "Projects") {
-                iconName = focused ? "bookmarks" : "bookmarks-outline";
-              } else if (route.name === "Tickets") {
-                iconName = focused ? "clipboard" : "clipboard-outline";
-              }
-              return (
-                <Ionicons
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  name={iconName}
-                  size={size}
-                  color={color}
-                />
-              );
-            },
-            tabBarStyle: { position: "absolute" },
-          })}
+        <Drawer.Navigator
+          screenOptions={{ headerTintColor: "#146b70" }}
+          initialRouteName="Home"
         >
-          <Tab.Screen name="Home" component={HomeScreen} />
-          <Tab.Screen name="Login" component={LoginScreen} />
-          <Tab.Screen name="Projects" component={ProjectsScreen} />
-          <Tab.Screen name="Tickets" component={TicketsScreen} />
-        </Tab.Navigator>
+          <Drawer.Screen
+            options={{
+              headerStyle: {
+                backgroundColor: "#F6FDFE",
+              },
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+            }}
+            name="Home"
+            component={HomeScreen}
+          />
+          <Drawer.Screen
+            options={{
+              headerStyle: {
+                backgroundColor: "#F6FDFE",
+              },
+            }}
+            name="Login"
+            component={LoginScreen}
+          />
+          <Drawer.Screen
+            options={{
+              headerStyle: {
+                backgroundColor: "#F6FDFE",
+              },
+            }}
+            name="Tickets"
+            component={TicketsScreen}
+          />
+          <Drawer.Screen
+            options={{
+              headerStyle: {
+                backgroundColor: "#F6FDFE",
+              },
+            }}
+            name="Projects"
+            component={ProjectsScreen}
+          />
+        </Drawer.Navigator>
       </NavigationContainer>
     </ApolloProvider>
   );
