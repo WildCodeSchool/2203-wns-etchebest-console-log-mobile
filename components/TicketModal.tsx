@@ -29,7 +29,6 @@ interface Props {
 }
 
 export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
-  console.log("ticket :>> ", ticket);
   const [deleteOneTicket, { data, error }] = useMutation(DELETE_ONE_TICKET, {
     refetchQueries: () => [{ query: GET_ALL_TICKETS }],
   });
@@ -51,8 +50,6 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
     description: ticket.description,
   });
 
-  const [selectStatusVisible, setSelectStatusVisible] = useState(false);
-
   const onUpdateTicket = () => {
     updateOneTicket({
       variables: {
@@ -67,10 +64,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
         },
       },
     });
-    setOnEdit((current) => ({
-      ...current,
-      title: false,
-    }));
+    setOnEdit({ title: false, status: false, description: false });
   };
   const onDeleteTicket = () => {
     deleteOneTicket({
@@ -155,24 +149,12 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
 
             {onEdit.status ? (
               <View>
-                {/* <TextInput
-                  value={title}
-                  onChangeText={(newValue) => setTitle(newValue)}
-                  onSubmitEditing={onUpdateTicket}
-                  blurOnSubmit
-                  multiline
-                /> */}
-                r
-                <TouchableOpacity
-                  onPress={() =>
-                    setOnEdit((current) => ({
-                      ...current,
-                      status: false,
-                    }))
-                  }
-                >
-                  <AntDesign name="close" size={24} color="black" />
-                </TouchableOpacity>
+                <MaterialCommunityIcons
+                  name="list-status"
+                  size={24}
+                  color="black"
+                  style={styles.iconDetail}
+                />
               </View>
             ) : (
               <TouchableOpacity
@@ -233,7 +215,6 @@ const styles = StyleSheet.create({
     flex: 1 / 10,
     flexDirection: "row",
     alignItems: "center",
-    blockSize: "fit-content",
     backgroundColor: "white",
     borderColor: "gray",
     shadowColor: "#000",
@@ -246,16 +227,14 @@ const styles = StyleSheet.create({
     elevation: 3,
     marginBottom: 10,
     paddingLeft: 15,
-    marginLeft: 5,
-    marginRight: 5,
+    marginHorizontal: 5,
     borderRadius: 4,
   },
   titleWrapper: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 30,
@@ -290,8 +269,7 @@ const styles = StyleSheet.create({
     flex: 1 / 6,
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingHorizontal: 20,
   },
   text: {
     fontSize: 16,

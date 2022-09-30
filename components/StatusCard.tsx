@@ -17,7 +17,6 @@ import {
 import { Ticket } from "../screens/TicketsScreen";
 import TicketCard from "./TicketCard";
 import { AntDesign } from "@expo/vector-icons";
-import { getTicketStatus } from "../utils/functions";
 import { gql, useMutation } from "@apollo/client";
 import {
   CREATE_ONE_TICKET,
@@ -25,16 +24,16 @@ import {
 } from "../lib/queries/ticketRequests";
 
 interface Props {
+  type: "TODO" | "DOING" | "DONE";
   title: string;
   tickets: Ticket[];
 }
 
-const StatusCard: React.FC<Props> = ({ title, tickets }) => {
-  const ticketStatus = getTicketStatus(title);
+const StatusCard: React.FC<Props> = ({ title, tickets, type }) => {
   const [isAddingTicket, setIsAddingTicket] = useState(false);
   const [ticket, setTicket] = useState({
     title: "",
-    status: ticketStatus,
+    status: type,
   });
 
   const [createOneticket, { data, error }] = useMutation(CREATE_ONE_TICKET, {
@@ -54,7 +53,7 @@ const StatusCard: React.FC<Props> = ({ title, tickets }) => {
         },
       },
     });
-    setTicket({ title: "", status: ticketStatus });
+    setTicket({ title: "", status: type });
     setIsAddingTicket(false);
   };
 
@@ -147,8 +146,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginRight: 8,
-    marginLeft: 8,
+    marginHorizontal: 8,
   },
   input: {
     flex: 1,

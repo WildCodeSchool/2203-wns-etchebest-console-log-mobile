@@ -36,9 +36,13 @@ const TicketsScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView horizontal={true}>
-        <StatusCard title="TO DO" tickets={toDoTickets} />
-        <StatusCard title="IN PROGRESS" tickets={inProgressTickets} />
-        <StatusCard title="DONE" tickets={doneTickets} />
+        <StatusCard title="TO DO" type="TODO" tickets={toDoTickets} />
+        <StatusCard
+          title="IN PROGRESS"
+          type="DOING"
+          tickets={inProgressTickets}
+        />
+        <StatusCard title="DONE" type="DONE" tickets={doneTickets} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -50,8 +54,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     backgroundColor: "#2da7be",
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingVertical: 20,
     height: "100%",
   },
 });
