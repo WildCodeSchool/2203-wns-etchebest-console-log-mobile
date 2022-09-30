@@ -12,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const App = () => {
   const httpLink = createHttpLink({
     // modifier l'uri en fonction de son adresse IP
-    uri: "http://192.168.1.13:4000/graphql",
+    uri: "http://192.168.1.195:4000/graphql",
   });
 
   const authLink = setContext((_, { headers }) => {
@@ -26,7 +26,7 @@ const App = () => {
   });
 
   const client = new ApolloClient({
-    uri: "http://176.158.169.136:4000/graphql",
+    uri: "http://192.168.1.195:4000/graphql",
     cache: new InMemoryCache(),
     link: authLink.concat(httpLink),
   });
