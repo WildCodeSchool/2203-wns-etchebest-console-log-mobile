@@ -19,7 +19,10 @@ import TicketCard from "./TicketCard";
 import { AntDesign } from "@expo/vector-icons";
 import { getTicketStatus } from "../utils/functions";
 import { gql, useMutation } from "@apollo/client";
-import { CREATE_ONE_TICKET, GET_ALL_TICKETS } from "../utils/ticketRequests";
+import {
+  CREATE_ONE_TICKET,
+  GET_ALL_TICKETS,
+} from "../lib/queries/ticketRequests";
 
 interface Props {
   title: string;

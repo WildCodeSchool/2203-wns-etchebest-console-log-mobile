@@ -16,7 +16,7 @@ import {
   DELETE_ONE_TICKET,
   GET_ALL_TICKETS,
   UPDATE_ONE_TICKET,
-} from "../utils/ticketRequests";
+} from "../lib/queries/ticketRequests";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -162,6 +162,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
                   blurOnSubmit
                   multiline
                 /> */}
+                r
                 <TouchableOpacity
                   onPress={() =>
                     setOnEdit((current) => ({
