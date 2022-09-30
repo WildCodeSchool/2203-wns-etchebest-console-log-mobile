@@ -68,9 +68,8 @@ const StatusCard: React.FC<Props> = ({ title, tickets, type }) => {
   );
   return (
     <KeyboardAvoidingView
-      // behavior={Platform.OS === "ios" ? "padding" : ""}
       style={{ flex: 1 }}
-      // keyboardVerticalOffset={-120}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
       enabled
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
