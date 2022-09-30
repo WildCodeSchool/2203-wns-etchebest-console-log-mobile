@@ -3,17 +3,26 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation } from "@apollo/client";
 import LOGIN from "../lib/queries/login";
 
-interface AuthContextInterface {
+export interface AuthContextInterface {
   isLoading: boolean;
   userToken: string | null;
   signIn: (email: string, password: string) => void;
   signOut: () => void;
   isLogged: boolean;
 }
+interface Props {
+  children: JSX.Element;
+}
 
-export const AuthContext = createContext<AuthContextInterface | null>(null);
+export const AuthContext = createContext<AuthContextInterface>({
+  isLoading: false,
+  userToken: null,
+  signIn: () => {},
+  signOut: () => {},
+  isLogged: false,
+});
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState<string | null>(null);
   const [login, { data }] = useMutation(LOGIN);
