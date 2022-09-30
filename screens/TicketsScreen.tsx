@@ -9,6 +9,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
+  Platform,
+  View,
 } from "react-native";
 import StatusCard from "../components/StatusCard";
 import { gql, useQuery } from "@apollo/client";
@@ -34,7 +36,7 @@ const TicketsScreen = () => {
   const doneTickets = tickets.filter((ticket) => ticket.status === "DONE");
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ScrollView horizontal={true}>
         <StatusCard title="TO DO" type="TODO" tickets={toDoTickets} />
         <StatusCard
@@ -44,7 +46,7 @@ const TicketsScreen = () => {
         />
         <StatusCard title="DONE" type="DONE" tickets={doneTickets} />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -53,7 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    backgroundColor: "#2da7be",
+    backgroundColor: "#146B70",
     paddingVertical: 20,
     height: "100%",
   },
