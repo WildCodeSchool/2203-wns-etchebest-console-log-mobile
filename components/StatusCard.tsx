@@ -67,52 +67,61 @@ const StatusCard: React.FC<Props> = ({ title, tickets, type }) => {
     <TicketCard ticket={item} />
   );
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        title === "DONE" ? styles.lastContainer : undefined,
-      ]}
+    <KeyboardAvoidingView
+      // behavior={Platform.OS === "ios" ? "padding" : ""}
+      style={{ flex: 1 }}
+      // keyboardVerticalOffset={-120}
+      enabled
     >
-      <View>
-        <Text style={styles.cardTitle}>{title}</Text>
-      </View>
-      <FlatList
-        data={tickets}
-        renderItem={renderTicket}
-        keyExtractor={(item) => item.id.toString()}
-      />
-      {isAddingTicket ? (
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            value={ticket.title}
-            onChangeText={(newValue) =>
-              setTicket((current) => ({ ...current, title: newValue }))
-            }
-            placeholder="Ticket name"
-            onSubmitEditing={onSubmitEditing}
-            onBlur={onBlur}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView
+          style={[
+            styles.container,
+            title === "DONE" ? styles.lastContainer : undefined,
+          ]}
+        >
+          <View>
+            <Text style={styles.cardTitle}>{title}</Text>
+          </View>
+          <FlatList
+            data={tickets}
+            renderItem={renderTicket}
+            keyExtractor={(item) => item.id.toString()}
           />
-          <TouchableOpacity
-            onPress={() => {
-              setTicket((current) => ({ ...current, title: "" }));
-              setIsAddingTicket(false);
-            }}
-          >
-            <AntDesign
-              name="close"
-              size={24}
-              color="black"
-              style={styles.closeInputButton}
-            />
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <TouchableOpacity onPress={onPressAddTicket}>
-          <Text style={styles.addButtonText}>+ Add ticket</Text>
-        </TouchableOpacity>
-      )}
-    </SafeAreaView>
+          {isAddingTicket ? (
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={ticket.title}
+                onChangeText={(newValue) =>
+                  setTicket((current) => ({ ...current, title: newValue }))
+                }
+                placeholder="Ticket name"
+                onSubmitEditing={onSubmitEditing}
+                onBlur={onBlur}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setTicket((current) => ({ ...current, title: "" }));
+                  setIsAddingTicket(false);
+                }}
+              >
+                <AntDesign
+                  name="close"
+                  size={24}
+                  color="black"
+                  style={styles.closeInputButton}
+                />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity onPress={onPressAddTicket}>
+              <Text style={styles.addButtonText}>+ Add ticket</Text>
+            </TouchableOpacity>
+          )}
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
