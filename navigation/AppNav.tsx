@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ActivityIndicator, View, StyleSheet, Text } from "react-native";
+import { ActivityIndicator, View, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import AppStack from "./AppStack";
 import AuthStack from "./AuthStack";

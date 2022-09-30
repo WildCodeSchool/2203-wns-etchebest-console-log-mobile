@@ -6,7 +6,7 @@ import ProjectsScreen from "../screens/ProjectsScreen";
 
 export type RootStackParamList = {
   Home: { initialRouteName: string };
-  Login: { name: string };
+  Authentificate: { name: string };
   Projects: { name: string };
   Tickets: { name: string };
 };
@@ -32,7 +32,6 @@ const AppStackScreen = () => {
           name="Home"
           component={HomeScreen}
         />
-
         <Drawer.Screen
           options={{
             headerStyle: {

@@ -11,6 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const App = () => {
   const httpLink = createHttpLink({
+    // modifier l'uri en fonction de son adresse IP
     uri: "http://192.168.1.13:4000/graphql",
   });
 

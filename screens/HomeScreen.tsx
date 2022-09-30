@@ -1,13 +1,13 @@
 import { NavigationProp } from "@react-navigation/native";
 import { useContext } from "react";
-import {StyleSheet, View, Image, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 interface RouterProps {
   navigation: NavigationProp<any, any>;
 }
 
 const HomeScreen = ({ navigation }: RouterProps) => {
-    const { signOut } = useContext(AuthContext);
+  const { signOut, isLogged } = useContext(AuthContext);
 
   const onSignOutPress = () => {
     console.log("Logged-out");
@@ -27,14 +27,16 @@ const HomeScreen = ({ navigation }: RouterProps) => {
       <TouchableOpacity style={styles.logoutBtn} onPress={onSignOutPress}>
         <Text style={styles.logoutText}>Log out</Text>
       </TouchableOpacity>
-      <View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("Login")}
-        >
-          <Text style={styles.textInButton}>Authentificate</Text>
-        </TouchableOpacity>
-      </View>
+      {!isLogged ? (
+        <View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("Login")}
+          >
+            <Text style={styles.textInButton}>Authentificate</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
     </View>
   );
 };
