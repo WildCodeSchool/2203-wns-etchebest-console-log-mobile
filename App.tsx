@@ -1,92 +1,43 @@
-import "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { AppRegistry, StyleSheet } from "react-native";
-import HomeScreen from "./screens/HomeScreen";
-import LoginScreen from "./screens/LoginScreen";
-import ProjectsScreen from "./screens/ProjectsScreen";
-import TicketsScreen from "./screens/TicketsScreen";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { Icon } from "@expo/vector-icons/build/createIconSet";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { useEffect, useState } from "react";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from "@apollo/client";
+import { AuthProvider } from "./context/AuthContext";
+import { setContext } from "@apollo/client/link/context";
+import AppNav from "./navigation/AppNav";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export type RootStackParamList = {
-  Home: { initialRouteName: string };
-  Login: { name: string };
-  Projects: { name: string };
-  Tickets: { name: string };
-};
+const App = () => {
+  const httpLink = createHttpLink({
+    // modifier l'uri en fonction de son adresse IP
+    uri: "http://192.168.1.13:4000/graphql",
+  });
 
-const Drawer = createDrawerNavigator<RootStackParamList>();
+  const authLink = setContext((_, { headers }) => {
+    const token = AsyncStorage.getItem("token");
+    return {
+      headers: {
+        ...headers,
+        authorization: token,
+      },
+    };
+  });
 
-const cache = new InMemoryCache();
+  const client = new ApolloClient({
+    uri: "http://176.158.169.136:4000/graphql",
+    cache: new InMemoryCache(),
+    link: authLink.concat(httpLink),
+  });
 
-const client = new ApolloClient({
-  uri: "http://192.168.1.195:4000/graphql",
-  cache,
-});
-
-const Tab = createBottomTabNavigator();
-
-export default function App() {
   return (
     <ApolloProvider client={client}>
-      <NavigationContainer>
-        <Drawer.Navigator
-          screenOptions={{ headerTintColor: "#146b70" }}
-          initialRouteName="Home"
-        >
-          <Drawer.Screen
-            options={{
-              headerStyle: {
-                backgroundColor: "#F6FDFE",
-              },
-              headerTitleStyle: {
-                fontWeight: "bold",
-              },
-            }}
-            name="Home"
-            component={HomeScreen}
-          />
-          <Drawer.Screen
-            options={{
-              headerStyle: {
-                backgroundColor: "#F6FDFE",
-              },
-            }}
-            name="Login"
-            component={LoginScreen}
-          />
-          <Drawer.Screen
-            options={{
-              headerStyle: {
-                backgroundColor: "#F6FDFE",
-              },
-            }}
-            name="Tickets"
-            component={TicketsScreen}
-          />
-          <Drawer.Screen
-            options={{
-              headerStyle: {
-                backgroundColor: "#F6FDFE",
-              },
-            }}
-            name="Projects"
-            component={ProjectsScreen}
-          />
-        </Drawer.Navigator>
-      </NavigationContainer>
+      <AuthProvider>
+        <AppNav />
+      </AuthProvider>
     </ApolloProvider>
   );
-}
+};
 
-AppRegistry.registerComponent("ConsoleLogApp", () => App);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+export default App;
