@@ -7,6 +7,9 @@ import {
   Modal,
   Button,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
 } from "react-native";
 import { Ticket } from "../screens/TicketsScreen";
 import { AntDesign } from "@expo/vector-icons";
@@ -22,6 +25,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getTicketStatusLabel } from "../utils/functions";
 import DropDownPicker from "react-native-dropdown-picker";
+import TicketTitle from "./TicketTitle";
+import {
+  ScrollView,
+  TouchableWithoutFeedback,
+} from "react-native-gesture-handler";
+import { TicketStatus } from "./TicketStatus";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 interface Props {
   show: boolean;
@@ -30,6 +41,13 @@ interface Props {
 }
 
 export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
+  const [onTitleEdit, setOnTitleEdit] = useState(false);
+  const [title, setTitle] = useState(ticket.title);
+  const [onStatusEdit, setOnStatusEdit] = useState(false);
+  const [status, setStatus] = useState(ticket.status);
+  const [onDescriptionEdit, setOnDescriptionEdit] = useState(false);
+  const [description, setDescription] = useState(ticket.description);
+
   const [deleteOneTicket, { data, error }] = useMutation(DELETE_ONE_TICKET, {
     refetchQueries: () => [{ query: GET_ALL_TICKETS }],
   });
@@ -40,32 +58,6 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
     }
   );
 
-  const [onEdit, setOnEdit] = useState({
-    title: false,
-    status: false,
-    description: false,
-  });
-  const [updatedTicket, setUpdatedTicket] = useState({
-    title: ticket.title,
-    status: ticket.status,
-    description: ticket.description,
-  });
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: "To do", value: "TODO" },
-    { label: "In progress", value: "DOING" },
-    { label: "Done", value: "DONE" },
-  ]);
-
-  const onBlur = () => {
-    setOnEdit({
-      title: false,
-      status: false,
-      description: false,
-    });
-  };
-
   const onUpdateTicket = () => {
     updateOneTicket({
       variables: {
@@ -73,14 +65,13 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
           id: ticket.id,
         },
         data: {
-          id: { set: ticket.id },
-          title: { set: updatedTicket.title },
-          status: { set: updatedTicket.status },
-          description: { set: updatedTicket.description },
+          title: { set: title },
+          status: { set: status },
+          description: { set: description },
         },
       },
     });
-    setOnEdit({ title: false, status: false, description: false });
+    setOnTitleEdit(false);
   };
   const onDeleteTicket = () => {
     deleteOneTicket({
@@ -93,12 +84,12 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
 
   return (
     <Modal
-      style={{ margin: 10, flex: 1 }}
+      style={{ flex: 1 }}
       visible={show}
       animationType="slide"
       onRequestClose={() => setShow(false)}
     >
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.actionIcons}>
           <TouchableOpacity onPress={() => setShow(false)} activeOpacity={0.1}>
             <AntDesign name="close" size={24} color="black" />
@@ -109,49 +100,13 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
         </View>
 
         <View style={styles.textWrapper}>
-          <View>
-            {onEdit.title ? (
-              <View style={styles.titleWrapper}>
-                <TextInput
-                  value={updatedTicket.title}
-                  onChangeText={(newValue) =>
-                    setUpdatedTicket((current) => ({
-                      ...current,
-                      title: newValue,
-                    }))
-                  }
-                  style={[styles.title, styles.inputTitle]}
-                  onSubmitEditing={onUpdateTicket}
-                  blurOnSubmit
-                  multiline
-                  onBlur={onBlur}
-                />
-                <TouchableOpacity
-                  onPress={() =>
-                    setOnEdit((current) => ({
-                      ...current,
-                      title: false,
-                    }))
-                  }
-                >
-                  <AntDesign name="close" size={24} color="black" />
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <TouchableOpacity
-                onPress={() =>
-                  setOnEdit((current) => ({
-                    ...current,
-                    title: !current.title,
-                  }))
-                }
-                style={styles.titleWrapper}
-              >
-                <Text style={styles.title}>{ticket.title}</Text>
-                <FontAwesome name="pencil" size={24} color="black" />
-              </TouchableOpacity>
-            )}
-          </View>
+          <TicketTitle
+            onEdit={onTitleEdit}
+            setOnEdit={setOnTitleEdit}
+            title={title}
+            setTitle={setTitle}
+            onUpdateTicket={onUpdateTicket}
+          />
 
           <View style={styles.detailsWrapper}>
             <View style={styles.wrapper}>
@@ -164,24 +119,13 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
               <Text style={styles.text}>Project</Text>
             </View>
 
-            <View style={[styles.wrapper, styles.statusWrapper]}>
-              <MaterialCommunityIcons
-                name="list-status"
-                size={24}
-                color="black"
-                style={styles.iconDetail}
-              />
-              <View style={styles.selectView}>
-                <DropDownPicker
-                  open={open}
-                  setOpen={setOpen}
-                  value={value}
-                  setValue={setValue}
-                  items={items}
-                  multiple={false}
-                />
-              </View>
-            </View>
+            <TicketStatus
+              onEdit={onStatusEdit}
+              setOnEdit={setOnStatusEdit}
+              status={status}
+              setStatus={setStatus}
+              onUpdateTicket={onUpdateTicket}
+            />
 
             <View style={styles.wrapper}>
               <Text>Created by </Text>
@@ -194,6 +138,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
               <AntDesign name="user" size={16} color="black" />
               <Text>Username</Text>
             </View>
+
             <View style={[styles.wrapper, styles.descriptionWrapper]}>
               <Text style={styles.description}>
                 {ticket.description ? ticket.description : "No description"}
@@ -201,7 +146,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
             </View>
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 };
@@ -210,17 +155,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#edf2f3",
-    paddingTop: 20,
   },
   detailsWrapper: {
-    flex: 1,
+    flex: 2,
     marginTop: 20,
   },
   wrapper: {
     flex: 1 / 10,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "yellow",
     borderColor: "gray",
     shadowColor: "#000",
     shadowOffset: {
@@ -235,27 +179,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     borderRadius: 4,
   },
-  titleWrapper: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "600",
-    marginRight: 10,
-  },
-  inputTitle: {
-    backgroundColor: "white",
-    padding: 2,
-    paddingLeft: 5,
-    width: "90%",
-    borderRadius: 4,
-  },
   textWrapper: {
     flex: 4,
-    marginTop: 15,
+    paddingTop: 15,
+    backgroundColor: "blue",
   },
   iconDetail: {
     marginRight: 10,
@@ -275,15 +202,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: "gray",
   },
   text: {
     fontSize: 16,
   },
-  selectView: {
-    padding: 3,
-    width: "90%",
-  },
-  statusWrapper: {
-    zIndex: 100,
+
+  safeAreaView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
