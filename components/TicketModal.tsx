@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
   Platform,
+  Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -87,76 +88,73 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
       }}
       statusBarTranslucent
     >
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        enabled
-      >
-        <SafeAreaView style={styles.container}>
-          <View style={styles.actionIcons}>
-            <TouchableOpacity
-              onPress={() => setShow(false)}
-              activeOpacity={0.1}
-            >
-              <AntDesign name="close" size={24} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onDeleteTicket} activeOpacity={0.1}>
-              <Feather name="trash-2" size={24} color="black" />
-            </TouchableOpacity>
-          </View>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.actionIcons}>
+          <TouchableOpacity
+            onPress={() => {
+              setShow(false);
+              resetInputs();
+            }}
+            activeOpacity={0.1}
+          >
+            <AntDesign name="close" size={24} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onDeleteTicket} activeOpacity={0.1}>
+            <Feather name="trash-2" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
 
-          <View style={styles.ticketWrapper}>
-            <TicketTitle
-              onEdit={onTitleEdit}
-              setOnEdit={setOnTitleEdit}
-              title={title}
-              setTitle={setTitle}
+        <View style={styles.ticketWrapper}>
+          <TicketTitle
+            onEdit={onTitleEdit}
+            setOnEdit={setOnTitleEdit}
+            title={title}
+            setTitle={setTitle}
+            onUpdateTicket={onUpdateTicket}
+          />
+
+          <View style={styles.ticketAttributes}>
+            <View style={styles.wrapper}>
+              <Ionicons
+                name="bookmarks-outline"
+                size={24}
+                color="black"
+                style={styles.iconDetail}
+              />
+              <Text style={styles.text}>Project</Text>
+            </View>
+
+            <TicketStatus
+              onEdit={onStatusEdit}
+              setOnEdit={setOnStatusEdit}
+              status={status}
+              setStatus={setStatus}
               onUpdateTicket={onUpdateTicket}
             />
 
-            <View style={styles.ticketAttributes}>
-              <View style={styles.wrapper}>
-                <Ionicons
-                  name="bookmarks-outline"
-                  size={24}
-                  color="black"
-                  style={styles.iconDetail}
-                />
-                <Text style={styles.text}>Project</Text>
-              </View>
-
-              <TicketStatus
-                onEdit={onStatusEdit}
-                setOnEdit={setOnStatusEdit}
-                status={status}
-                setStatus={setStatus}
-                onUpdateTicket={onUpdateTicket}
-              />
-
-              <View style={styles.wrapper}>
-                <Text>Created by </Text>
-                <AntDesign name="user" size={16} color="black" />
-                <Text>Username</Text>
-                <Text> - 10/10/1994</Text>
-              </View>
-              <View style={styles.wrapper}>
-                <Text>Assigned to </Text>
-                <AntDesign name="user" size={16} color="black" />
-                <Text>Username</Text>
-              </View>
-
-              <TicketDescription
-                onEdit={onDescriptionEdit}
-                setOnEdit={setOnDescriptionEdit}
-                description={description}
-                setDescription={setDescription}
-                onUpdateTicket={onUpdateTicket}
-                ticket={ticket}
-              />
+            <View style={styles.wrapper}>
+              <Text>Created by </Text>
+              <AntDesign name="user" size={16} color="black" />
+              <Text>Username</Text>
+              <Text> - 10/10/1994</Text>
             </View>
+            <View style={styles.wrapper}>
+              <Text>Assigned to </Text>
+              <AntDesign name="user" size={16} color="black" />
+              <Text>Username</Text>
+            </View>
+
+            <TicketDescription
+              onEdit={onDescriptionEdit}
+              setOnEdit={setOnDescriptionEdit}
+              description={description}
+              setDescription={setDescription}
+              onUpdateTicket={onUpdateTicket}
+              ticket={ticket}
+            />
           </View>
-        </SafeAreaView>
-      </KeyboardAvoidingView>
+        </View>
+      </SafeAreaView>
     </Modal>
   );
 };
