@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#146B70",
     paddingVertical: 20,
-    height: "100%",
   },
 });
 
