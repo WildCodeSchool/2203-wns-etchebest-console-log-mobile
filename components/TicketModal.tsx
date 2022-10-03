@@ -72,6 +72,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
       },
     });
     setOnTitleEdit(false);
+    setShow(false);
   };
   const onDeleteTicket = () => {
     deleteOneTicket({

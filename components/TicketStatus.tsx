@@ -29,8 +29,6 @@ export const TicketStatus: React.FC<Props> = ({
   setOnEdit,
   onUpdateTicket,
 }) => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     { label: "To do", value: "TODO" },
     { label: "In progress", value: "DOING" },
@@ -47,12 +45,13 @@ export const TicketStatus: React.FC<Props> = ({
       />
       <View style={styles.selectView}>
         <DropDownPicker
-          open={open}
-          setOpen={setOpen}
-          value={value}
-          setValue={setValue}
+          open={onEdit}
+          setOpen={setOnEdit}
+          value={status}
+          setValue={setStatus}
           items={items}
           multiple={false}
+          onChangeValue={onUpdateTicket}
         />
       </View>
     </View>
