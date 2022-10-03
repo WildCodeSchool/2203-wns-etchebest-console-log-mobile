@@ -1,15 +1,12 @@
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import React, { Dispatch, SetStateAction } from "react";
 import {
-  Text,
   StyleSheet,
-  View,
-  TouchableOpacity,
-  Modal,
-  Button,
+  Text,
   TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 
 interface Props {
   title: string;
@@ -69,7 +66,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   inputTitle: {
-    backgroundColor: "pink",
     padding: 2,
     paddingLeft: 5,
     width: "90%",

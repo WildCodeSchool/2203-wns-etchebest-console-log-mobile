@@ -1,17 +1,6 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Modal,
-  Button,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
 interface Props {
@@ -63,7 +52,7 @@ const styles = StyleSheet.create({
     flex: 1 / 10,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "yellow",
+    backgroundColor: "white",
     borderColor: "gray",
     shadowColor: "#000",
     shadowOffset: {
