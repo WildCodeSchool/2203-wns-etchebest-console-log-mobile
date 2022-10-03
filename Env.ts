@@ -1,0 +1,17 @@
+import Constants from 'expo-constants';
+
+const getApiUrl = () => {
+  const API_URL = Constants.expoConfig?.extra?.API_URL;
+
+  if (!API_URL) {
+    throw new Error('API_URL is missing.');
+  }
+
+  return API_URL;
+}
+
+const Env = {
+  API_URL: getApiUrl(),
+};
+
+export default Env;

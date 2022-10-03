@@ -8,9 +8,10 @@ import { AuthProvider } from "./context/AuthContext";
 import { setContext } from "@apollo/client/link/context";
 import AppNav from "./navigation/AppNav";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Env from "./Env";
 
 const App = () => {
-  const uri = process.env.API_URL;
+  const uri = Env.API_URL;
   const httpLink = createHttpLink({
     // modifier l'uri en fonction de son adresse IP
     uri: `${uri}/graphql`,

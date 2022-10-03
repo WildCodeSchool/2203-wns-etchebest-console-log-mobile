@@ -1,11 +1,5 @@
 {
   "build": {
-    "development": {
-      "node": "16.13.0",
-      "env": {
-        "API_URL": "http://192.168.1.76:4000"
-      }
-    },
     "staging": {
       "env": {
         "API_URL": "https://staging.etchebest-3-04-22.wilders.dev"

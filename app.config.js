@@ -1,4 +1,6 @@
-import "dotenv/config";
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 export default {
   "expo": {
@@ -30,6 +32,9 @@ export default {
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "API_URL": process.env.API_URL,
+    },
   }
 }
