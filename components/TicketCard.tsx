@@ -21,14 +21,13 @@ interface Props {
 const TicketCard: React.FC<Props> = ({ ticket }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const onPress = () => {
-    setShowModal(true);
-  };
-
   return (
     <>
       <TicketModal show={showModal} setShow={setShowModal} ticket={ticket} />
-      <TouchableOpacity onPress={onPress} style={styles.container}>
+      <TouchableOpacity
+        onPress={() => setShowModal(true)}
+        style={styles.container}
+      >
         <Text>{ticket.title}</Text>
         <Text>{ticket.description}</Text>
       </TouchableOpacity>
