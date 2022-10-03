@@ -1,7 +1,15 @@
 import { useMutation } from "@apollo/client";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   DELETE_ONE_TICKET,
@@ -21,10 +29,10 @@ interface Props {
 
 export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
   const [onTitleEdit, setOnTitleEdit] = useState(false);
-  const [title, setTitle] = useState(ticket.title);
   const [onStatusEdit, setOnStatusEdit] = useState(false);
-  const [status, setStatus] = useState(ticket.status);
   const [onDescriptionEdit, setOnDescriptionEdit] = useState(false);
+  const [title, setTitle] = useState(ticket.title);
+  const [status, setStatus] = useState(ticket.status);
   const [description, setDescription] = useState(ticket.description);
 
   const [deleteOneTicket, { data, error }] = useMutation(DELETE_ONE_TICKET, {
@@ -77,68 +85,78 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
         resetInputs();
         setShow(false);
       }}
+      statusBarTranslucent
     >
-      <SafeAreaView style={styles.container}>
-        <View style={styles.actionIcons}>
-          <TouchableOpacity onPress={() => setShow(false)} activeOpacity={0.1}>
-            <AntDesign name="close" size={24} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onDeleteTicket} activeOpacity={0.1}>
-            <Feather name="trash-2" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.textWrapper}>
-          <TicketTitle
-            onEdit={onTitleEdit}
-            setOnEdit={setOnTitleEdit}
-            title={title}
-            setTitle={setTitle}
-            onUpdateTicket={onUpdateTicket}
-          />
-
-          <View style={styles.detailsWrapper}>
-            <View style={styles.wrapper}>
-              <Ionicons
-                name="bookmarks-outline"
-                size={24}
-                color="black"
-                style={styles.iconDetail}
-              />
-              <Text style={styles.text}>Project</Text>
-            </View>
-
-            <TicketStatus
-              onEdit={onStatusEdit}
-              setOnEdit={setOnStatusEdit}
-              status={status}
-              setStatus={setStatus}
-              onUpdateTicket={onUpdateTicket}
-            />
-
-            <View style={styles.wrapper}>
-              <Text>Created by </Text>
-              <AntDesign name="user" size={16} color="black" />
-              <Text>Username</Text>
-              <Text> - 10/10/1994</Text>
-            </View>
-            <View style={styles.wrapper}>
-              <Text>Assigned to </Text>
-              <AntDesign name="user" size={16} color="black" />
-              <Text>Username</Text>
-            </View>
-
-            <TicketDescription
-              onEdit={onDescriptionEdit}
-              setOnEdit={setOnDescriptionEdit}
-              description={description}
-              setDescription={setDescription}
-              onUpdateTicket={onUpdateTicket}
-              ticket={ticket}
-            />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        enabled
+      >
+        <SafeAreaView style={styles.container}>
+          <View style={styles.actionIcons}>
+            <TouchableOpacity
+              onPress={() => setShow(false)}
+              activeOpacity={0.1}
+            >
+              <AntDesign name="close" size={24} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onDeleteTicket} activeOpacity={0.1}>
+              <Feather name="trash-2" size={24} color="black" />
+            </TouchableOpacity>
           </View>
-        </View>
-      </SafeAreaView>
+
+          <View style={styles.ticketWrapper}>
+            <TicketTitle
+              onEdit={onTitleEdit}
+              setOnEdit={setOnTitleEdit}
+              title={title}
+              setTitle={setTitle}
+              onUpdateTicket={onUpdateTicket}
+            />
+
+            <View style={styles.ticketAttributes}>
+              <View style={styles.wrapper}>
+                <Ionicons
+                  name="bookmarks-outline"
+                  size={24}
+                  color="black"
+                  style={styles.iconDetail}
+                />
+                <Text style={styles.text}>Project</Text>
+              </View>
+
+              <TicketStatus
+                onEdit={onStatusEdit}
+                setOnEdit={setOnStatusEdit}
+                status={status}
+                setStatus={setStatus}
+                onUpdateTicket={onUpdateTicket}
+              />
+
+              <View style={styles.wrapper}>
+                <Text>Created by </Text>
+                <AntDesign name="user" size={16} color="black" />
+                <Text>Username</Text>
+                <Text> - 10/10/1994</Text>
+              </View>
+              <View style={styles.wrapper}>
+                <Text>Assigned to </Text>
+                <AntDesign name="user" size={16} color="black" />
+                <Text>Username</Text>
+              </View>
+
+              <TicketDescription
+                onEdit={onDescriptionEdit}
+                setOnEdit={setOnDescriptionEdit}
+                description={description}
+                setDescription={setDescription}
+                onUpdateTicket={onUpdateTicket}
+                ticket={ticket}
+              />
+            </View>
+          </View>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
@@ -148,7 +166,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#edf2f3",
   },
-  detailsWrapper: {
+  ticketAttributes: {
     flex: 2,
     marginTop: 20,
   },
@@ -171,7 +189,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: "white",
   },
-  textWrapper: {
+  ticketWrapper: {
     flex: 4,
     paddingTop: 15,
   },
@@ -184,7 +202,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 10,
-    backgroundColor: "gray",
   },
   text: {
     fontSize: 16,
