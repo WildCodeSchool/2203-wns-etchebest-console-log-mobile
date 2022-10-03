@@ -1,15 +1,12 @@
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import React, { Dispatch, SetStateAction } from "react";
 import {
-  Text,
   StyleSheet,
-  View,
-  TouchableOpacity,
-  Modal,
-  Button,
+  Text,
   TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 import { Ticket } from "../screens/TicketsScreen";
 
 interface Props {
