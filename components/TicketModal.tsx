@@ -21,6 +21,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getTicketStatusLabel } from "../utils/functions";
+import DropDownPicker from "react-native-dropdown-picker";
 
 interface Props {
   show: boolean;
@@ -49,6 +50,21 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
     status: ticket.status,
     description: ticket.description,
   });
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: "To do", value: "TODO" },
+    { label: "In progress", value: "DOING" },
+    { label: "Done", value: "DONE" },
+  ]);
+
+  const onBlur = () => {
+    setOnEdit({
+      title: false,
+      status: false,
+      description: false,
+    });
+  };
 
   const onUpdateTicket = () => {
     updateOneTicket({
@@ -108,6 +124,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
                   onSubmitEditing={onUpdateTicket}
                   blurOnSubmit
                   multiline
+                  onBlur={onBlur}
                 />
                 <TouchableOpacity
                   onPress={() =>
@@ -147,36 +164,24 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
               <Text style={styles.text}>Project</Text>
             </View>
 
-            {onEdit.status ? (
-              <View>
-                <MaterialCommunityIcons
-                  name="list-status"
-                  size={24}
-                  color="black"
-                  style={styles.iconDetail}
+            <View style={[styles.wrapper, styles.statusWrapper]}>
+              <MaterialCommunityIcons
+                name="list-status"
+                size={24}
+                color="black"
+                style={styles.iconDetail}
+              />
+              <View style={styles.selectView}>
+                <DropDownPicker
+                  open={open}
+                  setOpen={setOpen}
+                  value={value}
+                  setValue={setValue}
+                  items={items}
+                  multiple={false}
                 />
               </View>
-            ) : (
-              <TouchableOpacity
-                style={styles.wrapper}
-                onPress={() =>
-                  setOnEdit((current) => ({
-                    ...current,
-                    status: !current.title,
-                  }))
-                }
-              >
-                <MaterialCommunityIcons
-                  name="list-status"
-                  size={24}
-                  color="black"
-                  style={styles.iconDetail}
-                />
-                <Text style={styles.text}>
-                  {getTicketStatusLabel(ticket.status)}
-                </Text>
-              </TouchableOpacity>
-            )}
+            </View>
 
             <View style={styles.wrapper}>
               <Text>Created by </Text>
@@ -273,5 +278,12 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+  },
+  selectView: {
+    padding: 3,
+    width: "90%",
+  },
+  statusWrapper: {
+    zIndex: 100,
   },
 });
