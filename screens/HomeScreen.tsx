@@ -2,6 +2,8 @@ import { NavigationProp } from "@react-navigation/native";
 import { useContext } from "react";
 import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native";
 import { AuthContext } from "../context/AuthContext";
+import Env from "../Env";
+
 interface RouterProps {
   navigation: NavigationProp<any, any>;
 }
