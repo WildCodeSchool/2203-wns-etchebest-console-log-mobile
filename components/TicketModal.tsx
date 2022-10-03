@@ -1,38 +1,17 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Modal,
-  Button,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-} from "react-native";
-import { Ticket } from "../screens/TicketsScreen";
-import { AntDesign } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
 import { useMutation } from "@apollo/client";
+import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   DELETE_ONE_TICKET,
   GET_ALL_TICKETS,
   UPDATE_ONE_TICKET,
 } from "../lib/queries/ticketRequests";
-import { FontAwesome } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { getTicketStatusLabel } from "../utils/functions";
-import DropDownPicker from "react-native-dropdown-picker";
-import TicketTitle from "./TicketTitle";
-import {
-  ScrollView,
-  TouchableWithoutFeedback,
-} from "react-native-gesture-handler";
+import { Ticket } from "../screens/TicketsScreen";
+import { TicketDescription } from "./TicketDescription";
 import { TicketStatus } from "./TicketStatus";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import TicketTitle from "./TicketTitle";
 
 interface Props {
   show: boolean;
@@ -58,6 +37,12 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
     }
   );
 
+  const resetInputs = () => {
+    setOnTitleEdit(false);
+    setOnStatusEdit(false);
+    setOnDescriptionEdit(false);
+  };
+
   const onUpdateTicket = () => {
     updateOneTicket({
       variables: {
@@ -71,7 +56,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
         },
       },
     });
-    setOnTitleEdit(false);
+    resetInputs();
     setShow(false);
   };
   const onDeleteTicket = () => {
@@ -88,7 +73,10 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
       style={{ flex: 1 }}
       visible={show}
       animationType="slide"
-      onRequestClose={() => setShow(false)}
+      onRequestClose={() => {
+        resetInputs();
+        setShow(false);
+      }}
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.actionIcons}>
@@ -140,11 +128,14 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
               <Text>Username</Text>
             </View>
 
-            <View style={[styles.wrapper, styles.descriptionWrapper]}>
-              <Text style={styles.description}>
-                {ticket.description ? ticket.description : "No description"}
-              </Text>
-            </View>
+            <TicketDescription
+              onEdit={onDescriptionEdit}
+              setOnEdit={setOnDescriptionEdit}
+              description={description}
+              setDescription={setDescription}
+              onUpdateTicket={onUpdateTicket}
+              ticket={ticket}
+            />
           </View>
         </View>
       </SafeAreaView>
@@ -165,7 +156,6 @@ const styles = StyleSheet.create({
     flex: 1 / 10,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "yellow",
     borderColor: "gray",
     shadowColor: "#000",
     shadowOffset: {
@@ -179,24 +169,14 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     marginHorizontal: 5,
     borderRadius: 4,
+    backgroundColor: "white",
   },
   textWrapper: {
     flex: 4,
     paddingTop: 15,
-    backgroundColor: "blue",
   },
   iconDetail: {
     marginRight: 10,
-  },
-  descriptionWrapper: {
-    flex: 1 / 4,
-  },
-  description: {
-    fontSize: 15,
-    fontStyle: "italic",
-    color: "#4C4C4C",
-    marginTop: 20,
-    marginBottom: 15,
   },
   actionIcons: {
     flex: 1 / 6,
@@ -209,7 +189,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
   },
-
   safeAreaView: {
     flex: 1,
     justifyContent: "center",

@@ -1,19 +1,7 @@
 import React, { useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Modal,
-  Button,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Ticket } from "../screens/TicketsScreen";
-import { AntDesign } from "@expo/vector-icons";
 import { TicketModal } from "./TicketModal";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 interface Props {
   ticket: Ticket;
 }

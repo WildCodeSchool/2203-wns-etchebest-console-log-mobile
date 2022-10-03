@@ -1,27 +1,26 @@
+import { useMutation } from "@apollo/client";
+import { AntDesign } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
-  Text,
-  StyleSheet,
-  SafeAreaView,
   FlatList,
-  ListRenderItem,
-  View,
-  Button,
-  TextInput,
-  TouchableOpacity,
   Keyboard,
   KeyboardAvoidingView,
+  ListRenderItem,
   Platform,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import { Ticket } from "../screens/TicketsScreen";
-import TicketCard from "./TicketCard";
-import { AntDesign } from "@expo/vector-icons";
-import { gql, useMutation } from "@apollo/client";
 import {
   CREATE_ONE_TICKET,
   GET_ALL_TICKETS,
 } from "../lib/queries/ticketRequests";
+import { Ticket } from "../screens/TicketsScreen";
+import TicketCard from "./TicketCard";
 
 interface Props {
   type: "TODO" | "DOING" | "DONE";
