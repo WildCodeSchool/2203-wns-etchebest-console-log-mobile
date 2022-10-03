@@ -26,7 +26,7 @@ const App = () => {
   });
 
   const client = new ApolloClient({
-    uri: "http://192.168.0.11:4000/graphql",
+    uri: `${apiUrl}`,
     cache: new InMemoryCache(),
     link: authLink.concat(httpLink),
   });
