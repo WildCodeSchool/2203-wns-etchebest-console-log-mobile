@@ -1,19 +1,6 @@
-import { useState, useEffect, useRef } from "react";
-import {
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  StyleSheet,
-  Button,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  View,
-} from "react-native";
-import StatusCard from "../components/StatusCard";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import AllTicketsCard from "../components/AllTicketsCard";
 import { GET_ALL_TICKETS } from "../lib/queries/ticketRequests";
 
 export interface Ticket {
@@ -38,13 +25,13 @@ const TicketsScreen = () => {
   return (
     <View style={styles.container}>
       <ScrollView horizontal={true}>
-        <StatusCard title="TO DO" type="TODO" tickets={toDoTickets} />
-        <StatusCard
+        <AllTicketsCard title="TO DO" type="TODO" tickets={toDoTickets} />
+        <AllTicketsCard
           title="IN PROGRESS"
           type="DOING"
           tickets={inProgressTickets}
         />
-        <StatusCard title="DONE" type="DONE" tickets={doneTickets} />
+        <AllTicketsCard title="DONE" type="DONE" tickets={doneTickets} />
       </ScrollView>
     </View>
   );

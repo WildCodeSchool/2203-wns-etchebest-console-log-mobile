@@ -28,7 +28,7 @@ interface Props {
   tickets: Ticket[];
 }
 
-const StatusCard: React.FC<Props> = ({ title, tickets, type }) => {
+const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
   const [isAddingTicket, setIsAddingTicket] = useState(false);
   const [ticket, setTicket] = useState({
     title: "",
@@ -189,4 +189,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StatusCard;
+export default AllTicketsCard;

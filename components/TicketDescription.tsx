@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { globalStyles } from "../constants/globalStyles";
 import { Ticket } from "../screens/TicketsScreen";
 
 interface Props {
@@ -27,7 +28,7 @@ export const TicketDescription: React.FC<Props> = ({
   ticket,
 }) => {
   return (
-    <View style={[styles.wrapper, styles.descriptionWrapper]}>
+    <View style={[globalStyles.ticketCard, styles.descriptionWrapper]}>
       {onEdit ? (
         <View
           style={[styles.descriptionWrapper, styles.descriptionInputWrapper]}
@@ -64,25 +65,6 @@ export const TicketDescription: React.FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1 / 10,
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "gray",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-    marginBottom: 10,
-    paddingLeft: 15,
-    marginHorizontal: 5,
-    borderRadius: 4,
-    backgroundColor: "white",
-  },
   descriptionWrapper: {
     flex: 1 / 4,
     fontSize: 15,
