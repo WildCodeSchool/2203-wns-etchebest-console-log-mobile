@@ -100,7 +100,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
             <AntDesign name="close" size={24} color="black" />
           </TouchableOpacity>
           <TouchableOpacity onPress={onDeleteTicket} activeOpacity={0.1}>
-            <Feather name="trash-2" size={24} color="black" />
+            <Feather name="trash-2" size={24} color="gray" />
           </TouchableOpacity>
         </View>
 

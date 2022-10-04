@@ -167,9 +167,10 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 15,
-    fontWeight: "600",
+    fontWeight: "700",
     letterSpacing: 1,
-    color: "#787c7d",
+    color: "#146B70",
+    // color: "#787c7d",
     marginLeft: 3,
     marginBottom: 8,
   },

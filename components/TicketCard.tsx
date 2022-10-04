@@ -16,7 +16,7 @@ const TicketCard: React.FC<Props> = ({ ticket }) => {
         onPress={() => setShowModal(true)}
         style={styles.container}
       >
-        <Text>{ticket.title}</Text>
+        <Text style={styles.ticketTitle}>{ticket.title}</Text>
         <Text>{ticket.description}</Text>
       </TouchableOpacity>
     </>
@@ -43,6 +43,10 @@ const styles = StyleSheet.create({
   userWrapper: {
     flex: 1,
     flexDirection: "row",
+  },
+  ticketTitle: {
+    color: "#146B70",
+    fontWeight: "600",
   },
 });
 
