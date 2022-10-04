@@ -13,7 +13,6 @@ import Env from "./Env";
 const App = () => {
   const uri = Env.API_URL;
   const httpLink = createHttpLink({
-    // modifier l'uri en fonction de son adresse IP
     uri: `${uri}/graphql`,
   });
 

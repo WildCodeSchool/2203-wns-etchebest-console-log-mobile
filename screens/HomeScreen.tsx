@@ -9,12 +9,7 @@ interface RouterProps {
 }
 
 const HomeScreen = ({ navigation }: RouterProps) => {
-  const { signOut, isLogged } = useContext(AuthContext);
-
-  const onSignOutPress = () => {
-    console.log("Logged-out");
-    signOut();
-  };
+  const { isLogged } = useContext(AuthContext);
 
   return (
     <View style={[styles.container, { flexDirection: "column" }]}>
@@ -26,16 +21,13 @@ const HomeScreen = ({ navigation }: RouterProps) => {
           borderRadius: 20,
         }}
       />
-      <TouchableOpacity style={styles.logoutBtn} onPress={onSignOutPress}>
-        <Text style={styles.logoutText}>Log out</Text>
-      </TouchableOpacity>
       {!isLogged ? (
         <View>
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate("Login")}
           >
-            <Text style={styles.textInButton}>Authentificate</Text>
+            <Text style={styles.textInButton}>Sign in</Text>
           </TouchableOpacity>
         </View>
       ) : null}
