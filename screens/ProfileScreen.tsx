@@ -18,7 +18,7 @@ import jwt_decode from "jwt-decode";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
-const ProfilScreen = () => {
+const ProfileScreen = () => {
   const [user, setUser] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
@@ -323,4 +323,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfilScreen;
+export default ProfileScreen;

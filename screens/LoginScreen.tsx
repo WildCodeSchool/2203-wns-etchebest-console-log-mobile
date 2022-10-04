@@ -6,9 +6,13 @@ import {
   View,
   StyleSheet,
 } from "react-native";
+import { NavigationProp } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
+interface RouterProps {
+  navigation: NavigationProp<any, any>;
+}
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }: RouterProps) => {
   const { signIn } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,9 +40,21 @@ const LoginScreen = () => {
           keyboardType="default"
           secureTextEntry={true}
         />
-        <TouchableOpacity style={styles.loginBtn} onPress={onSignInPress}>
-          <Text style={styles.loginText}>Log in</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.loginBtn}
+            onPress={onSignInPress}
+            disabled={!email || !password}
+          >
+            <Text style={styles.loginText}>Log in</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.loginBtn}
+            onPress={() => navigation.navigate("Register")}
+          >
+            <Text style={styles.loginText}>Create an account</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -51,6 +67,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#73c6ce4d",
+  },
+  errorText: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#146B70",
   },
   title: {
     fontSize: 30,
@@ -75,6 +97,11 @@ const styles = StyleSheet.create({
     border: "1px solid white",
     backgroundColor: "white",
   },
+  buttonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   loginBtn: {
     borderRadius: 5,
     height: 40,
@@ -84,7 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#146B70",
     marginVertical: 10,
     marginHorizontal: 10,
-    paddingHorizontal: 10,
+    width: 150,
   },
   loginText: {
     color: "white",
