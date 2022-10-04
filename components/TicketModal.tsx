@@ -12,6 +12,7 @@ import {
   Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { globalStyles } from "../constants/globalStyles";
 import {
   DELETE_ONE_TICKET,
   GET_ALL_TICKETS,
@@ -46,7 +47,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
     }
   );
 
-  const resetInputs = () => {
+  const resetEditInputs = () => {
     setOnTitleEdit(false);
     setOnStatusEdit(false);
     setOnDescriptionEdit(false);
@@ -65,8 +66,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
         },
       },
     });
-    resetInputs();
-    setShow(false);
+    resetEditInputs();
   };
   const onDeleteTicket = () => {
     deleteOneTicket({
@@ -83,7 +83,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
       visible={show}
       animationType="slide"
       onRequestClose={() => {
-        resetInputs();
+        resetEditInputs();
         setShow(false);
       }}
       statusBarTranslucent
@@ -93,7 +93,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
           <TouchableOpacity
             onPress={() => {
               setShow(false);
-              resetInputs();
+              resetEditInputs();
             }}
             activeOpacity={0.1}
           >
@@ -114,12 +114,12 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
           />
 
           <View style={styles.ticketAttributes}>
-            <View style={styles.wrapper}>
+            <View style={globalStyles.ticketCard}>
               <Ionicons
                 name="bookmarks-outline"
                 size={24}
                 color="black"
-                style={styles.iconDetail}
+                style={styles.listIcon}
               />
               <Text style={styles.text}>Project</Text>
             </View>
@@ -132,13 +132,13 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
               onUpdateTicket={onUpdateTicket}
             />
 
-            <View style={styles.wrapper}>
+            <View style={globalStyles.ticketCard}>
               <Text>Created by </Text>
               <AntDesign name="user" size={16} color="black" />
               <Text>Username</Text>
               <Text> - 10/10/1994</Text>
             </View>
-            <View style={styles.wrapper}>
+            <View style={globalStyles.ticketCard}>
               <Text>Assigned to </Text>
               <AntDesign name="user" size={16} color="black" />
               <Text>Username</Text>
@@ -164,42 +164,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#edf2f3",
   },
-  ticketAttributes: {
-    flex: 2,
-    marginTop: 20,
-  },
-  wrapper: {
-    flex: 1 / 10,
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "gray",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-    marginBottom: 10,
-    paddingLeft: 15,
-    marginHorizontal: 5,
-    borderRadius: 4,
-    backgroundColor: "white",
-  },
-  ticketWrapper: {
-    flex: 4,
-    paddingTop: 15,
-  },
-  iconDetail: {
-    marginRight: 10,
-  },
   actionIcons: {
     flex: 1 / 6,
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 10,
+  },
+  ticketWrapper: {
+    flex: 4,
+    paddingTop: 15,
+  },
+  ticketAttributes: {
+    flex: 2,
+    marginTop: 20,
+  },
+  listIcon: {
+    marginRight: 10,
   },
   text: {
     fontSize: 16,

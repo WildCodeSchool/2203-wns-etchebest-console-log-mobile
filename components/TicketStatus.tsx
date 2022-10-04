@@ -2,6 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import { globalStyles } from "../constants/globalStyles";
 
 interface Props {
   status: string;
@@ -25,7 +26,7 @@ export const TicketStatus: React.FC<Props> = ({
   ]);
 
   return (
-    <View style={[styles.wrapper, styles.statusWrapper]}>
+    <View style={[globalStyles.ticketCard, styles.statusWrapper]}>
       <MaterialCommunityIcons
         name="list-status"
         size={24}
@@ -48,25 +49,6 @@ export const TicketStatus: React.FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1 / 10,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-    borderColor: "gray",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-    marginBottom: 10,
-    paddingLeft: 15,
-    marginHorizontal: 5,
-    borderRadius: 4,
-  },
   statusWrapper: {
     zIndex: 100,
   },
