@@ -1,14 +1,6 @@
 import React, { useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Modal,
-  Button,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Ticket } from "../screens/TicketsScreen";
-import { AntDesign } from "@expo/vector-icons";
 import { TicketModal } from "./TicketModal";
 interface Props {
   ticket: Ticket;
@@ -17,15 +9,14 @@ interface Props {
 const TicketCard: React.FC<Props> = ({ ticket }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const onPress = () => {
-    setShowModal(true);
-  };
-
   return (
     <>
       <TicketModal show={showModal} setShow={setShowModal} ticket={ticket} />
-      <TouchableOpacity onPress={onPress} style={styles.container}>
-        <Text>{ticket.title}</Text>
+      <TouchableOpacity
+        onPress={() => setShowModal(true)}
+        style={styles.container}
+      >
+        <Text style={styles.ticketTitle}>{ticket.title}</Text>
         <Text>{ticket.description}</Text>
       </TouchableOpacity>
     </>
@@ -52,6 +43,10 @@ const styles = StyleSheet.create({
   userWrapper: {
     flex: 1,
     flexDirection: "row",
+  },
+  ticketTitle: {
+    color: "#146B70",
+    fontWeight: "600",
   },
 });
 

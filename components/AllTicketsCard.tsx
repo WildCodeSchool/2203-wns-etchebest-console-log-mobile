@@ -1,27 +1,26 @@
+import { useMutation } from "@apollo/client";
+import { AntDesign } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
-  Text,
-  StyleSheet,
-  SafeAreaView,
   FlatList,
-  ListRenderItem,
-  View,
-  Button,
-  TextInput,
-  TouchableOpacity,
   Keyboard,
   KeyboardAvoidingView,
+  ListRenderItem,
   Platform,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import { Ticket } from "../screens/TicketsScreen";
-import TicketCard from "./TicketCard";
-import { AntDesign } from "@expo/vector-icons";
-import { gql, useMutation } from "@apollo/client";
 import {
   CREATE_ONE_TICKET,
   GET_ALL_TICKETS,
 } from "../lib/queries/ticketRequests";
+import { Ticket } from "../screens/TicketsScreen";
+import TicketCard from "./TicketCard";
 
 interface Props {
   type: "TODO" | "DOING" | "DONE";
@@ -29,7 +28,7 @@ interface Props {
   tickets: Ticket[];
 }
 
-const StatusCard: React.FC<Props> = ({ title, tickets, type }) => {
+const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
   const [isAddingTicket, setIsAddingTicket] = useState(false);
   const [ticket, setTicket] = useState({
     title: "",
@@ -44,7 +43,6 @@ const StatusCard: React.FC<Props> = ({ title, tickets, type }) => {
     setIsAddingTicket(true);
   };
   const onSubmitEditing = () => {
-    console.log("ticket", ticket);
     createOneticket({
       variables: {
         data: {
@@ -67,52 +65,60 @@ const StatusCard: React.FC<Props> = ({ title, tickets, type }) => {
     <TicketCard ticket={item} />
   );
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        title === "DONE" ? styles.lastContainer : undefined,
-      ]}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      enabled
     >
-      <View>
-        <Text style={styles.cardTitle}>{title}</Text>
-      </View>
-      <FlatList
-        data={tickets}
-        renderItem={renderTicket}
-        keyExtractor={(item) => item.id.toString()}
-      />
-      {isAddingTicket ? (
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            value={ticket.title}
-            onChangeText={(newValue) =>
-              setTicket((current) => ({ ...current, title: newValue }))
-            }
-            placeholder="Ticket name"
-            onSubmitEditing={onSubmitEditing}
-            onBlur={onBlur}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView
+          style={[
+            styles.container,
+            title === "DONE" ? styles.lastContainer : undefined,
+          ]}
+        >
+          <View>
+            <Text style={styles.cardTitle}>{title}</Text>
+          </View>
+          <FlatList
+            data={tickets}
+            renderItem={renderTicket}
+            keyExtractor={(item) => item.id.toString()}
           />
-          <TouchableOpacity
-            onPress={() => {
-              setTicket((current) => ({ ...current, title: "" }));
-              setIsAddingTicket(false);
-            }}
-          >
-            <AntDesign
-              name="close"
-              size={24}
-              color="black"
-              style={styles.closeInputButton}
-            />
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <TouchableOpacity onPress={onPressAddTicket}>
-          <Text style={styles.addButtonText}>+ Add ticket</Text>
-        </TouchableOpacity>
-      )}
-    </SafeAreaView>
+          {isAddingTicket ? (
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={ticket.title}
+                onChangeText={(newValue) =>
+                  setTicket((current) => ({ ...current, title: newValue }))
+                }
+                placeholder="Ticket name"
+                onSubmitEditing={onSubmitEditing}
+                onBlur={onBlur}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setTicket((current) => ({ ...current, title: "" }));
+                  setIsAddingTicket(false);
+                }}
+              >
+                <AntDesign
+                  name="close"
+                  size={24}
+                  color="black"
+                  style={styles.closeInputButton}
+                />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity onPress={onPressAddTicket}>
+              <Text style={styles.addButtonText}>+ Add ticket</Text>
+            </TouchableOpacity>
+          )}
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -161,9 +167,10 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 15,
-    fontWeight: "600",
+    fontWeight: "700",
     letterSpacing: 1,
-    color: "#787c7d",
+    color: "#146B70",
+    // color: "#787c7d",
     marginLeft: 3,
     marginBottom: 8,
   },
@@ -183,4 +190,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StatusCard;
+export default AllTicketsCard;

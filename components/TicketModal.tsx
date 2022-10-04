@@ -1,26 +1,27 @@
+import { useMutation } from "@apollo/client";
+import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
+  KeyboardAvoidingView,
   Modal,
-  Button,
-  TextInput,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+  Keyboard,
 } from "react-native";
-import { Ticket } from "../screens/TicketsScreen";
-import { AntDesign } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { useMutation } from "@apollo/client";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { globalStyles } from "../constants/globalStyles";
 import {
   DELETE_ONE_TICKET,
   GET_ALL_TICKETS,
   UPDATE_ONE_TICKET,
 } from "../lib/queries/ticketRequests";
-import { FontAwesome } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { getTicketStatusLabel } from "../utils/functions";
+import { Ticket } from "../screens/TicketsScreen";
+import { TicketDescription } from "./TicketDescription";
+import { TicketStatus } from "./TicketStatus";
+import TicketTitle from "./TicketTitle";
 
 interface Props {
   show: boolean;
@@ -29,6 +30,13 @@ interface Props {
 }
 
 export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
+  const [onTitleEdit, setOnTitleEdit] = useState(false);
+  const [onStatusEdit, setOnStatusEdit] = useState(false);
+  const [onDescriptionEdit, setOnDescriptionEdit] = useState(false);
+  const [title, setTitle] = useState(ticket.title);
+  const [status, setStatus] = useState(ticket.status);
+  const [description, setDescription] = useState(ticket.description);
+
   const [deleteOneTicket, { data, error }] = useMutation(DELETE_ONE_TICKET, {
     refetchQueries: () => [{ query: GET_ALL_TICKETS }],
   });
@@ -39,16 +47,11 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
     }
   );
 
-  const [onEdit, setOnEdit] = useState({
-    title: false,
-    status: false,
-    description: false,
-  });
-  const [updatedTicket, setUpdatedTicket] = useState({
-    title: ticket.title,
-    status: ticket.status,
-    description: ticket.description,
-  });
+  const resetEditInputs = () => {
+    setOnTitleEdit(false);
+    setOnStatusEdit(false);
+    setOnDescriptionEdit(false);
+  };
 
   const onUpdateTicket = () => {
     updateOneTicket({
@@ -57,14 +60,13 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
           id: ticket.id,
         },
         data: {
-          id: { set: ticket.id },
-          title: { set: updatedTicket.title },
-          status: { set: updatedTicket.status },
-          description: { set: updatedTicket.description },
+          title: { set: title },
+          status: { set: status },
+          description: { set: description },
         },
       },
     });
-    setOnEdit({ title: false, status: false, description: false });
+    resetEditInputs();
   };
   const onDeleteTicket = () => {
     deleteOneTicket({
@@ -77,126 +79,82 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
 
   return (
     <Modal
-      style={{ margin: 10, flex: 1 }}
+      style={{ flex: 1 }}
       visible={show}
       animationType="slide"
-      onRequestClose={() => setShow(false)}
+      onRequestClose={() => {
+        resetEditInputs();
+        setShow(false);
+      }}
+      statusBarTranslucent
     >
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.actionIcons}>
-          <TouchableOpacity onPress={() => setShow(false)} activeOpacity={0.1}>
+          <TouchableOpacity
+            onPress={() => {
+              setShow(false);
+              resetEditInputs();
+            }}
+            activeOpacity={0.1}
+          >
             <AntDesign name="close" size={24} color="black" />
           </TouchableOpacity>
           <TouchableOpacity onPress={onDeleteTicket} activeOpacity={0.1}>
-            <Feather name="trash-2" size={24} color="black" />
+            <Feather name="trash-2" size={24} color="gray" />
           </TouchableOpacity>
         </View>
 
-        <View style={styles.textWrapper}>
-          <View>
-            {onEdit.title ? (
-              <View style={styles.titleWrapper}>
-                <TextInput
-                  value={updatedTicket.title}
-                  onChangeText={(newValue) =>
-                    setUpdatedTicket((current) => ({
-                      ...current,
-                      title: newValue,
-                    }))
-                  }
-                  style={[styles.title, styles.inputTitle]}
-                  onSubmitEditing={onUpdateTicket}
-                  blurOnSubmit
-                  multiline
-                />
-                <TouchableOpacity
-                  onPress={() =>
-                    setOnEdit((current) => ({
-                      ...current,
-                      title: false,
-                    }))
-                  }
-                >
-                  <AntDesign name="close" size={24} color="black" />
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <TouchableOpacity
-                onPress={() =>
-                  setOnEdit((current) => ({
-                    ...current,
-                    title: !current.title,
-                  }))
-                }
-                style={styles.titleWrapper}
-              >
-                <Text style={styles.title}>{ticket.title}</Text>
-                <FontAwesome name="pencil" size={24} color="black" />
-              </TouchableOpacity>
-            )}
-          </View>
+        <View style={styles.ticketWrapper}>
+          <TicketTitle
+            onEdit={onTitleEdit}
+            setOnEdit={setOnTitleEdit}
+            title={title}
+            setTitle={setTitle}
+            onUpdateTicket={onUpdateTicket}
+          />
 
-          <View style={styles.detailsWrapper}>
-            <View style={styles.wrapper}>
+          <View style={styles.ticketAttributes}>
+            <View style={globalStyles.ticketCard}>
               <Ionicons
                 name="bookmarks-outline"
                 size={24}
                 color="black"
-                style={styles.iconDetail}
+                style={styles.listIcon}
               />
               <Text style={styles.text}>Project</Text>
             </View>
 
-            {onEdit.status ? (
-              <View>
-                <MaterialCommunityIcons
-                  name="list-status"
-                  size={24}
-                  color="black"
-                  style={styles.iconDetail}
-                />
-              </View>
-            ) : (
-              <TouchableOpacity
-                style={styles.wrapper}
-                onPress={() =>
-                  setOnEdit((current) => ({
-                    ...current,
-                    status: !current.title,
-                  }))
-                }
-              >
-                <MaterialCommunityIcons
-                  name="list-status"
-                  size={24}
-                  color="black"
-                  style={styles.iconDetail}
-                />
-                <Text style={styles.text}>
-                  {getTicketStatusLabel(ticket.status)}
-                </Text>
-              </TouchableOpacity>
-            )}
+            <TicketStatus
+              onEdit={onStatusEdit}
+              setOnEdit={setOnStatusEdit}
+              status={status}
+              setStatus={setStatus}
+              onUpdateTicket={onUpdateTicket}
+            />
 
-            <View style={styles.wrapper}>
+            <View style={globalStyles.ticketCard}>
               <Text>Created by </Text>
               <AntDesign name="user" size={16} color="black" />
               <Text>Username</Text>
               <Text> - 10/10/1994</Text>
             </View>
-            <View style={styles.wrapper}>
+            <View style={globalStyles.ticketCard}>
               <Text>Assigned to </Text>
               <AntDesign name="user" size={16} color="black" />
               <Text>Username</Text>
             </View>
-            <View style={[styles.wrapper, styles.descriptionWrapper]}>
-              <Text style={styles.description}>
-                {ticket.description ? ticket.description : "No description"}
-              </Text>
-            </View>
+
+            <TicketDescription
+              onEdit={onDescriptionEdit}
+              setOnEdit={setOnDescriptionEdit}
+              description={description}
+              setDescription={setDescription}
+              onUpdateTicket={onUpdateTicket}
+              ticket={ticket}
+            />
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 };
@@ -205,73 +163,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#edf2f3",
-    paddingTop: 20,
-  },
-  detailsWrapper: {
-    flex: 1,
-    marginTop: 20,
-  },
-  wrapper: {
-    flex: 1 / 10,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-    borderColor: "gray",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-    marginBottom: 10,
-    paddingLeft: 15,
-    marginHorizontal: 5,
-    borderRadius: 4,
-  },
-  titleWrapper: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "600",
-    marginRight: 10,
-  },
-  inputTitle: {
-    backgroundColor: "white",
-    padding: 2,
-    paddingLeft: 5,
-    width: "90%",
-    borderRadius: 4,
-  },
-  textWrapper: {
-    flex: 4,
-    marginTop: 15,
-  },
-  iconDetail: {
-    marginRight: 10,
-  },
-  descriptionWrapper: {
-    flex: 1 / 4,
-  },
-  description: {
-    fontSize: 15,
-    fontStyle: "italic",
-    color: "#4C4C4C",
-    marginTop: 20,
-    marginBottom: 15,
   },
   actionIcons: {
     flex: 1 / 6,
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  ticketWrapper: {
+    flex: 4,
+    paddingTop: 15,
+  },
+  ticketAttributes: {
+    flex: 2,
+    marginTop: 20,
+  },
+  listIcon: {
+    marginRight: 10,
   },
   text: {
     fontSize: 16,
+  },
+  safeAreaView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
