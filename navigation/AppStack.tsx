@@ -1,73 +1,34 @@
 import "react-native-gesture-handler";
-import { useContext } from "react";
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from "@react-navigation/drawer";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import ProjectsScreen from "../screens/ProjectsScreen";
 import TicketsScreen from "../screens/TicketsScreen";
-import { AuthContext } from "../context/AuthContext";
+import CustomDrawer from "../components/CustomDrawer";
+import ProfilScreen from "../screens/ProfilScreen";
 
 export type RootStackParamList = {
   Home: { initialRouteName: string };
   Login: { name: string; title: "string" };
   Projects: { name: string };
   Tickets: { name: string };
+  Profil: { name: string };
 };
 
 const Drawer = createDrawerNavigator<RootStackParamList>();
-
-const DrawerContent = (props: any) => {
-  const { signOut } = useContext(AuthContext);
-  const onSignOutPress = () => {
-    console.log("Logged-out");
-    signOut();
-  };
-  return (
-    <>
-      <DrawerContentScrollView
-        {...props}
-        contentContainerStyle={{
-          flex: 1,
-          position: "relative",
-        }}
-      >
-        <DrawerItemList {...props} />
-        <DrawerItem
-          icon={({ focused, size }) => (
-            <Ionicons
-              color={focused ? "#7cc" : "#ccc"}
-              size={size}
-              name={focused ? "log-out" : "log-out-outline"}
-            />
-          )}
-          label="Sign out"
-          onPress={onSignOutPress}
-          style={{
-            position: "absolute",
-            bottom: 0,
-            flex: 1,
-            width: "93%",
-          }}
-        />
-      </DrawerContentScrollView>
-    </>
-  );
-};
 
 const AppStackScreen = () => {
   return (
     <>
       <Drawer.Navigator
+        drawerContent={(props) => <CustomDrawer {...props} />}
         screenOptions={{
           headerTintColor: "#146b70",
-          drawerActiveTintColor: "#7cc",
+          drawerActiveBackgroundColor: "#146b70",
+          drawerActiveTintColor: "#fff",
+          drawerInactiveTintColor: "#333",
+          drawerLabelStyle: { marginLeft: -25, fontSize: 15 },
         }}
-        drawerContent={DrawerContent}
         initialRouteName="Home"
       >
         <Drawer.Screen
@@ -82,7 +43,7 @@ const AppStackScreen = () => {
               <Ionicons
                 name={focused ? "home" : "home-outline"}
                 size={size}
-                color={focused ? "#7cc" : "#ccc"}
+                color={focused ? "#FFFFFF" : "#333"}
               />
             ),
           }}
@@ -96,7 +57,7 @@ const AppStackScreen = () => {
               <Ionicons
                 name={focused ? "clipboard" : "clipboard-outline"}
                 size={size}
-                color={focused ? "#7cc" : "#ccc"}
+                color={focused ? "#FFFFFF" : "#333"}
               />
             ),
           }}
@@ -110,12 +71,26 @@ const AppStackScreen = () => {
               <Ionicons
                 name={focused ? "bookmarks" : "bookmarks-outline"}
                 size={size}
-                color={focused ? "#7cc" : "#ccc"}
+                color={focused ? "#FFFFFF" : "#333"}
               />
             ),
           }}
           name="Tickets"
           component={TicketsScreen}
+        />
+        <Drawer.Screen
+          options={{
+            title: "Profil",
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name={focused ? "person" : "person-outline"}
+                size={size}
+                color={focused ? "#FFFFFF" : "#333"}
+              />
+            ),
+          }}
+          name="Profil"
+          component={ProfilScreen}
         />
       </Drawer.Navigator>
     </>
