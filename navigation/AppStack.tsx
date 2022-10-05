@@ -6,7 +6,6 @@ import ProjectsScreen from "../screens/ProjectsScreen";
 import TicketsScreen from "../screens/TicketsScreen";
 import CustomDrawer from "../components/CustomDrawer";
 import ProfilScreen from "../screens/ProfilScreen";
-import React from "react";
 
 export type RootStackParamList = {
   Home: { initialRouteName: string };
