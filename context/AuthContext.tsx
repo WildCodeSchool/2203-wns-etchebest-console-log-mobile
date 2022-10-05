@@ -42,6 +42,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
         },
       });
       setUserToken(token.data.login);
+      console.log("token data", token.data);
       AsyncStorage.setItem("userToken", token.data.login);
       setIsLoading(false);
       setIsLogged(true);
@@ -69,5 +70,3 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-
