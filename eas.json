@@ -3,11 +3,18 @@
     "staging": {
       "env": {
         "API_URL": "https://staging.etchebest-3-04-22.wilders.dev"
+      },
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
       }
     },
     "production": {
       "env": {
         "API_URL": "https://etchebest-3-04-22.wilders.dev"
+      },
+      "android": {
+        "buildType": "apk"
       }
     }
   }
