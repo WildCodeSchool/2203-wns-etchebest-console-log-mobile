@@ -22,19 +22,25 @@ export default {
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.wilders.etchebest30422",
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "dev.wilders.etchebest30422",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "API_URL": process.env.API_URL,
+      "eas": {
+        "projectId": "ecb9f3c7-9d33-43c8-9e6d-940ff24a2c91"
+      }
     },
   }
 }
