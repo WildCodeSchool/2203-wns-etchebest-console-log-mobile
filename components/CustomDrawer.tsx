@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import React from "react";
 import {
   DrawerContentScrollView,
   DrawerItemList,
