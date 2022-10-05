@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation } from "@apollo/client";
 import LOGIN from "../lib/queries/login";
+import { Alert } from "react-native";
 
 export interface AuthContextInterface {
   isLoading: boolean;
@@ -45,7 +46,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
       setIsLoading(false);
       setIsLogged(true);
     } catch (error) {
-      alert("Invalid credentials");
+      Alert.alert("Invalid credentials");
       setIsLoading(false);
       setIsLogged(false);
       console.log(error);
@@ -68,3 +69,5 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+
