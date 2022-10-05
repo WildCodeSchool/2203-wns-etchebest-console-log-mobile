@@ -1,15 +1,27 @@
-export const getTicketStatusLabel = (status: string) => {
+export const getTicketStatusOptions = (status: string) => {
   switch (status) {
     case "TODO":
-      return "To do";
+      return {
+        a: { label: "In progress", value: "DOING" },
+        b: { label: "Done", value: "DONE" },
+      };
       break;
     case "DOING":
-      return "In progress";
+      return {
+        a: { label: "To do", value: "TODO" },
+        b: { label: "Done", value: "DONE" },
+      };
       break;
     case "DONE":
-      return "Done";
+      return {
+        a: { label: "In progress", value: "DOING" },
+        b: { label: "To do", value: "TODO" },
+      };
       break;
     default:
-      return "To do";
+      return {
+        a: { label: "In progress", value: "DOING" },
+        b: { label: "Done", value: "DONE" },
+      };
   }
 };

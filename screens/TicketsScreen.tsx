@@ -24,7 +24,7 @@ const TicketsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView horizontal={true}>
+      <ScrollView horizontal={true} scrollEnabled={false}>
         <AllTicketsCard title="TO DO" type="TODO" tickets={toDoTickets} />
         <AllTicketsCard
           title="IN PROGRESS"

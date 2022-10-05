@@ -18,6 +18,7 @@ import {
 import {
   CREATE_ONE_TICKET,
   GET_ALL_TICKETS,
+  UPDATE_ONE_TICKET,
 } from "../lib/queries/ticketRequests";
 import { Ticket } from "../screens/TicketsScreen";
 import TicketCard from "./TicketCard";
@@ -39,9 +40,13 @@ const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
     refetchQueries: () => [{ query: GET_ALL_TICKETS }],
   });
 
-  const onPressAddTicket = () => {
-    setIsAddingTicket(true);
-  };
+  const [updateOneTicket, { error: updateError }] = useMutation(
+    UPDATE_ONE_TICKET,
+    {
+      refetchQueries: () => [{ query: GET_ALL_TICKETS }],
+    }
+  );
+
   const onSubmitEditing = () => {
     createOneticket({
       variables: {
@@ -55,6 +60,19 @@ const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
     setIsAddingTicket(false);
   };
 
+  const onUpdateTicket = (id: string, status: string) => {
+    updateOneTicket({
+      variables: {
+        where: {
+          id: id,
+        },
+        data: {
+          status: { set: status },
+        },
+      },
+    });
+  };
+
   const onBlur = () => {
     Keyboard.dismiss();
     setIsAddingTicket(false);
@@ -62,7 +80,7 @@ const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
   };
 
   const renderTicket: ListRenderItem<Ticket> = ({ item }) => (
-    <TicketCard ticket={item} />
+    <TicketCard ticket={item} onUpdateTicket={onUpdateTicket} />
   );
   return (
     <KeyboardAvoidingView
@@ -112,7 +130,7 @@ const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
               </TouchableOpacity>
             </View>
           ) : (
-            <TouchableOpacity onPress={onPressAddTicket}>
+            <TouchableOpacity onPress={() => setIsAddingTicket(true)}>
               <Text style={styles.addButtonText}>+ Add ticket</Text>
             </TouchableOpacity>
           )}
