@@ -1,15 +1,26 @@
-import { createContext, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useMutation } from "@apollo/client";
-import LOGIN from "../lib/queries/login";
-import { Alert } from "react-native";
-import REGISTER from "../lib/queries/register";
+import { createContext, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useMutation } from '@apollo/client';
+import LOGIN from '../lib/queries/login';
+import { Alert } from 'react-native';
+import REGISTER from '../lib/queries/register';
+
+export type SignInInterface = {
+  email: string;
+  password: string;
+};
+
+export type RegisterInterface = {
+  name: string;
+  email: string;
+  password: string;
+};
 export interface AuthContextInterface {
   isLoading: boolean;
   userToken: string | null;
-  signIn: (email: string, password: string) => void;
+  signIn: (data: SignInInterface) => void;
   signOut: () => void;
-  registerUser: (name: string, email: string, password: string) => void;
+  registerUser: (data: RegisterInterface) => void;
   isLogged: boolean;
 }
 interface Props {
@@ -33,57 +44,57 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [register, { error }] = useMutation(REGISTER);
 
   if (data) {
-    AsyncStorage.setItem("userToken", data.login);
+    AsyncStorage.setItem('userToken', data.login);
   }
 
-  const registerUser = async (
-    name: string,
-    email: string,
-    password: string
-  ) => {
+  const registerUser = async (data: RegisterInterface) => {
     try {
       setIsLoading(true);
       const response = await register({
         variables: {
-          userRegisterInput: { email: email, password: password, name: name },
+          userRegisterInput: {
+            email: data.email,
+            password: data.password,
+            name: data.name,
+          },
         },
       });
       if (response) {
         let token = await login({
           variables: {
-            userLoginInput: { email: email, password: password },
+            userLoginInput: { email: data.email, password: data.password },
           },
         });
         setUserToken(token.data.login);
-        AsyncStorage.setItem("userToken", token.data.login);
-        console.log("token", token);
+        AsyncStorage.setItem('userToken', token.data.login);
+        console.log('token', token);
         setIsLoading(false);
         setIsLogged(true);
       }
       // console.log(response);
     } catch (error) {
-      Alert.alert("A problem occurred during register");
+      Alert.alert('A problem occurred during register');
       setIsLoading(false);
       setIsLogged(false);
       console.log(error);
     }
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (data: SignInInterface) => {
     try {
       setIsLoading(true);
       let token = await login({
         variables: {
-          userLoginInput: { email: email, password: password },
+          userLoginInput: { email: data.email, password: data.password },
         },
       });
       setUserToken(token.data.login);
-      console.log("token data", token.data);
-      AsyncStorage.setItem("userToken", token.data.login);
+      console.log('token data', token.data);
+      AsyncStorage.setItem('userToken', token.data.login);
       setIsLoading(false);
       setIsLogged(true);
     } catch (error) {
-      Alert.alert("Invalid credentials");
+      Alert.alert('Invalid credentials');
       setIsLoading(false);
       setIsLogged(false);
       console.log(error);
@@ -92,7 +103,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
   const signOut = () => {
     setIsLoading(true);
-    AsyncStorage.removeItem("userToken");
+    AsyncStorage.removeItem('userToken');
     setUserToken(null);
     setIsLoading(false);
     setIsLogged(false);
