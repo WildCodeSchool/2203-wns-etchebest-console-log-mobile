@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation } from "@apollo/client";
 import LOGIN from "../lib/queries/login";
+import jwt_decode from "jwt-decode";
 
 export interface AuthContextInterface {
   isLoading: boolean;
