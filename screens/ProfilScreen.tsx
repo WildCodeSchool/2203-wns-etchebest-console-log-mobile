@@ -120,13 +120,8 @@ const ProfilScreen = () => {
             />
           </View>
 
-          <View
-            style={{
-              marginHorizontal: 22,
-              borderRadius: 10,
-            }}
-          >
-            <Text style={styles.textChoiseAvatar}>Choice a new profil</Text>
+          <View style={styles.viewContainerTextAvatar}>
+            <Text style={styles.textChoiseAvatar}>Enter a new profil</Text>
             <ScrollView horizontal>
               <View style={styles.viewAvatarBottom}>
                 <Image
@@ -137,59 +132,36 @@ const ProfilScreen = () => {
               <View style={styles.viewAvatarBottom}>
                 <Image
                   style={styles.avatarScroll}
-                  source={require("../assets/profilWoman.jpg")}
+                  source={require("../assets/profilWoman.png")}
                 />
               </View>
               <View style={styles.viewAvatarBottom}>
                 <Image
                   style={styles.avatarScroll}
-                  source={require("../assets/profilMan.jpg")}
+                  source={require("../assets/profilMan.png")}
                 />
               </View>
               <View style={styles.viewAvatarBottom}>
                 <Image
                   style={styles.avatarScroll}
-                  source={require("../assets/profilWoman2.jpg")}
+                  source={require("../assets/profilWoman2.png")}
                 />
               </View>
             </ScrollView>
           </View>
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 20,
-              borderColor: "black",
-            }}
-          >
-            <TouchableOpacity
-              style={{ borderColor: "#1B6B70" }}
-              onPress={pickImage}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  borderColor: "#1B6B70",
-                  borderWidth: 2,
-                  padding: 10,
-                  borderRadius: 40,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
+          <View style={styles.viewPicker}>
+            <TouchableOpacity style={styles.borderPicker} onPress={pickImage}>
+              <View style={styles.rowViewPicker}>
                 <Ionicons
                   name="cloud-upload-outline"
                   size={30}
                   color="#1B6B70"
                 />
-                <Text style={{ marginLeft: 10 }}>Choise your image</Text>
+                <Text style={styles.textSelectImage}>Select your image</Text>
               </View>
 
               {image && (
-                <Image
-                  source={{ uri: image }}
-                  style={{ width: 200, height: 200 }}
-                />
+                <Image source={{ uri: image }} style={styles.imagePicker} />
               )}
             </TouchableOpacity>
           </View>
@@ -273,6 +245,10 @@ const styles = StyleSheet.create({
 
     color: "#0B3E40",
   },
+  viewContainerTextAvatar: {
+    marginHorizontal: 22,
+    borderRadius: 40,
+  },
   input: {
     margin: 12,
     borderWidth: 0.8,
@@ -299,6 +275,31 @@ const styles = StyleSheet.create({
     width: 80,
     borderRadius: 40,
     marginHorizontal: 10,
+  },
+  viewPicker: {
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    borderColor: "black",
+  },
+  borderPicker: {
+    borderColor: "#1B6B70",
+  },
+  rowViewPicker: {
+    flexDirection: "row",
+    borderColor: "#1B6B70",
+    borderWidth: 2,
+    padding: 10,
+    borderRadius: 40,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  textSelectImage: {
+    marginLeft: 10,
+  },
+  imagePicker: {
+    width: 200,
+    height: 200,
   },
   viewButtonCenter: {
     alignItems: "center",
