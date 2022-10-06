@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Button,
+  Avatar,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
@@ -17,11 +18,22 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import avatar1 from "../assets/profil.png";
+import avatar2 from "../assets/profilMan.png";
+import avatar3 from "../assets/profilWoman.png";
+import avatar4 from "../assets/profilWoman2.png";
 
 const ProfilScreen = () => {
   const [user, setUser] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
+  const [avatar, setAvatar] = useState(avatar1);
+
+  const changeAvatar = () => {
+    if (true) {
+      setAvatar(avatar);
+    }
+  };
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -32,7 +44,7 @@ const ProfilScreen = () => {
       quality: 1,
     });
 
-    console.log(result);
+    /*     console.log(result); */
 
     if (!result.cancelled) {
       setImage(result.uri);
@@ -45,7 +57,7 @@ const ProfilScreen = () => {
       if (token) {
         const jwt = jwt_decode<{ user: string }>(token);
         setUser(jwt.user);
-        console.log("jwt user", jwt);
+        /*      console.log("jwt user", jwt); */
       }
     };
     getToken();
@@ -63,6 +75,7 @@ const ProfilScreen = () => {
         },
         data: {
           name: { set: name },
+          avatar: { set: avatar },
         },
       },
     });
@@ -82,8 +95,10 @@ const ProfilScreen = () => {
     return <Text>Loading</Text>;
   }
   if (data) {
-    console.log("data", data);
+    console.log("data user :", data.user.avatar);
     return (
+      /* header Carte */
+
       <View style={styles.container}>
         <View style={styles.item}>
           <View style={styles.itemContainerBackgroundImage}>
@@ -98,7 +113,8 @@ const ProfilScreen = () => {
             >
               <View style={styles.viewImage}>
                 <Image
-                  source={require("../assets/profil.png")}
+                  source={avatar}
+                  /* source={require("../assets/profil.png")} */
                   style={styles.imageCustom}
                 />
                 <View style={styles.textView}>
@@ -108,6 +124,8 @@ const ProfilScreen = () => {
               </View>
             </ImageBackground>
           </View>
+
+          {/* Input name */}
 
           <View style={styles.containerInput}>
             <Text style={styles.textLabelChangeName}>Change your name</Text>
@@ -120,35 +138,64 @@ const ProfilScreen = () => {
             />
           </View>
 
+          {/* Container 4 avatar choose */}
+
           <View style={styles.viewContainerTextAvatar}>
             <Text style={styles.textChoiseAvatar}>Enter a new profil</Text>
             <ScrollView horizontal>
-              <View style={styles.viewAvatarBottom}>
-                <Image
-                  style={styles.avatarScroll}
-                  source={require("../assets/profil.png")}
-                />
-              </View>
-              <View style={styles.viewAvatarBottom}>
-                <Image
-                  style={styles.avatarScroll}
-                  source={require("../assets/profilWoman.png")}
-                />
-              </View>
-              <View style={styles.viewAvatarBottom}>
-                <Image
-                  style={styles.avatarScroll}
-                  source={require("../assets/profilMan.png")}
-                />
-              </View>
-              <View style={styles.viewAvatarBottom}>
-                <Image
-                  style={styles.avatarScroll}
-                  source={require("../assets/profilWoman2.png")}
-                />
-              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  setAvatar(avatar1);
+                }}
+              >
+                <View style={styles.viewAvatarBottom}>
+                  <Image
+                    style={styles.avatarScroll}
+                    /* source={require("../assets/profil.png")} */
+                    source={avatar1}
+                  />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setAvatar(avatar2);
+                }}
+              >
+                <View style={styles.viewAvatarBottom}>
+                  <Image
+                    style={styles.avatarScroll}
+                    /* source={require("../assets/profilWoman.png")} */
+                    source={avatar2}
+                  />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setAvatar(avatar3);
+                }}
+              >
+                <View style={styles.viewAvatarBottom}>
+                  <Image style={styles.avatarScroll} source={avatar3} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setAvatar(avatar4);
+                }}
+              >
+                <View style={styles.viewAvatarBottom}>
+                  <Image
+                    style={styles.avatarScroll}
+                    source={avatar4}
+                    /* source={require("../assets/profilWoman2.png")} */
+                  />
+                </View>
+              </TouchableOpacity>
             </ScrollView>
           </View>
+
+          {/* Composant du picker */}
+
           <View style={styles.viewPicker}>
             <TouchableOpacity style={styles.borderPicker} onPress={pickImage}>
               <View style={styles.rowViewPicker}>
@@ -165,6 +212,9 @@ const ProfilScreen = () => {
               )}
             </TouchableOpacity>
           </View>
+
+          {/* Composant Button push */}
+
           <View style={styles.viewButtonCenter}>
             <TouchableOpacity
               style={styles.paddingTouchableOpacity}
