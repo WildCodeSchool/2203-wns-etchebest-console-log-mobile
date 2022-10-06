@@ -15,7 +15,7 @@ import {
 } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "@apollo/client";
-import { GET_ONE_USER } from "../lib/queries/getOneUser";
+import { GET_ONE_USER } from "../lib/queries/userRequest";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
 
