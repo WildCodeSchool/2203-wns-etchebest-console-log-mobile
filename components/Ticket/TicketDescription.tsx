@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { globalStyles } from "../constants/globalStyles";
-import { Ticket } from "../screens/TicketsScreen";
+import { globalStyles } from "../../constants/globalStyles";
+import { Ticket } from "../../screens/TicketsScreen";
 
 interface Props {
   description: string;

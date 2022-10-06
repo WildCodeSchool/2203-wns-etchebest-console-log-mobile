@@ -12,13 +12,13 @@ import {
   Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { globalStyles } from "../constants/globalStyles";
+import { globalStyles } from "../../constants/globalStyles";
 import {
   DELETE_ONE_TICKET,
   GET_ALL_TICKETS,
   UPDATE_ONE_TICKET,
-} from "../lib/queries/ticketRequests";
-import { Ticket } from "../screens/TicketsScreen";
+} from "../../lib/queries/ticketRequests";
+import { Ticket } from "../../screens/TicketsScreen";
 import { TicketDescription } from "./TicketDescription";
 import { TicketStatus } from "./TicketStatus";
 import TicketTitle from "./TicketTitle";

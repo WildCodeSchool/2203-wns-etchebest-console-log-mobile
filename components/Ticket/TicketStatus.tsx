@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import { globalStyles } from "../constants/globalStyles";
+import { globalStyles } from "../../constants/globalStyles";
 
 interface Props {
   status: string;

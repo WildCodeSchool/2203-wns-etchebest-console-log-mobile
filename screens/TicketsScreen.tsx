@@ -1,7 +1,8 @@
-import { useQuery } from '@apollo/client';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import AllTicketsCard from '../components/AllTicketsCard';
-import { GET_ALL_TICKETS } from '../lib/queries/ticketRequests';
+import { useQuery } from "@apollo/client";
+import React, { useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import TicketListCard from "../components/Ticket/TicketListCard";
+import { GET_ALL_TICKETS } from "../lib/queries/ticketRequests";
 
 export interface Ticket {
   id: string;
@@ -10,7 +11,8 @@ export interface Ticket {
   status: string;
 }
 
-const TicketsScreen = () => {
+const TicketsScreen: React.FC = () => {
+  const [enableScroll, setEnableScroll] = useState(true);
   const { data, error, loading } = useQuery(GET_ALL_TICKETS);
 
   if (error) return <Text>Error</Text>;
@@ -22,16 +24,37 @@ const TicketsScreen = () => {
   );
   const doneTickets = tickets.filter((ticket) => ticket.status === 'DONE');
 
+  console.log("enableScroll :>> ", enableScroll);
+
   return (
     <View style={styles.container}>
-      <ScrollView horizontal={true} scrollEnabled={false}>
-        <AllTicketsCard title="TO DO" type="TODO" tickets={toDoTickets} />
-        <AllTicketsCard
+      <ScrollView
+        horizontal
+        snapToAlignment="center"
+        pagingEnabled
+        disableIntervalMomentum
+      >
+        <TicketListCard
+          title="TO DO"
+          type="TODO"
+          tickets={toDoTickets}
+          setEnableScroll={setEnableScroll}
+          enableScroll={enableScroll}
+        />
+        <TicketListCard
           title="IN PROGRESS"
           type="DOING"
           tickets={inProgressTickets}
+          setEnableScroll={setEnableScroll}
+          enableScroll={enableScroll}
         />
-        <AllTicketsCard title="DONE" type="DONE" tickets={doneTickets} />
+        <TicketListCard
+          title="DONE"
+          type="DONE"
+          tickets={doneTickets}
+          setEnableScroll={setEnableScroll}
+          enableScroll={enableScroll}
+        />
       </ScrollView>
     </View>
   );

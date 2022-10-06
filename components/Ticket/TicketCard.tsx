@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Ticket } from "../screens/TicketsScreen";
+import { Ticket } from "../../screens/TicketsScreen";
 import { TicketModal } from "./TicketModal";
 import SwipeableItem, {
   useSwipeableItemParams,
 } from "react-native-swipeable-item";
-import { getTicketStatusOptions } from "../utils/functions";
+import { getTicketStatusOptions } from "../../utils/functions";
 interface Props {
   ticket: Ticket;
   onUpdateTicket: (id: string, status: string) => void;
+  setEnableScroll: Dispatch<SetStateAction<boolean>>;
 }
 
 interface UnderlayProps {
@@ -25,7 +26,7 @@ const Underlay: React.FC<UnderlayProps> = ({
   const { close } = useSwipeableItemParams();
   const [newStatus, setNewStatus] = useState("");
   const options = getTicketStatusOptions(ticket.status);
-  const selectedOption = type === "left" ? options.a : options.b;
+  const selectedOption = type === "right" ? options.a : options.b;
 
   const alignSelf = type === "left" ? "flex-end" : "flex-start";
 
@@ -39,14 +40,18 @@ const Underlay: React.FC<UnderlayProps> = ({
         }}
       >
         <Text style={[styles.swipeText]}>
-          {type === "left" ? options.a.label : options.b.label}
+          {type === "right" ? options.a.label : options.b.label}
         </Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-const TicketCard: React.FC<Props> = ({ ticket, onUpdateTicket }) => {
+const TicketCard: React.FC<Props> = ({
+  ticket,
+  onUpdateTicket,
+  setEnableScroll,
+}) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -55,7 +60,9 @@ const TicketCard: React.FC<Props> = ({ ticket, onUpdateTicket }) => {
       <SwipeableItem
         key={ticket.id}
         item={ticket}
-        onChange={({ openDirection }) => {}}
+        onChange={() => {
+          console.log("change swipe item");
+        }}
         renderUnderlayLeft={() => (
           <Underlay
             ticket={ticket}
@@ -74,7 +81,9 @@ const TicketCard: React.FC<Props> = ({ ticket, onUpdateTicket }) => {
         snapPointsRight={[70]}
       >
         <TouchableOpacity
-          onPress={() => setShowModal(true)}
+          onPress={() => {
+            setShowModal(true);
+          }}
           style={styles.container}
         >
           <Text style={styles.ticketTitle}>{ticket.title}</Text>

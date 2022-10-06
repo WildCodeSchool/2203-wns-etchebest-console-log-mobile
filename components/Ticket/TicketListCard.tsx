@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { AntDesign } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
   FlatList,
   Keyboard,
@@ -8,6 +8,7 @@ import {
   ListRenderItem,
   Platform,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -15,21 +16,30 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { globalStyles } from "../../constants/globalStyles";
 import {
   CREATE_ONE_TICKET,
   GET_ALL_TICKETS,
   UPDATE_ONE_TICKET,
-} from "../lib/queries/ticketRequests";
-import { Ticket } from "../screens/TicketsScreen";
+} from "../../lib/queries/ticketRequests";
+import { Ticket } from "../../screens/TicketsScreen";
 import TicketCard from "./TicketCard";
 
 interface Props {
   type: "TODO" | "DOING" | "DONE";
   title: string;
   tickets: Ticket[];
+  setEnableScroll: Dispatch<SetStateAction<boolean>>;
+  enableScroll: boolean;
 }
 
-const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
+const TicketListCard: React.FC<Props> = ({
+  title,
+  tickets,
+  type,
+  setEnableScroll,
+  enableScroll,
+}) => {
   const [isAddingTicket, setIsAddingTicket] = useState(false);
   const [ticket, setTicket] = useState({
     title: "",
@@ -80,7 +90,11 @@ const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
   };
 
   const renderTicket: ListRenderItem<Ticket> = ({ item }) => (
-    <TicketCard ticket={item} onUpdateTicket={onUpdateTicket} />
+    <TicketCard
+      ticket={item}
+      onUpdateTicket={onUpdateTicket}
+      setEnableScroll={setEnableScroll}
+    />
   );
   return (
     <KeyboardAvoidingView
@@ -92,6 +106,7 @@ const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
         <SafeAreaView
           style={[
             styles.container,
+            globalStyles.ticketListShadow,
             title === "DONE" ? styles.lastContainer : undefined,
           ]}
         >
@@ -101,7 +116,17 @@ const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
           <FlatList
             data={tickets}
             renderItem={renderTicket}
+            onTouchMove={() => {
+              console.log("touch mouve flatlist");
+            }}
+            scrollEnabled={enableScroll}
             keyExtractor={(item) => item.id.toString()}
+            style={{
+              backgroundColor: "pink",
+              flexGrow: 0,
+              borderColor: "red",
+              borderWidth: 2,
+            }}
           />
           {isAddingTicket ? (
             <View style={styles.inputContainer}>
@@ -146,21 +171,13 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#edf2f3",
-    width: 250,
+    // backgroundColor: "#edf2f3",
+    backgroundColor: "yellow",
+    width: 300,
     height: 580,
     marginLeft: 20,
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    paddingRight: 8,
-    paddingLeft: 8,
+    paddingHorizontal: 8,
     paddingTop: 8,
     paddingBottom: 10,
   },
@@ -208,4 +225,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AllTicketsCard;
+export default TicketListCard;
