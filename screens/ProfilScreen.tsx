@@ -7,8 +7,6 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Button,
-  Avatar,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
@@ -28,12 +26,6 @@ const ProfilScreen = () => {
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
   const [avatar, setAvatar] = useState(avatar1);
-
-  const changeAvatar = () => {
-    if (true) {
-      setAvatar(avatar);
-    }
-  };
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -112,11 +104,7 @@ const ProfilScreen = () => {
               }}
             >
               <View style={styles.viewImage}>
-                <Image
-                  source={avatar}
-                  /* source={require("../assets/profil.png")} */
-                  style={styles.imageCustom}
-                />
+                <Image source={avatar} style={styles.imageCustom} />
                 <View style={styles.textView}>
                   <Text style={styles.textName}>{data.user.name}</Text>
                   <Text style={styles.textEmail}>{data.user.email}</Text>
@@ -149,11 +137,7 @@ const ProfilScreen = () => {
                 }}
               >
                 <View style={styles.viewAvatarBottom}>
-                  <Image
-                    style={styles.avatarScroll}
-                    /* source={require("../assets/profil.png")} */
-                    source={avatar1}
-                  />
+                  <Image style={styles.avatarScroll} source={avatar1} />
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
@@ -162,11 +146,7 @@ const ProfilScreen = () => {
                 }}
               >
                 <View style={styles.viewAvatarBottom}>
-                  <Image
-                    style={styles.avatarScroll}
-                    /* source={require("../assets/profilWoman.png")} */
-                    source={avatar2}
-                  />
+                  <Image style={styles.avatarScroll} source={avatar2} />
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
@@ -184,11 +164,7 @@ const ProfilScreen = () => {
                 }}
               >
                 <View style={styles.viewAvatarBottom}>
-                  <Image
-                    style={styles.avatarScroll}
-                    source={avatar4}
-                    /* source={require("../assets/profilWoman2.png")} */
-                  />
+                  <Image style={styles.avatarScroll} source={avatar4} />
                 </View>
               </TouchableOpacity>
             </ScrollView>
