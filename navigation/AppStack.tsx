@@ -5,14 +5,14 @@ import HomeScreen from "../screens/HomeScreen";
 import ProjectsScreen from "../screens/ProjectsScreen";
 import TicketsScreen from "../screens/TicketsScreen";
 import CustomDrawer from "../components/CustomDrawer";
-import ProfilScreen from "../screens/ProfilScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 export type RootStackParamList = {
   Home: { initialRouteName: string };
   Login: { name: string; title: "string" };
   Projects: { name: string };
   Tickets: { name: string };
-  Profil: { name: string };
+  Profile: { name: string };
 };
 
 const Drawer = createDrawerNavigator<RootStackParamList>();
@@ -80,7 +80,7 @@ const AppStackScreen = () => {
         />
         <Drawer.Screen
           options={{
-            title: "Profil",
+            title: "Profile",
             drawerIcon: ({ focused, size }) => (
               <Ionicons
                 name={focused ? "person" : "person-outline"}
@@ -89,8 +89,8 @@ const AppStackScreen = () => {
               />
             ),
           }}
-          name="Profil"
-          component={ProfilScreen}
+          name="Profile"
+          component={ProfileScreen}
         />
       </Drawer.Navigator>
     </>

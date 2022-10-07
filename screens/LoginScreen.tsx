@@ -1,94 +1,51 @@
-import { useContext, useState } from "react";
-import {
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-} from "react-native";
-import { AuthContext } from "../context/AuthContext";
+import { useContext } from 'react';
+import { useForm } from 'react-hook-form';
+import { NavigationProp } from '@react-navigation/native';
+import { AuthContext, SignInInterface } from '../context/AuthContext';
+import AuthForm from '../components/AuthForm';
+import { type ListFieldsSignInType } from '../components/AuthInputList';
+import { type AuthButtonType } from '../components/AuthButton';
+interface RouterProps {
+  navigation: NavigationProp<any, any>;
+}
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }: RouterProps) => {
   const { signIn } = useContext(AuthContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
-  const onSignInPress = () => {
-    signIn(email, password);
+  const listFields: ListFieldsSignInType[] = [
+    { placeholder: 'Email', name: 'email' },
+    { placeholder: 'Password', name: 'password' },
+  ];
+
+  const onSubmit = (data: SignInInterface) => {
+    signIn(data);
   };
 
+  const buttonProps: AuthButtonType[] = [
+    {
+      text: 'Log in',
+      onPress: handleSubmit(onSubmit),
+    },
+    {
+      text: 'Create an account',
+      onPress: () => navigation.navigate('Register'),
+    },
+  ];
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Console.log</Text>
-      <View style={styles.containerLog}>
-        <TextInput
-          value={email}
-          onChangeText={(email) => setEmail(email)}
-          style={styles.input}
-          placeholder="Email"
-          keyboardType="email-address"
-        />
-        <TextInput
-          value={password}
-          onChangeText={(password) => setPassword(password)}
-          style={styles.input}
-          placeholder="Password"
-          keyboardType="default"
-          secureTextEntry={true}
-        />
-        <TouchableOpacity style={styles.loginBtn} onPress={onSignInPress}>
-          <Text style={styles.loginText}>Log in</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <AuthForm
+      title="Console.log"
+      listFields={listFields}
+      control={control}
+      buttonProps={buttonProps}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "column",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#73c6ce4d",
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    padding: 10,
-    color: "#146B70",
-  },
-  text: {
-    textAlign: "center",
-  },
-  containerLog: {
-    width: "100%",
-    marginVertical: 5,
-    marginHorizontal: 10,
-    paddingHorizontal: 10,
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    padding: 10,
-    borderRadius: 5,
-    border: "1px solid white",
-    backgroundColor: "white",
-  },
-  loginBtn: {
-    borderRadius: 5,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: "bold",
-    backgroundColor: "#146B70",
-    marginVertical: 10,
-    marginHorizontal: 10,
-    paddingHorizontal: 10,
-  },
-  loginText: {
-    color: "white",
-  },
-});
 
 export default LoginScreen;

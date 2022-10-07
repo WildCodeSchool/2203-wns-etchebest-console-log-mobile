@@ -1,17 +1,28 @@
-import { createContext, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useMutation } from "@apollo/client";
-import LOGIN from "../lib/queries/login";
-import { Alert } from "react-native";
+import { createContext, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useMutation } from '@apollo/client';
+import LOGIN from '../lib/queries/login';
+import { Alert } from 'react-native';
+import REGISTER from '../lib/queries/register';
 
+export type SignInInterface = {
+  email: string;
+  password: string;
+};
+export type RegisterInterface = {
+  name: string;
+  email: string;
+  password: string;
+};
 export interface AuthContextInterface {
   isLoading: boolean;
   userToken: string | null;
-  signIn: (email: string, password: string) => void;
+  signIn: (data: SignInInterface) => void;
   signOut: () => void;
+  registerUser: (data: RegisterInterface) => void;
   isLogged: boolean;
 }
-interface Props {
+interface ChildrenProps {
   children: JSX.Element;
 }
 
@@ -20,34 +31,66 @@ export const AuthContext = createContext<AuthContextInterface>({
   userToken: null,
   signIn: () => {},
   signOut: () => {},
+  registerUser: () => {},
   isLogged: false,
 });
 
-export const AuthProvider: React.FC<Props> = ({ children }) => {
+export const AuthProvider: React.FC<ChildrenProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState<string | null>(null);
-  const [login, { data }] = useMutation(LOGIN);
   const [isLogged, setIsLogged] = useState(false);
+  const [login, { data }] = useMutation(LOGIN);
+  const [register, { error }] = useMutation(REGISTER);
 
   if (data) {
-    AsyncStorage.setItem("userToken", data.login);
+    AsyncStorage.setItem('userToken', data.login);
   }
 
-  const signIn = async (email: string, password: string) => {
+  const registerUser = async (data: RegisterInterface) => {
+    try {
+      setIsLoading(true);
+      const response = await register({
+        variables: {
+          userRegisterInput: {
+            email: data.email,
+            password: data.password,
+            name: data.name,
+          },
+        },
+      });
+      if (response) {
+        let token = await login({
+          variables: {
+            userLoginInput: { email: data.email, password: data.password },
+          },
+        });
+        setUserToken(token.data.login);
+        AsyncStorage.setItem('userToken', token.data.login);
+        setIsLoading(false);
+        setIsLogged(true);
+      }
+    } catch (error) {
+      Alert.alert('A problem occurred during register');
+      setIsLoading(false);
+      setIsLogged(false);
+      console.log(error);
+    }
+  };
+
+  const signIn = async (data: SignInInterface) => {
     try {
       setIsLoading(true);
       let token = await login({
         variables: {
-          userLoginInput: { email: email, password: password },
+          userLoginInput: { email: data.email, password: data.password },
         },
       });
       setUserToken(token.data.login);
-      console.log("token data", token.data);
-      AsyncStorage.setItem("userToken", token.data.login);
+      AsyncStorage.setItem('userToken', token.data.login);
       setIsLoading(false);
       setIsLogged(true);
     } catch (error) {
-      Alert.alert("Invalid credentials");
+      Alert.alert('Invalid credentials');
       setIsLoading(false);
       setIsLogged(false);
       console.log(error);
@@ -56,7 +99,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
   const signOut = () => {
     setIsLoading(true);
-    AsyncStorage.removeItem("userToken");
+    AsyncStorage.removeItem('userToken');
     setUserToken(null);
     setIsLoading(false);
     setIsLogged(false);
@@ -64,7 +107,14 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signIn, signOut, isLoading, userToken, isLogged }}
+      value={{
+        signIn,
+        signOut,
+        registerUser,
+        isLoading,
+        userToken,
+        isLogged,
+      }}
     >
       {children}
     </AuthContext.Provider>
