@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthContext, RegisterInterface } from '../context/AuthContext';
-import AuthComponent from '../components/Auth';
+import AuthForm from '../components/AuthForm';
 import { type ListFieldsRegisterType } from '../components/AuthInputList';
 import { type AuthButtonType } from '../components/AuthButton';
 
@@ -33,7 +33,7 @@ const RegisterScreen = () => {
   ];
 
   return (
-    <AuthComponent
+    <AuthForm
       title="Register for free"
       listFields={listFields}
       control={control}

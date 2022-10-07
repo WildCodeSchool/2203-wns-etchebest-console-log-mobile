@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { NavigationProp } from '@react-navigation/native';
 import { AuthContext, SignInInterface } from '../context/AuthContext';
-import AuthComponent from '../components/Auth';
+import AuthForm from '../components/AuthForm';
 import { type ListFieldsSignInType } from '../components/AuthInputList';
 import { type AuthButtonType } from '../components/AuthButton';
 interface RouterProps {
@@ -39,7 +39,7 @@ const LoginScreen = ({ navigation }: RouterProps) => {
   ];
 
   return (
-    <AuthComponent
+    <AuthForm
       title="Console.log"
       listFields={listFields}
       control={control}
