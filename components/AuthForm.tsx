@@ -2,11 +2,11 @@ import { Text, View, StyleSheet } from 'react-native';
 import AuthButton, { type AuthButtonProps } from './AuthButton';
 import AuthInputList, { type AuthInputListType } from './AuthInputList';
 
-interface AuthComponentInterface extends AuthInputListType, AuthButtonProps {
+interface AuthFormInterface extends AuthInputListType, AuthButtonProps {
   title: string;
 }
 
-const AuthForm = (props: AuthComponentInterface) => {
+const AuthForm = (props: AuthFormInterface) => {
   const { title, listFields, control, buttonProps } = props;
 
   return (
