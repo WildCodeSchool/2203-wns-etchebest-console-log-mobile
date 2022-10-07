@@ -9,7 +9,6 @@ export type SignInInterface = {
   email: string;
   password: string;
 };
-
 export type RegisterInterface = {
   name: string;
   email: string;
@@ -23,7 +22,7 @@ export interface AuthContextInterface {
   registerUser: (data: RegisterInterface) => void;
   isLogged: boolean;
 }
-interface Props {
+interface ChildrenProps {
   children: JSX.Element;
 }
 
@@ -36,7 +35,7 @@ export const AuthContext = createContext<AuthContextInterface>({
   isLogged: false,
 });
 
-export const AuthProvider: React.FC<Props> = ({ children }) => {
+export const AuthProvider: React.FC<ChildrenProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState<string | null>(null);
   const [isLogged, setIsLogged] = useState(false);
@@ -71,7 +70,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
         setIsLoading(false);
         setIsLogged(true);
       }
-      // console.log(response);
     } catch (error) {
       Alert.alert('A problem occurred during register');
       setIsLoading(false);
