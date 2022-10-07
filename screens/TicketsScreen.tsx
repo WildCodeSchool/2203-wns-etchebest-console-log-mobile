@@ -1,7 +1,7 @@
-import { useQuery } from "@apollo/client";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import AllTicketsCard from "../components/AllTicketsCard";
-import { GET_ALL_TICKETS } from "../lib/queries/ticketRequests";
+import { useQuery } from '@apollo/client';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import AllTicketsCard from '../components/AllTicketsCard';
+import { GET_ALL_TICKETS } from '../lib/queries/ticketRequests';
 
 export interface Ticket {
   id: string;
@@ -16,11 +16,11 @@ const TicketsScreen = () => {
   if (error) return <Text>Error</Text>;
 
   const tickets: Ticket[] = data?.tickets || [];
-  const toDoTickets = tickets.filter((ticket) => ticket.status === "TODO");
+  const toDoTickets = tickets.filter((ticket) => ticket.status === 'TODO');
   const inProgressTickets = tickets.filter(
-    (ticket) => ticket.status === "DOING"
+    (ticket) => ticket.status === 'DOING'
   );
-  const doneTickets = tickets.filter((ticket) => ticket.status === "DONE");
+  const doneTickets = tickets.filter((ticket) => ticket.status === 'DONE');
 
   return (
     <View style={styles.container}>
@@ -40,9 +40,9 @@ const TicketsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    backgroundColor: "#146B70",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: '#146B70',
     paddingVertical: 20,
   },
 });
