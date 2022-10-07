@@ -1,15 +1,21 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Ticket } from "../../screens/TicketsScreen";
 import { TicketModal } from "./TicketModal";
 import SwipeableItem, {
   useSwipeableItemParams,
+  useOverlayParams,
 } from "react-native-swipeable-item";
 import { getTicketStatusOptions } from "../../utils/functions";
 interface Props {
   ticket: Ticket;
   onUpdateTicket: (id: string, status: string) => void;
-  setEnableScroll: Dispatch<SetStateAction<boolean>>;
 }
 
 interface UnderlayProps {
@@ -47,12 +53,9 @@ const Underlay: React.FC<UnderlayProps> = ({
   );
 };
 
-const TicketCard: React.FC<Props> = ({
-  ticket,
-  onUpdateTicket,
-  setEnableScroll,
-}) => {
+const TicketCard: React.FC<Props> = ({ ticket, onUpdateTicket }) => {
   const [showModal, setShowModal] = useState(false);
+  const [swipeable, setSwipeable] = useState(false);
 
   return (
     <>

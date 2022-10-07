@@ -25,3 +25,9 @@ export const getTicketStatusOptions = (status: string) => {
       };
   }
 };
+
+export const ticketStatusLabel = {
+  TODO: "To do",
+  DOING: "In progress",
+  DONE: "Done",
+};

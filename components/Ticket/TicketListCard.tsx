@@ -23,28 +23,23 @@ import {
   UPDATE_ONE_TICKET,
 } from "../../lib/queries/ticketRequests";
 import { Ticket } from "../../screens/TicketsScreen";
+import { ticketStatusLabel } from "../../utils/functions";
 import TicketCard from "./TicketCard";
 
 interface Props {
   type: "TODO" | "DOING" | "DONE";
-  title: string;
   tickets: Ticket[];
-  setEnableScroll: Dispatch<SetStateAction<boolean>>;
-  enableScroll: boolean;
 }
 
-const TicketListCard: React.FC<Props> = ({
-  title,
-  tickets,
-  type,
-  setEnableScroll,
-  enableScroll,
-}) => {
+const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
+  const title = ticketStatusLabel[type];
   const [isAddingTicket, setIsAddingTicket] = useState(false);
   const [ticket, setTicket] = useState({
     title: "",
     status: type,
   });
+
+  console.log("tickets", tickets);
 
   const [createOneticket, { data, error }] = useMutation(CREATE_ONE_TICKET, {
     refetchQueries: () => [{ query: GET_ALL_TICKETS }],
@@ -90,11 +85,7 @@ const TicketListCard: React.FC<Props> = ({
   };
 
   const renderTicket: ListRenderItem<Ticket> = ({ item }) => (
-    <TicketCard
-      ticket={item}
-      onUpdateTicket={onUpdateTicket}
-      setEnableScroll={setEnableScroll}
-    />
+    <TicketCard ticket={item} onUpdateTicket={onUpdateTicket} />
   );
   return (
     <KeyboardAvoidingView
@@ -107,23 +98,19 @@ const TicketListCard: React.FC<Props> = ({
           style={[
             styles.container,
             globalStyles.ticketListShadow,
-            title === "DONE" ? styles.lastContainer : undefined,
+            type === "TODO" ? styles.firstContainer : undefined,
           ]}
         >
-          <View>
-            <Text style={styles.cardTitle}>{title}</Text>
-          </View>
+          <Text style={styles.cardTitle}>{title}</Text>
           <FlatList
             data={tickets}
             renderItem={renderTicket}
-            onTouchMove={() => {
-              console.log("touch mouve flatlist");
-            }}
-            scrollEnabled={enableScroll}
             keyExtractor={(item) => item.id.toString()}
+            // onTouchStart={() => setEnableScroll(false)}
+            // onTouchEnd={() => setEnableScroll(true)}
             style={{
               backgroundColor: "pink",
-              flexGrow: 0,
+              height: 300,
               borderColor: "red",
               borderWidth: 2,
             }}
@@ -166,23 +153,17 @@ const TicketListCard: React.FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
-  globalContainer: {
-    flex: 1,
-  },
   container: {
     flex: 1,
-    // backgroundColor: "#edf2f3",
-    backgroundColor: "yellow",
-    width: 300,
-    height: 580,
-    marginLeft: 20,
+    backgroundColor: "#edf2f3",
     borderRadius: 10,
     paddingHorizontal: 8,
     paddingTop: 8,
     paddingBottom: 10,
+    marginBottom: 20,
   },
-  lastContainer: {
-    marginRight: 20,
+  firstContainer: {
+    marginTop: 20,
   },
   inputContainer: {
     flexDirection: "row",

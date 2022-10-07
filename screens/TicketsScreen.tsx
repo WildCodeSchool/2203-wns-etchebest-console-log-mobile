@@ -1,8 +1,22 @@
 import { useQuery } from "@apollo/client";
-import React, { useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ListRenderItem,
+  LogBox,
+} from "react-native";
 import TicketListCard from "../components/Ticket/TicketListCard";
 import { GET_ALL_TICKETS } from "../lib/queries/ticketRequests";
+import {
+  NestableScrollContainer,
+  NestableDraggableFlatList,
+  ScaleDecorator,
+} from "react-native-draggable-flatlist";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export interface Ticket {
   id: string;
@@ -11,9 +25,14 @@ export interface Ticket {
   status: string;
 }
 
+export type TicketStatus = "TODO" | "DOING" | "DONE";
+
 const TicketsScreen: React.FC = () => {
-  const [enableScroll, setEnableScroll] = useState(true);
   const { data, error, loading } = useQuery(GET_ALL_TICKETS);
+
+  useEffect(() => {
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+  }, []);
 
   if (error) return <Text>Error</Text>;
 
@@ -24,38 +43,69 @@ const TicketsScreen: React.FC = () => {
   );
   const doneTickets = tickets.filter((ticket) => ticket.status === 'DONE');
 
-  console.log("enableScroll :>> ", enableScroll);
+  const ticketsByStatus: { type: TicketStatus; tickets: Ticket[] }[] = [
+    { type: "TODO", tickets: toDoTickets },
+    { type: "DOING", tickets: inProgressTickets },
+    { type: "DONE", tickets: doneTickets },
+  ];
+
+  const onRenderItem: ListRenderItem<{
+    type: TicketStatus;
+    tickets: Ticket[];
+  }> = ({ item }) => <TicketListCard type={item.type} tickets={item.tickets} />;
+
+  const onDragRenderItem = ({
+    item,
+    drag,
+    isActive,
+  }: {
+    item: Ticket;
+    drag: any;
+    isActive: boolean;
+  }) => {
+    return (
+      <ScaleDecorator>
+        <TouchableOpacity onLongPress={drag} disabled={isActive}>
+          <Text>Ticket</Text>
+        </TouchableOpacity>
+      </ScaleDecorator>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        horizontal
-        snapToAlignment="center"
-        pagingEnabled
-        disableIntervalMomentum
-      >
-        <TicketListCard
-          title="TO DO"
-          type="TODO"
-          tickets={toDoTickets}
-          setEnableScroll={setEnableScroll}
-          enableScroll={enableScroll}
-        />
-        <TicketListCard
-          title="IN PROGRESS"
-          type="DOING"
-          tickets={inProgressTickets}
-          setEnableScroll={setEnableScroll}
-          enableScroll={enableScroll}
-        />
-        <TicketListCard
-          title="DONE"
-          type="DONE"
-          tickets={doneTickets}
-          setEnableScroll={setEnableScroll}
-          enableScroll={enableScroll}
-        />
-      </ScrollView>
+      {/* <Dragga
+        data={todoTickets}
+        renderItem={onDragRenderItem}
+        keyExtractor={(item) => item.id}
+        onDragEnd={({ data }) => setTodoTickets(data)}
+      />
+      <View>
+        <Text>TODO</Text>
+      </View>
+      <NestableDraggableFlatList
+        data={doingTickets}
+        renderItem={onDragRenderItem}
+        keyExtractor={(item) => item.id}
+      />
+      <View>
+        <Text>TODO</Text>
+      </View>
+      <NestableDraggableFlatList
+        data={doneTickets}
+        renderItem={onDragRenderItem}
+        keyExtractor={(item) => item.id}
+      /> */}
+
+      {/* <FlatList
+        data={ticketsByStatus}
+        renderItem={onRenderItem}
+        keyExtractor={(item) => item.type}
+      /> */}
+
+      {/* <TicketListCard type="TODO" tickets={toDoTickets} />
+      <TicketListCard type="DOING" tickets={doingTickets} />
+      <TicketListCard type="DONE" tickets={doneTickets} /> */}
     </View>
   );
 };
