@@ -22,6 +22,7 @@ const HomeScreen = ({ navigation }: RouterProps) => {
       {!isLogged ? (
         <View>
           <TouchableOpacity
+
             style={styles.button}
             onPress={() => navigation.navigate("Login")}
           >

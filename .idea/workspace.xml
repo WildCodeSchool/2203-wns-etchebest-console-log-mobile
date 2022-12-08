@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0661931b-625e-4a21-8e36-27cb77b8e6aa" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/test/HomeScreen.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/HomeScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/HomeScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/ProfileScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ProfileScreen.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2Id0B8oOQhW1hNebDpze9BUlLoF" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/lauraduboeuf/wildCodeSchool/projet-groupe-alternance/2203-wns-etchebest-console-log-mobile",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.selected.package.eslint": "",
+    "node.js.selected.package.standard": "",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "/Users/lauraduboeuf/wildCodeSchool/projet-groupe-alternance/2203-wns-etchebest-console-log-mobile/node_modules/prettier",
+    "ts.external.directory.path": "/Users/lauraduboeuf/Library/Application Support/JetBrains/Toolbox/apps/WebStorm/ch-0/222.3739.57/WebStorm.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0661931b-625e-4a21-8e36-27cb77b8e6aa" name="Changes" comment="" />
+      <created>1670496015174</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1670496015174</updated>
+      <workItem from="1670496017087" duration="494000" />
+      <workItem from="1670496518789" duration="5493000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug" />
+  </component>
+</project>
