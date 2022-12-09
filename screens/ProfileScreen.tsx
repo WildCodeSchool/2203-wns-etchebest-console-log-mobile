@@ -24,7 +24,7 @@ import avatar4 from '../assets/profilWoman2.png';
 const ProfileScreen = () => {
   const [user, setUser] = useState<string | null>(null);
   const [name, setName] = useState('');
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState('');
   const [avatar, setAvatar] = useState(avatar1);
 
   const pickImage = async () => {
