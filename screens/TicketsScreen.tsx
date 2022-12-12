@@ -11,12 +11,13 @@ import {
 } from "react-native";
 import TicketListCard from "../components/Ticket/TicketListCard";
 import { GET_ALL_TICKETS } from "../lib/queries/ticketRequests";
-import {
+import DraggableFlatList, {
   NestableScrollContainer,
   NestableDraggableFlatList,
   ScaleDecorator,
 } from "react-native-draggable-flatlist";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Header } from "@react-navigation/stack";
 
 export interface Ticket {
   id: string;
@@ -74,38 +75,41 @@ const TicketsScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* <Dragga
+      {/* <NestableScrollContainer>
+      <NestableDraggableFlatList
         data={todoTickets}
         renderItem={onDragRenderItem}
-        keyExtractor={(item) => item.id}
-        onDragEnd={({ data }) => setTodoTickets(data)}
+        keyExtractor={(item: any) => item.id}
+        onDragEnd={({ data }: any) => setTodoTickets(data)}
       />
       <View>
-        <Text>TODO</Text>
-      </View>
+          <Text>TODO</Text>
+        </View>
       <NestableDraggableFlatList
         data={doingTickets}
         renderItem={onDragRenderItem}
         keyExtractor={(item) => item.id}
       />
       <View>
-        <Text>TODO</Text>
-      </View>
+          <Text>TODO</Text>
+        </View>
       <NestableDraggableFlatList
         data={doneTickets}
         renderItem={onDragRenderItem}
         keyExtractor={(item) => item.id}
       /> */}
 
-      {/* <FlatList
+      <FlatList
+        horizontal={true}
         data={ticketsByStatus}
         renderItem={onRenderItem}
         keyExtractor={(item) => item.type}
-      /> */}
+      />
 
       {/* <TicketListCard type="TODO" tickets={toDoTickets} />
       <TicketListCard type="DOING" tickets={doingTickets} />
       <TicketListCard type="DONE" tickets={doneTickets} /> */}
+      {/* </NestableScrollContainer> */}
     </View>
   );
 };

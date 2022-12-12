@@ -1,5 +1,5 @@
 import { NavigationProp } from "@react-navigation/native";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 interface RouterProps {
@@ -7,7 +7,11 @@ interface RouterProps {
 }
 
 const HomeScreen = ({ navigation }: RouterProps) => {
-  const { isLogged } = useContext(AuthContext);
+  const { isLogged, signOut } = useContext(AuthContext);
+
+  // useEffect(() => {
+  //   signOut();
+  // }, []);
 
   return (
     <View style={[styles.container, { flexDirection: "column" }]}>
