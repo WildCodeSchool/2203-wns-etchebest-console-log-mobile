@@ -18,10 +18,9 @@ const AuthInput = (props: AuthInputType) => {
     },
     password: {
       value: new RegExp(
-        '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
+        '^(?=.{1,})' // '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
       ),
-      message:
-        'Password should contain at least 1 lowercase, 1 uppercase, 1 numeric and 1 special characters',
+      message: 'Password should contain at least 1 character', // 'Password should contain at least 1 lowercase, 1 uppercase, 1 numeric and 1 special characters',
     },
   };
 
