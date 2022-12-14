@@ -3,7 +3,7 @@ import { FragmentType, useFragment } from '../src/gql/fragment-masking';
 import { graphql } from '../src/gql/gql';
 import color from '../styles/colors';
 
-export const ProjectFragment = graphql(/* GraphQL */ `
+const ProjectFragment = graphql(/* GraphQL */ `
   fragment ProjectItem on Project {
     _count {
       tickets
