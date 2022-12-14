@@ -1,15 +1,15 @@
-import "react-native-gesture-handler";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Ionicons } from "@expo/vector-icons";
-import HomeScreen from "../screens/HomeScreen";
-import ProjectsScreen from "../screens/ProjectsScreen";
-import TicketsScreen from "../screens/TicketsScreen";
-import CustomDrawer from "../components/CustomDrawer";
-import ProfileScreen from "../screens/ProfileScreen";
+import 'react-native-gesture-handler';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Ionicons } from '@expo/vector-icons';
+import HomeScreen from '../screens/HomeScreen';
+import ProjectsScreen from '../screens/ProjectsScreen';
+import TicketsScreen from '../screens/TicketsScreen';
+import CustomDrawer from '../components/CustomDrawer';
+import ProfileScreen from '../screens/ProfileScreen';
 
 export type RootStackParamList = {
   Home: { initialRouteName: string };
-  Login: { name: string; title: "string" };
+  Login: { name: string; title: 'string' };
   Projects: { name: string };
   Tickets: { name: string };
   Profile: { name: string };
@@ -23,10 +23,10 @@ const AppStackScreen = () => {
       <Drawer.Navigator
         drawerContent={(props) => <CustomDrawer {...props} />}
         screenOptions={{
-          headerTintColor: "#146b70",
-          drawerActiveBackgroundColor: "#146b70",
-          drawerActiveTintColor: "#fff",
-          drawerInactiveTintColor: "#333",
+          headerTintColor: '#146b70',
+          drawerActiveBackgroundColor: '#146b70',
+          drawerActiveTintColor: '#fff',
+          drawerInactiveTintColor: '#333',
           drawerLabelStyle: { marginLeft: -25, fontSize: 15 },
         }}
         initialRouteName="Home"
@@ -34,16 +34,16 @@ const AppStackScreen = () => {
         <Drawer.Screen
           options={{
             headerStyle: {
-              backgroundColor: "#F6FDFE",
+              backgroundColor: '#F6FDFE',
             },
             headerTitleStyle: {
-              fontWeight: "bold",
+              fontWeight: 'bold',
             },
             drawerIcon: ({ focused, size }) => (
               <Ionicons
-                name={focused ? "home" : "home-outline"}
+                name={focused ? 'home' : 'home-outline'}
                 size={size}
-                color={focused ? "#FFFFFF" : "#333"}
+                color={focused ? '#FFFFFF' : '#333'}
               />
             ),
           }}
@@ -52,12 +52,12 @@ const AppStackScreen = () => {
         />
         <Drawer.Screen
           options={{
-            title: "Projects",
+            title: 'Projects',
             drawerIcon: ({ focused, size }) => (
               <Ionicons
-                name={focused ? "clipboard" : "clipboard-outline"}
+                name={focused ? 'clipboard' : 'clipboard-outline'}
                 size={size}
-                color={focused ? "#FFFFFF" : "#333"}
+                color={focused ? '#FFFFFF' : '#333'}
               />
             ),
           }}
@@ -66,26 +66,27 @@ const AppStackScreen = () => {
         />
         <Drawer.Screen
           options={{
-            title: "Ticket",
+            title: 'Ticket',
             drawerIcon: ({ focused, size }) => (
               <Ionicons
-                name={focused ? "bookmarks" : "bookmarks-outline"}
+                name={focused ? 'bookmarks' : 'bookmarks-outline'}
                 size={size}
-                color={focused ? "#FFFFFF" : "#333"}
+                color={focused ? '#FFFFFF' : '#333'}
               />
             ),
+            swipeEnabled: false,
           }}
           name="Tickets"
           component={TicketsScreen}
         />
         <Drawer.Screen
           options={{
-            title: "Profile",
+            title: 'Profile',
             drawerIcon: ({ focused, size }) => (
               <Ionicons
-                name={focused ? "person" : "person-outline"}
+                name={focused ? 'person' : 'person-outline'}
                 size={size}
-                color={focused ? "#FFFFFF" : "#333"}
+                color={focused ? '#FFFFFF' : '#333'}
               />
             ),
           }}

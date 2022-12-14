@@ -17,9 +17,7 @@ const AuthInput = (props: AuthInputType) => {
       message: 'Email adress is incorrect',
     },
     password: {
-      value: new RegExp(
-        '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
-      ),
+      value: new RegExp('[a-z]'),
       message:
         'Password should contain at least 1 lowercase, 1 uppercase, 1 numeric and 1 special characters',
     },
@@ -31,7 +29,7 @@ const AuthInput = (props: AuthInputType) => {
       rules={{
         required: `${placeholder} is required.`,
         minLength: {
-          value: name === 'password' ? 8 : 2,
+          value: name === 'password' ? 3 : 2,
           message:
             name === 'password'
               ? 'Password should be minimum 8 characters long. '

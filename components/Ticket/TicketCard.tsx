@@ -1,108 +1,93 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Ticket } from "../../screens/TicketsScreen";
-import { TicketModal } from "./TicketModal";
-import SwipeableItem, {
-  useSwipeableItemParams,
-  useOverlayParams,
-} from "react-native-swipeable-item";
-import { getTicketStatusOptions } from "../../utils/functions";
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { Ticket } from '../../screens/TicketsScreen';
+import { getSwipeBgColor, getTicketStatusOptions } from '../../utils/functions';
+import { TicketModal } from './TicketModal';
+
 interface Props {
   ticket: Ticket;
   onUpdateTicket: (id: string, status: string) => void;
+  onDeleteTicket: (id: string) => void;
+  index: number;
+  closePreviousRow: (index: number) => void;
+  updateSwipeRows: (swipeRef: Swipeable, index: number) => void;
 }
 
-interface UnderlayProps {
-  ticket: Ticket;
-  type: string;
-  onUpdateTicket: (id: string, status: string) => void;
-}
-
-const Underlay: React.FC<UnderlayProps> = ({
-  ticket,
-  type,
-  onUpdateTicket,
-}) => {
-  const { close } = useSwipeableItemParams();
-  const [newStatus, setNewStatus] = useState("");
+const swipeView = (
+  ticket: Ticket,
+  type: string,
+  onUpdateTicket: (id: string, status: string) => void,
+  onDeleteTicket?: (id: string) => void
+) => {
+  const isRightView = type === 'right';
   const options = getTicketStatusOptions(ticket.status);
-  const selectedOption = type === "right" ? options.a : options.b;
-
-  const alignSelf = type === "left" ? "flex-end" : "flex-start";
+  const option = isRightView ? options.a : options.b;
 
   return (
-    <View style={{ flex: 1 }}>
+    <View
+      style={[
+        styles.swipeWrapper,
+        {
+          backgroundColor: getSwipeBgColor(option.value),
+        },
+      ]}
+    >
       <TouchableOpacity
-        style={[styles.swipeWrapper, { alignSelf: alignSelf }]}
+        style={{ alignItems: 'center' }}
         onPress={() => {
-          onUpdateTicket(ticket.id, selectedOption.value);
-          close();
+          if (option.value === 'DELETE' && onDeleteTicket) {
+            onDeleteTicket(ticket.id);
+          }
+          onUpdateTicket(ticket.id, option.value);
         }}
       >
-        <Text style={[styles.swipeText]}>
-          {type === "right" ? options.a.label : options.b.label}
-        </Text>
+        <Text style={[styles.swipeText]}>{option.label}</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-const TicketCard: React.FC<Props> = ({ ticket, onUpdateTicket }) => {
+const TicketCard: React.FC<Props> = ({
+  ticket,
+  onUpdateTicket,
+  index,
+  closePreviousRow,
+  updateSwipeRows,
+  onDeleteTicket,
+}) => {
   const [showModal, setShowModal] = useState(false);
-  const [swipeable, setSwipeable] = useState(false);
 
   return (
-    <>
+    <Swipeable
+      ref={(ref) => {
+        if (ref) updateSwipeRows(ref, index);
+      }}
+      renderRightActions={() =>
+        swipeView(ticket, 'left', onUpdateTicket, onDeleteTicket)
+      }
+      renderLeftActions={() => swipeView(ticket, 'right', onUpdateTicket)}
+      onSwipeableOpen={() => closePreviousRow(index)}
+      activateAfterLongPress={500}
+    >
       <TicketModal show={showModal} setShow={setShowModal} ticket={ticket} />
-      <SwipeableItem
-        key={ticket.id}
-        item={ticket}
-        onChange={() => {
-          console.log("change swipe item");
-        }}
-        renderUnderlayLeft={() => (
-          <Underlay
-            ticket={ticket}
-            type="left"
-            onUpdateTicket={onUpdateTicket}
-          />
-        )}
-        renderUnderlayRight={() => (
-          <Underlay
-            ticket={ticket}
-            type="right"
-            onUpdateTicket={onUpdateTicket}
-          />
-        )}
-        snapPointsLeft={[70]}
-        snapPointsRight={[70]}
+      <TouchableOpacity
+        onPress={() => setShowModal(true)}
+        style={styles.container}
       >
-        <TouchableOpacity
-          onPress={() => {
-            setShowModal(true);
-          }}
-          style={styles.container}
-        >
-          <Text style={styles.ticketTitle}>{ticket.title}</Text>
-          <Text>{ticket.description}</Text>
-        </TouchableOpacity>
-      </SwipeableItem>
-    </>
+        <Text style={styles.ticketTitle}>{ticket.title}</Text>
+        <Text>{ticket.description}</Text>
+      </TouchableOpacity>
+    </Swipeable>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 3,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 1,
@@ -116,22 +101,24 @@ const styles = StyleSheet.create({
   },
   userWrapper: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   ticketTitle: {
-    color: "#146B70",
-    fontWeight: "600",
+    color: '#146B70',
+    fontWeight: '600',
   },
   swipeWrapper: {
-    flex: 1,
-    width: "30%",
-    justifyContent: "center",
+    width: 90,
+    justifyContent: 'center',
+    backgroundColor: 'pink',
+    marginVertical: 4,
   },
   swipeText: {
-    fontWeight: "bold",
-    color: "gray",
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    textAlign: 'center',
+    color: 'gray',
     fontSize: 15,
-    textAlign: "center",
   },
 });
 
