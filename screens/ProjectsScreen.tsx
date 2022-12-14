@@ -9,10 +9,7 @@ const ProjectsScreen: React.FC = () => {
 
   return (
     <View>
-      <FlatList
-        data={data?.projects ?? []}
-        renderItem={ProjectCard} //  as React.FC<{ item: Project }> ????
-      />
+      <FlatList data={data?.projects ?? []} renderItem={ProjectCard} />
     </View>
   );
 };
