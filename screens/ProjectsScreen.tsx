@@ -8,7 +8,7 @@ const ProjectsScreen: React.FC = () => {
   const { data, error, loading } = useQuery(allProjectsQueryDocument);
 
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList data={data?.projects ?? []} renderItem={ProjectCard} />
     </View>
   );
