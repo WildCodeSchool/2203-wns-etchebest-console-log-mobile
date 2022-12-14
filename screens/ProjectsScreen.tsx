@@ -1,7 +1,6 @@
-import { FlatList, View, StyleSheet, Text, ListRenderItem } from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
 import { allProjectsQueryDocument } from '../lib/queries/projects.js';
 import { useQuery } from '@apollo/client';
-import { Project, ProjectsQuery } from '../src/gql/graphql';
 import ProjectCard from '../components/ProjectCard';
 
 const ProjectsScreen: React.FC = () => {
