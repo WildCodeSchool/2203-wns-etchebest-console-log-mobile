@@ -18,10 +18,9 @@ const AuthInput = (props: AuthInputType) => {
     },
     password: {
       value: new RegExp(
-        '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
+        '^(?=.{1,})' // '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
       ),
-      message:
-        'Password should contain at least 1 lowercase, 1 uppercase, 1 numeric and 1 special characters',
+      message: 'Password should contain at least 1 character', // 'Password should contain at least 1 lowercase, 1 uppercase, 1 numeric and 1 special characters',
     },
   };
 
@@ -31,11 +30,8 @@ const AuthInput = (props: AuthInputType) => {
       rules={{
         required: `${placeholder} is required.`,
         minLength: {
-          value: name === 'password' ? 8 : 2,
-          message:
-            name === 'password'
-              ? 'Password should be minimum 8 characters long. '
-              : `${placeholder} is too small.`,
+          value: 1,
+          message: `${placeholder} can't be empty.`,
         },
         pattern:
           name === 'email'
