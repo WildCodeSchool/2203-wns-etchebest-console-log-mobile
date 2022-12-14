@@ -25,7 +25,7 @@ const TicketsScreen: React.FC = () => {
   const { data, error, loading } = useQuery(GET_ALL_TICKETS);
 
   useEffect(() => {
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']); // TODO: FIX
   }, []);
 
   if (error) return <Text>Error</Text>;

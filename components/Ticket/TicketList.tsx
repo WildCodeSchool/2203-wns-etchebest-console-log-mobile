@@ -1,4 +1,3 @@
-import { useMutation } from '@apollo/client';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
@@ -18,14 +17,12 @@ import {
 } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import { globalStyles } from '../../constants/globalStyles';
-import {
-  CREATE_ONE_TICKET,
-  DELETE_ONE_TICKET,
-  GET_ALL_TICKETS,
-  UPDATE_ONE_TICKET,
-} from '../../lib/queries/ticketRequests';
 import { Ticket } from '../../screens/TicketsScreen';
-import { ticketStatusLabel } from '../../utils/functions';
+import {
+  getTicketRequestVariables,
+  ticketStatusLabel,
+} from '../../utils/functions';
+import { useTicketMutations } from '../../utils/hook';
 import TicketCard from './TicketCard';
 
 interface Props {
@@ -41,6 +38,9 @@ const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
     status: type,
   });
   const cardDimension = Dimensions.get('window').width * 0.8;
+
+  const { createOneTicket, updateOneTicket, deleteOneTicket } =
+    useTicketMutations();
 
   const swipeRows: { rows: Swipeable[]; prevOpenedRow: Swipeable | undefined } =
     {
@@ -60,40 +60,19 @@ const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
     swipeRows.prevOpenedRow = swipeRows.rows[index];
   };
 
-  const [createOneticket, { data, error }] = useMutation(CREATE_ONE_TICKET, {
-    refetchQueries: () => [{ query: GET_ALL_TICKETS }],
-  });
-  const [updateOneTicket, { error: updateError }] = useMutation(
-    UPDATE_ONE_TICKET,
-    {
-      refetchQueries: () => [{ query: GET_ALL_TICKETS }],
-    }
-  );
-
   const onSubmitEditing = () => {
-    createOneticket({
-      variables: {
-        data: {
-          title: ticket.title,
-          status: ticket.status,
-        },
-      },
+    const variables = getTicketRequestVariables({
+      title: ticket.title,
+      status: ticket.status,
     });
+    createOneTicket({ ...variables });
     setTicket({ title: '', status: type });
     setIsAddingTicket(false);
   };
 
   const onUpdateTicket = (id: string, status: string) => {
-    updateOneTicket({
-      variables: {
-        where: {
-          id: id,
-        },
-        data: {
-          status: { set: status },
-        },
-      },
-    });
+    const variables = getTicketRequestVariables({ status }, id, true);
+    updateOneTicket({ ...variables });
   };
 
   const onBlur = () => {
@@ -102,21 +81,9 @@ const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
     setTicket((current) => ({ ...current, title: '' }));
   };
 
-  const [deleteOneTicket, { data: test, error: errorTest }] = useMutation(
-    DELETE_ONE_TICKET,
-    {
-      refetchQueries: () => [{ query: GET_ALL_TICKETS }],
-    }
-  );
-
   const onDelete = (id: string) => {
-    deleteOneTicket({
-      variables: {
-        where: {
-          id,
-        },
-      },
-    });
+    const variables = getTicketRequestVariables({}, id);
+    deleteOneTicket({ ...variables });
   };
 
   const renderTicket: ListRenderItem<Ticket> = ({ item, index }) => (

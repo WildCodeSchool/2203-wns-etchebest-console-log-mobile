@@ -1,15 +1,11 @@
-import { useMutation } from '@apollo/client';
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from '../../constants/globalStyles';
-import {
-  DELETE_ONE_TICKET,
-  GET_ALL_TICKETS,
-  UPDATE_ONE_TICKET,
-} from '../../lib/queries/ticketRequests';
 import { Ticket } from '../../screens/TicketsScreen';
+import { getTicketRequestVariables } from '../../utils/functions';
+import { useTicketMutations } from '../../utils/hook';
 import { TicketDescription } from './TicketDescription';
 import { TicketStatus } from './TicketStatus';
 import TicketTitle from './TicketTitle';
@@ -28,15 +24,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
   const [status, setStatus] = useState(ticket.status);
   const [description, setDescription] = useState(ticket.description);
 
-  const [deleteOneTicket, { data, error }] = useMutation(DELETE_ONE_TICKET, {
-    refetchQueries: () => [{ query: GET_ALL_TICKETS }],
-  });
-  const [updateOneTicket, { error: updateError }] = useMutation(
-    UPDATE_ONE_TICKET,
-    {
-      refetchQueries: () => [{ query: GET_ALL_TICKETS }],
-    }
-  );
+  const { updateOneTicket, deleteOneTicket } = useTicketMutations();
 
   const resetEditInputs = () => {
     setOnTitleEdit(false);
@@ -45,26 +33,17 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
   };
 
   const onUpdateTicket = () => {
-    updateOneTicket({
-      variables: {
-        where: {
-          id: ticket.id,
-        },
-        data: {
-          title: { set: title },
-          status: { set: status },
-          description: { set: description },
-        },
-      },
-    });
+    const variables = getTicketRequestVariables(
+      { title, status, description },
+      ticket.id,
+      true
+    );
+    updateOneTicket({ ...variables });
     resetEditInputs();
   };
   const onDeleteTicket = () => {
-    deleteOneTicket({
-      variables: {
-        where: { id: ticket.id },
-      },
-    });
+    const variables = getTicketRequestVariables({}, ticket.id);
+    deleteOneTicket({ ...variables });
     setShow(false);
   };
 

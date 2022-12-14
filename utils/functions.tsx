@@ -41,3 +41,34 @@ export const getSwipeBgColor = (status: string) => {
       return 'rgba(255, 136, 128, 0.5)';
   }
 };
+
+const getWhereRequest = (id: string) => ({
+  where: {
+    id,
+  },
+});
+
+/**
+ *
+ * @param input : data to send to request
+ * @param id : ticket id (udpate and delete)
+ * @param setValue : use set syntaxe ({set: value})
+ * @returns
+ */
+export const getTicketRequestVariables = (
+  input?: any,
+  id?: string,
+  setValue?: boolean
+) => {
+  const where = id ? getWhereRequest(id) : undefined;
+  const data: Record<string, any> = {};
+  for (const [key, value] of Object.entries(input)) {
+    data[key] = setValue ? { set: value } : value;
+  }
+  return {
+    variables: {
+      ...where,
+      data,
+    },
+  };
+};
