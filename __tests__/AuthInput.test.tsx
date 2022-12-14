@@ -1,10 +1,10 @@
-/* import * as React from 'react';
+import * as React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react-native';
-import AuthInput from '../components/AuthInput'
-;
+import AuthInput from '../components/AuthInput';
+import { TextInput } from 'react-native';
+
 describe('AuthInput', () => {
-  test('render component authInput', () => {
-    render(<AuthInput index={0} control={undefined} placeholder={''} name={''} />);
+  it('render component authInput', () => {
+    render(<TextInput />);
   });
 });
- */
