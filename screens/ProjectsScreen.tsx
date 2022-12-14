@@ -1,9 +1,14 @@
-import { Text, StyleSheet, View } from "react-native";
+import { FlatList, View, StyleSheet } from 'react-native';
+import { allProjectsQueryDocument } from '../lib/queries/projects.js';
+import { useQuery } from '@apollo/client';
+import ProjectCard from '../components/ProjectCard';
 
-const ProjectsScreen = () => {
+const ProjectsScreen: React.FC = () => {
+  const { data, error, loading } = useQuery(allProjectsQueryDocument);
+
   return (
     <View style={styles.container}>
-      <Text>Projects</Text>
+      <FlatList data={data?.projects ?? []} renderItem={ProjectCard} />
     </View>
   );
 };
@@ -11,9 +16,12 @@ const ProjectsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#146b70",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#146b70',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  item: {
+    backgroundColor: '#CCCCCC',
   },
 });
 
