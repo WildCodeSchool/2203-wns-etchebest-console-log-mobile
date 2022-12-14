@@ -1,7 +1,8 @@
 import { PropsWithChildren } from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { FragmentType, useFragment } from '../src/gql/fragment-masking';
-import { ProjectFragment } from '../lib/queries/projects.js';
+import { ProjectFragment } from '../lib/queries/projects';
+import color from '../styles/colors';
 
 const ProjectCard = (
   props: PropsWithChildren<{ item: FragmentType<typeof ProjectFragment> }>
@@ -12,7 +13,7 @@ const ProjectCard = (
 
 const styles = StyleSheet.create({
   project: {
-    backgroundColor: '#CCCCCC',
+    backgroundColor: color.lightGray,
   },
 });
 

@@ -1,3 +1,4 @@
 node_modules/
 src/gql/
 package-lock.json
+babel.config.js
