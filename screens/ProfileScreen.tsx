@@ -10,12 +10,11 @@ import {
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_ONE_USER } from '../lib/queries/userRequest';
-import { UPDATE_ONE_USER } from '../lib/queries/userRequest';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode from 'jwt-decode';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { UPDATE_ONE_USER, GET_ONE_USER } from '../lib/queries/userRequest';
 import avatar1 from '../assets/profil.png';
 import avatar2 from '../assets/profilMan.png';
 import avatar3 from '../assets/profilWoman.png';
@@ -29,7 +28,7 @@ const ProfileScreen = () => {
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
@@ -63,7 +62,7 @@ const ProfileScreen = () => {
     updateOneUser({
       variables: {
         where: {
-          id: id,
+          id,
         },
         data: {
           name: { set: name },
@@ -213,81 +212,115 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#146b70',
+  avatarScroll: {
+    borderRadius: 40,
+    height: 80,
+    marginHorizontal: 10,
+    width: 80,
+  },
+  borderPicker: {
+    borderColor: '#1B6B70',
+  },
+  buttonRow: {
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'center',
   },
+  container: {
+    alignItems: 'center',
+    backgroundColor: '#146b70',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  containerInput: {
+    height: '15%',
+    marginHorizontal: 10,
+    marginTop: 20,
+  },
+  imageCustom: {
+    borderRadius: 40,
+    height: 80,
+    width: 80,
+  },
+
+  imagePicker: {
+    height: 200,
+    width: 200,
+  },
+  input: {
+    borderColor: '#1B6B70',
+    borderRadius: 10,
+    borderWidth: 0.8,
+    color: '#1B6B70',
+    margin: 12,
+    padding: 10,
+  },
   item: {
+    backgroundColor: '#F9FEFF',
+    borderRadius: 10,
     height: '80%',
     width: '80%',
-    backgroundColor: '#F9FEFF',
+  },
+  itemContainerBackgroundImage: {
     borderRadius: 10,
   },
   paddingImageBackground: {
     padding: 20,
   },
-  itemContainerBackgroundImage: {
-    borderRadius: 10,
-  },
-  viewImage: {
-    flexDirection: 'row',
-  },
-  imageCustom: {
-    height: 80,
-    width: 80,
+  paddingTouchableOpacity: {
+    backgroundColor: '#1B6B70',
     borderRadius: 40,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
   },
-
-  textView: {
+  rowViewPicker: {
     alignItems: 'center',
-    marginTop: 15,
-  },
-  textName: {
-    color: '#ffffff',
-    fontWeight: 'bold',
-    fontSize: 16,
-    marginLeft: 10,
-    textAlign: 'center',
-  },
-  textEmail: {
-    color: '#ffffff',
-    fontSize: 16,
-    marginLeft: 10,
-    marginTop: 10,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  containerInput: {
-    height: '15%',
-    marginTop: 20,
-    marginHorizontal: 10,
-  },
-  textLabelChangeName: {
-    paddingLeft: 15,
-    marginBottom: -5,
-    fontSize: 15,
-
-    color: '#0B3E40',
-  },
-  viewContainerTextAvatar: {
-    marginHorizontal: 22,
-    borderRadius: 40,
-  },
-  input: {
-    margin: 12,
-    borderWidth: 0.8,
     borderColor: '#1B6B70',
+    borderRadius: 40,
+    borderWidth: 2,
+    flexDirection: 'row',
+    justifyContent: 'center',
     padding: 10,
-    borderRadius: 10,
-    color: '#1B6B70',
   },
   textChoiseAvatar: {
     color: '#0B3E40',
     fontSize: 15,
-    marginLeft: 4,
     marginBottom: 10,
+    marginLeft: 4,
+  },
+  textEmail: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 10,
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  textInButton: {
+    color: '#fff',
+    fontSize: 15,
+    paddingLeft: 10,
+  },
+  textLabelChangeName: {
+    color: '#0B3E40',
+    fontSize: 15,
+    marginBottom: -5,
+
+    paddingLeft: 15,
+  },
+  textName: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 10,
+    textAlign: 'center',
+  },
+  textSelectImage: {
+    marginLeft: 10,
+  },
+  textView: {
+    alignItems: 'center',
+    marginTop: 15,
   },
   viewAvatarBottom: {
     borderColor: '#EEE',
@@ -296,56 +329,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
-  avatarScroll: {
-    height: 80,
-    width: 80,
-    borderRadius: 40,
-    marginHorizontal: 10,
-  },
-  viewPicker: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    borderColor: 'black',
-  },
-  borderPicker: {
-    borderColor: '#1B6B70',
-  },
-  rowViewPicker: {
-    flexDirection: 'row',
-    borderColor: '#1B6B70',
-    borderWidth: 2,
-    padding: 10,
-    borderRadius: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textSelectImage: {
-    marginLeft: 10,
-  },
-  imagePicker: {
-    width: 200,
-    height: 200,
-  },
   viewButtonCenter: {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  buttonRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  paddingTouchableOpacity: {
-    paddingVertical: 8,
-    backgroundColor: '#1B6B70',
+  viewContainerTextAvatar: {
     borderRadius: 40,
-    paddingHorizontal: 15,
+    marginHorizontal: 22,
   },
-  textInButton: {
-    color: '#fff',
-    fontSize: 15,
-    paddingLeft: 10,
+  viewImage: {
+    flexDirection: 'row',
+  },
+  viewPicker: {
+    alignItems: 'center',
+    borderColor: 'black',
+    justifyContent: 'center',
+    padding: 20,
   },
 });
 

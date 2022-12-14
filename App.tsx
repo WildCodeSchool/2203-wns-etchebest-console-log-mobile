@@ -4,10 +4,10 @@ import {
   ApolloProvider,
   createHttpLink,
 } from '@apollo/client';
-import { AuthProvider } from './context/AuthContext';
 import { setContext } from '@apollo/client/link/context';
-import AppNav from './navigation/AppNav';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthProvider } from './context/AuthContext';
+import AppNav from './navigation/AppNav';
 import Env from './Env';
 import { graphql } from './src/gql/gql';
 

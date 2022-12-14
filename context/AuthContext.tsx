@@ -1,8 +1,8 @@
 import { createContext, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from '@apollo/client';
-import LOGIN from '../lib/queries/login';
 import { Alert } from 'react-native';
+import LOGIN from '../lib/queries/login';
 import REGISTER from '../lib/queries/register';
 
 export type SignInInterface = {
@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<ChildrenProps> = ({ children }) => {
         },
       });
       if (response) {
-        let token = await login({
+        const token = await login({
           variables: {
             userLoginInput: { email: data.email, password: data.password },
           },
@@ -80,7 +80,7 @@ export const AuthProvider: React.FC<ChildrenProps> = ({ children }) => {
   const signIn = async (data: SignInInterface) => {
     try {
       setIsLoading(true);
-      let token = await login({
+      const token = await login({
         variables: {
           userLoginInput: { email: data.email, password: data.password },
         },

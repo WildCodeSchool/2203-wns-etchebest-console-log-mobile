@@ -1,10 +1,11 @@
 import { FlatList, View, StyleSheet } from 'react-native';
-import { allProjectsQueryDocument } from '../lib/queries/projects.js';
 import { useQuery } from '@apollo/client';
+import { allProjectsQueryDocument } from '../lib/queries/projects';
 import ProjectCard from '../components/ProjectCard';
+import color from '../styles/colors';
 
 const ProjectsScreen: React.FC = () => {
-  const { data, error, loading } = useQuery(allProjectsQueryDocument);
+  const { data } = useQuery(allProjectsQueryDocument);
 
   return (
     <View style={styles.container}>
@@ -15,13 +16,10 @@ const ProjectsScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#146b70',
     alignItems: 'center',
+    backgroundColor: color.primary,
+    flex: 1,
     justifyContent: 'center',
-  },
-  item: {
-    backgroundColor: '#CCCCCC',
   },
 });
 

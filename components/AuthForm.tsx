@@ -22,22 +22,22 @@ const AuthForm = (props: AuthFormInterface) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#73c6ce4d',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  containerForm: {
+    marginHorizontal: 10,
+    marginVertical: 5,
+    paddingHorizontal: 10,
+    width: '100%',
   },
   title: {
+    color: '#146B70',
     fontSize: 30,
     fontWeight: 'bold',
     padding: 10,
-    color: '#146B70',
-  },
-  containerForm: {
-    width: '100%',
-    marginVertical: 5,
-    marginHorizontal: 10,
-    paddingHorizontal: 10,
   },
 });
 export default AuthForm;
