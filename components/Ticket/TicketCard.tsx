@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { Ticket } from '../../screens/TicketsScreen';
-import { getSwipeBgColor, getTicketStatusOptions } from '../../utils/functions';
 import { TicketModal } from './TicketModal';
+import TicketSwipeView from './TicketSwipeView';
 
 interface Props {
   ticket: Ticket;
@@ -13,40 +13,6 @@ interface Props {
   closePreviousRow: (index: number) => void;
   updateSwipeRows: (swipeRef: Swipeable, index: number) => void;
 }
-
-const swipeView = (
-  ticket: Ticket,
-  type: string,
-  onUpdateTicket: (id: string, status: string) => void,
-  onDeleteTicket?: (id: string) => void
-) => {
-  const isRightView = type === 'right';
-  const options = getTicketStatusOptions(ticket.status);
-  const option = isRightView ? options.a : options.b;
-
-  return (
-    <View
-      style={[
-        styles.swipeWrapper,
-        {
-          backgroundColor: getSwipeBgColor(option.value),
-        },
-      ]}
-    >
-      <TouchableOpacity
-        style={{ alignItems: 'center' }}
-        onPress={() => {
-          if (option.value === 'DELETE' && onDeleteTicket) {
-            onDeleteTicket(ticket.id);
-          }
-          onUpdateTicket(ticket.id, option.value);
-        }}
-      >
-        <Text style={[styles.swipeText]}>{option.label}</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
 
 const TicketCard: React.FC<Props> = ({
   ticket,
@@ -63,10 +29,21 @@ const TicketCard: React.FC<Props> = ({
       ref={(ref) => {
         if (ref) updateSwipeRows(ref, index);
       }}
-      renderRightActions={() =>
-        swipeView(ticket, 'left', onUpdateTicket, onDeleteTicket)
-      }
-      renderLeftActions={() => swipeView(ticket, 'right', onUpdateTicket)}
+      renderRightActions={() => (
+        <TicketSwipeView
+          type="left"
+          ticket={ticket}
+          onUpdateTicket={onUpdateTicket}
+          onDeleteTicket={onDeleteTicket}
+        />
+      )}
+      renderLeftActions={() => (
+        <TicketSwipeView
+          type="right"
+          ticket={ticket}
+          onUpdateTicket={onUpdateTicket}
+        />
+      )}
       onSwipeableOpen={() => closePreviousRow(index)}
       activateAfterLongPress={500}
     >
