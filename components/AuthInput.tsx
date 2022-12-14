@@ -30,11 +30,8 @@ const AuthInput = (props: AuthInputType) => {
       rules={{
         required: `${placeholder} is required.`,
         minLength: {
-          value: name === 'password' ? 8 : 2,
-          message:
-            name === 'password'
-              ? 'Password should be minimum 8 characters long. '
-              : `${placeholder} is too small.`,
+          value: 1,
+          message: `${placeholder} can't be empty.`,
         },
         pattern:
           name === 'email'
