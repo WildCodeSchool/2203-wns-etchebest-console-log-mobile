@@ -1,8 +1,16 @@
 import { FlatList, View, StyleSheet } from 'react-native';
 import { useQuery } from '@apollo/client';
-import { allProjectsQueryDocument } from '../lib/queries/projects';
 import ProjectCard from '../components/ProjectCard';
+import { graphql } from '../src/gql/gql';
 import color from '../styles/colors';
+
+const allProjectsQueryDocument = graphql(`
+  query Projects($where: ProjectWhereInput) {
+    projects(where: $where) {
+      ...ProjectItem
+    }
+  }
+`);
 
 const ProjectsScreen: React.FC = () => {
   const { data } = useQuery(allProjectsQueryDocument);
