@@ -5,6 +5,7 @@ import { AuthContext, SignInInterface } from '../context/AuthContext';
 import AuthForm from '../components/AuthForm';
 import { type ListFieldsSignInType } from '../components/AuthInputList';
 import { type AuthButtonType } from '../components/AuthButton';
+
 interface RouterProps {
   navigation: NavigationProp<any, any>;
 }

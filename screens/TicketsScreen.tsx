@@ -39,10 +39,10 @@ const TicketsScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#146B70',
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#146B70',
     paddingVertical: 20,
   },
 });

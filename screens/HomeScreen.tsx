@@ -1,7 +1,8 @@
-import { NavigationProp } from "@react-navigation/native";
-import { useContext } from "react";
-import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native";
-import { AuthContext } from "../context/AuthContext";
+import { NavigationProp } from '@react-navigation/native';
+import { useContext } from 'react';
+import { StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
+import { AuthContext } from '../context/AuthContext';
+
 interface RouterProps {
   navigation: NavigationProp<any, any>;
 }
@@ -10,9 +11,9 @@ const HomeScreen = ({ navigation }: RouterProps) => {
   const { isLogged } = useContext(AuthContext);
 
   return (
-    <View style={[styles.container, { flexDirection: "column" }]}>
+    <View style={[styles.container, { flexDirection: 'column' }]}>
       <Image
-        source={require("../assets/logoHomePage.png")}
+        source={require('../assets/logoHomePage.png')}
         style={{
           width: 350,
           height: 200,
@@ -23,7 +24,7 @@ const HomeScreen = ({ navigation }: RouterProps) => {
         <View>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => navigation.navigate('Login')}
           >
             <Text style={styles.textInButton}>Sign in</Text>
           </TouchableOpacity>
@@ -33,37 +34,37 @@ const HomeScreen = ({ navigation }: RouterProps) => {
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "column",
-    flex: 1,
-    backgroundColor: "#146b70",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   button: {
-    backgroundColor: "#F6FDFE",
+    backgroundColor: '#F6FDFE',
     borderRadius: 10,
+    marginTop: 40,
     padding: 20,
     paddingHorizontal: 30,
-    marginTop: 40,
   },
-  textInButton: {
-    fontSize: 18,
-    fontWeight: "bold",
+  container: {
+    alignItems: 'center',
+    backgroundColor: '#146b70',
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'center',
   },
   logoutBtn: {
+    alignItems: 'center',
+    backgroundColor: '#146B70',
     borderRadius: 5,
+    fontWeight: 'bold',
     height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: "bold",
-    backgroundColor: "#146B70",
-    marginVertical: 10,
+    justifyContent: 'center',
     marginHorizontal: 10,
+    marginVertical: 10,
     paddingHorizontal: 10,
   },
   logoutText: {
-    color: "white",
+    color: 'white',
+  },
+  textInButton: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 export default HomeScreen;

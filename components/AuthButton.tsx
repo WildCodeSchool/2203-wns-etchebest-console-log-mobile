@@ -33,19 +33,19 @@ const AuthButton = (props: AuthButtonProps) => {
 
 const styles = StyleSheet.create({
   bntContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'center',
   },
   btn: {
-    borderRadius: 5,
-    height: 40,
     alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: 'bold',
     backgroundColor: '#146B70',
-    marginVertical: 10,
+    borderRadius: 5,
+    fontWeight: 'bold',
+    height: 40,
+    justifyContent: 'center',
     marginHorizontal: 10,
+    marginVertical: 10,
     width: 160,
   },
   btnText: {

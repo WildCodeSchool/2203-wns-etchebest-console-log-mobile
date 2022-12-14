@@ -1,6 +1,6 @@
-import { useMutation } from "@apollo/client";
-import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import { useMutation } from '@apollo/client';
+import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Modal,
@@ -10,18 +10,18 @@ import {
   View,
   Platform,
   Keyboard,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { globalStyles } from "../constants/globalStyles";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { globalStyles } from '../constants/globalStyles';
 import {
   DELETE_ONE_TICKET,
   GET_ALL_TICKETS,
   UPDATE_ONE_TICKET,
-} from "../lib/queries/ticketRequests";
-import { Ticket } from "../screens/TicketsScreen";
-import { TicketDescription } from "./TicketDescription";
-import { TicketStatus } from "./TicketStatus";
-import TicketTitle from "./TicketTitle";
+} from '../lib/queries/ticketRequests';
+import { Ticket } from '../screens/TicketsScreen';
+import { TicketDescription } from './TicketDescription';
+import { TicketStatus } from './TicketStatus';
+import TicketTitle from './TicketTitle';
 
 interface Props {
   show: boolean;
@@ -160,34 +160,34 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#edf2f3",
-  },
   actionIcons: {
     flex: 1 / 6,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
-  ticketWrapper: {
-    flex: 4,
-    paddingTop: 15,
+  container: {
+    backgroundColor: '#edf2f3',
+    flex: 1,
+  },
+  listIcon: {
+    marginRight: 10,
+  },
+  safeAreaView: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: 16,
   },
   ticketAttributes: {
     flex: 2,
     marginTop: 20,
   },
-  listIcon: {
-    marginRight: 10,
-  },
-  text: {
-    fontSize: 16,
-  },
-  safeAreaView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  ticketWrapper: {
+    flex: 4,
+    paddingTop: 15,
   },
 });

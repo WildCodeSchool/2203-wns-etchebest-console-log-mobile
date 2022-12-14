@@ -66,18 +66,18 @@ const AuthInput = (props: AuthInputType) => {
 
 const styles = StyleSheet.create({
   input: {
+    backgroundColor: 'white',
+    borderRadius: 5,
+    border: '1px solid white',
     height: 40,
     margin: 12,
     padding: 10,
-    borderRadius: 5,
-    border: '1px solid white',
-    backgroundColor: 'white',
   },
   textRequired: {
-    paddingHorizontal: 20,
-    marginTop: -6,
-    fontSize: 12,
     color: '#808080',
+    fontSize: 12,
+    marginTop: -6,
+    paddingHorizontal: 20,
   },
 });
 

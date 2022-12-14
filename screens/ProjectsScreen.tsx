@@ -1,6 +1,6 @@
+import { useQuery } from '@apollo/client';
 import { FlatList, View, StyleSheet } from 'react-native';
 import { allProjectsQueryDocument } from '../lib/queries/projects.js';
-import { useQuery } from '@apollo/client';
 import ProjectCard from '../components/ProjectCard';
 
 const ProjectsScreen: React.FC = () => {
@@ -15,9 +15,9 @@ const ProjectsScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#146b70',
     alignItems: 'center',
+    backgroundColor: '#146b70',
+    flex: 1,
     justifyContent: 'center',
   },
   item: {
