@@ -1,19 +1,25 @@
-import { Text, StyleSheet, View } from "react-native";
+import { FlatList, View, StyleSheet } from 'react-native';
+import { useQuery } from '@apollo/client';
+import { allProjectsQueryDocument } from '../lib/queries/projects';
+import ProjectCard from '../components/ProjectCard';
+import color from '../styles/colors';
 
-const ProjectsScreen = () => {
+const ProjectsScreen: React.FC = () => {
+  const { data } = useQuery(allProjectsQueryDocument);
+
   return (
     <View style={styles.container}>
-      <Text>Projects</Text>
+      <FlatList data={data?.projects ?? []} renderItem={ProjectCard} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
+    backgroundColor: color.primary,
     flex: 1,
-    backgroundColor: "#146b70",
-    alignItems: "center",
-    justifyContent: "center",
+    justifyContent: 'center',
   },
 });
 

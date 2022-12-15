@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Ticket } from '../../screens/TicketsScreen';
+import { Ticket, TicketStatus } from '../../src/gql/graphql';
+import COLORS from '../../styles/colors';
 import { getSwipeBgColor, getTicketStatusOptions } from '../../utils/functions';
 
 interface Props {
@@ -17,7 +18,7 @@ const TicketSwipeView: React.FC<Props> = ({
   onDeleteTicket,
 }) => {
   const isRightView = type === 'right';
-  const options = getTicketStatusOptions(ticket.status);
+  const options = getTicketStatusOptions(ticket.status as TicketStatus);
   const option = isRightView ? options.a : options.b;
 
   return (
@@ -38,25 +39,24 @@ const TicketSwipeView: React.FC<Props> = ({
           onUpdateTicket(ticket.id, option.value);
         }}
       >
-        <Text style={[styles.swipeText]}>{option.label}</Text>
+        <Text style={styles.swipeText}>{option.label}</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  swipeWrapper: {
-    width: 90,
-    justifyContent: 'center',
-    backgroundColor: 'pink',
-    marginVertical: 4,
-  },
   swipeText: {
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    textAlign: 'center',
-    color: 'gray',
+    color: COLORS.lightGray,
     fontSize: 15,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+  },
+  swipeWrapper: {
+    justifyContent: 'center',
+    marginVertical: 4,
+    width: 90,
   },
 });
 

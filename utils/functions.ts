@@ -39,6 +39,8 @@ export const getSwipeBgColor = (status: string) => {
       return 'rgba(149, 245, 195, 0.5)';
     case 'DELETE':
       return 'rgba(255, 136, 128, 0.5)';
+    default:
+      return 'rgba(178, 143, 219, 0.5)';
   }
 };
 
@@ -49,8 +51,8 @@ export const getSwipeBgColor = (status: string) => {
  * @param setValue : use set syntaxe ({set: value})
  * @returns
  */
-export const getTicketRequestVariables = (
-  input?: any,
+export const getTicketRequestVariables = <T extends object>(
+  input: T,
   id?: string,
   setValue?: boolean
 ) => {
@@ -61,10 +63,12 @@ export const getTicketRequestVariables = (
         },
       }
     : undefined;
-  const data: Record<string, any> = {};
-  for (const [key, value] of Object.entries(input)) {
+  const data: Record<string, unknown> = {};
+  const keys = Object.keys(input);
+  keys.forEach((key) => {
+    const value = input[key as keyof T];
     data[key] = setValue ? { set: value } : value;
-  }
+  });
   return {
     variables: {
       ...where,

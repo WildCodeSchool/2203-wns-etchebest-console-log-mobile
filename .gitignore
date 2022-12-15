@@ -12,6 +12,7 @@ web-build/
 yarn.lock
 .env
 .eslintcache
+src/gql/
 
 # macOS
 .DS_Store

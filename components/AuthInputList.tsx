@@ -1,3 +1,4 @@
+import { Control } from 'react-hook-form';
 import { FlatList, View } from 'react-native';
 import AuthInput from './AuthInput';
 
@@ -13,7 +14,7 @@ export type ListFieldsRegisterType = {
 
 export type AuthInputListType = {
   listFields: ListFieldsSignInType[] | ListFieldsRegisterType[];
-  control: any;
+  control: Control;
 };
 
 const AuthInputList = (props: AuthInputListType) => {

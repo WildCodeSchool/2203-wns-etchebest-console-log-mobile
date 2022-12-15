@@ -12,6 +12,8 @@ module.exports = {
     'plugin:react-native/all',
     'plugin:react/jsx-runtime',
     'plugin:@typescript-eslint/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
@@ -29,6 +31,11 @@ module.exports = {
   },
   rules: {
     'arrow-body-style': 'warn',
+    'react-native/no-inline-styles': 0,
+    '@typescript-eslint/no-use-before-define': [
+      'error',
+      { functions: true, classes: true, variables: false },
+    ], // allow to declare styles after component rendering as per react native convention
   },
   ignorePatterns: ['.eslintrc.js'],
 };

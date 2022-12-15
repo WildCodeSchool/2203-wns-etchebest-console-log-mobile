@@ -1,8 +1,8 @@
 import { createContext, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from '@apollo/client';
-import LOGIN from '../lib/queries/login';
 import { Alert } from 'react-native';
+import LOGIN from '../lib/queries/login';
 import REGISTER from '../lib/queries/register';
 
 export type SignInInterface = {
@@ -35,15 +35,17 @@ export const AuthContext = createContext<AuthContextInterface>({
   isLogged: false,
 });
 
-export const AuthProvider: React.FC<ChildrenProps> = ({ children }) => {
+export const AuthProvider: React.FC<ChildrenProps> = ({
+  children,
+}: ChildrenProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState<string | null>(null);
   const [isLogged, setIsLogged] = useState(false);
-  const [login, { data }] = useMutation(LOGIN);
-  const [register, { error }] = useMutation(REGISTER);
+  const [login, { data: loginData }] = useMutation(LOGIN);
+  const [register] = useMutation(REGISTER);
 
-  if (data) {
-    AsyncStorage.setItem('userToken', data.login);
+  if (loginData) {
+    AsyncStorage.setItem('userToken', loginData.login);
   }
 
   const registerUser = async (data: RegisterInterface) => {
@@ -59,7 +61,7 @@ export const AuthProvider: React.FC<ChildrenProps> = ({ children }) => {
         },
       });
       if (response) {
-        let token = await login({
+        const token = await login({
           variables: {
             userLoginInput: { email: data.email, password: data.password },
           },
@@ -73,6 +75,7 @@ export const AuthProvider: React.FC<ChildrenProps> = ({ children }) => {
       Alert.alert('A problem occurred during register');
       setIsLoading(false);
       setIsLogged(false);
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };
@@ -80,7 +83,7 @@ export const AuthProvider: React.FC<ChildrenProps> = ({ children }) => {
   const signIn = async (data: SignInInterface) => {
     try {
       setIsLoading(true);
-      let token = await login({
+      const token = await login({
         variables: {
           userLoginInput: { email: data.email, password: data.password },
         },
@@ -93,6 +96,7 @@ export const AuthProvider: React.FC<ChildrenProps> = ({ children }) => {
       Alert.alert('Invalid credentials');
       setIsLoading(false);
       setIsLogged(false);
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };

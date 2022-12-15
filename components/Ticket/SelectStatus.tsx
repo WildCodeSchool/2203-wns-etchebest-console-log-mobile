@@ -3,16 +3,17 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { globalStyles } from '../../constants/globalStyles';
+import { TicketStatus } from '../../src/gql/graphql';
 
 interface Props {
   status: string;
-  setStatus: Dispatch<SetStateAction<string>>;
+  setStatus: Dispatch<SetStateAction<TicketStatus>>;
   onEdit: boolean;
   setOnEdit: Dispatch<SetStateAction<boolean>>;
   onUpdateTicket: () => void;
 }
 
-export const SelectStatus: React.FC<Props> = ({
+const SelectStatus: React.FC<Props> = ({
   status,
   setStatus,
   onEdit,
@@ -50,14 +51,16 @@ export const SelectStatus: React.FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
-  statusWrapper: {
-    zIndex: 100,
+  iconDetail: {
+    marginRight: 10,
   },
   selectView: {
     padding: 3,
     width: '90%',
   },
-  iconDetail: {
-    marginRight: 10,
+  statusWrapper: {
+    zIndex: 100,
   },
 });
+
+export default SelectStatus;

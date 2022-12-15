@@ -7,8 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Ticket } from '../../screens/TicketsScreen';
-import { EditMode } from './TicketModal';
+import { Ticket } from '../../src/gql/graphql';
+import COLORS from '../../styles/colors';
+import { EditMode } from '../../utils/types';
 
 interface Props {
   title: string;
@@ -18,68 +19,70 @@ interface Props {
   onUpdateTicket: () => void;
 }
 
-export const TicketTitle: React.FC<Props> = ({
+const TicketTitle: React.FC<Props> = ({
   title,
   setTicketInput,
   onEdit,
   setOnEdit,
   onUpdateTicket,
-}) => {
-  return (
-    <View>
-      {onEdit ? (
-        <View style={styles.titleWrapper}>
-          <TextInput
-            autoFocus
-            value={title}
-            onChangeText={(newValue) =>
-              setTicketInput((prevState) => ({ ...prevState, title: newValue }))
-            }
-            style={[styles.title, styles.inputTitle]}
-            onSubmitEditing={onUpdateTicket}
-            blurOnSubmit
-            multiline
-            onBlur={() => setOnEdit({ title: false })}
-          />
-          <TouchableOpacity onPress={() => setOnEdit({ title: false })}>
-            <AntDesign name="close" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
-      ) : (
+}) => (
+  <View>
+    {onEdit ? (
+      <View style={styles.titleWrapper}>
+        <TextInput
+          autoFocus
+          value={title}
+          onChangeText={(newValue) =>
+            setTicketInput((prevState) => ({ ...prevState, title: newValue }))
+          }
+          style={[styles.title, styles.inputTitle]}
+          onSubmitEditing={onUpdateTicket}
+          blurOnSubmit
+          multiline
+          onBlur={() =>
+            setOnEdit((prevState) => ({ ...prevState, title: false }))
+          }
+        />
         <TouchableOpacity
           onPress={() =>
-            setOnEdit((prevState) => ({
-              title: !prevState.title,
-            }))
+            setOnEdit((prevState) => ({ ...prevState, title: false }))
           }
-          style={styles.titleWrapper}
         >
-          <Text style={styles.title}>{title}</Text>
-          <FontAwesome name="pencil" size={24} color="black" />
+          <AntDesign name="close" size={24} color="black" />
         </TouchableOpacity>
-      )}
-    </View>
-  );
-};
+      </View>
+    ) : (
+      <TouchableOpacity
+        onPress={() =>
+          setOnEdit((prevState) => ({ ...prevState, title: true }))
+        }
+        style={styles.titleWrapper}
+      >
+        <Text style={styles.title}>{title}</Text>
+        <FontAwesome name="pencil" size={24} color="black" />
+      </TouchableOpacity>
+    )}
+  </View>
+);
 
 const styles = StyleSheet.create({
-  titleWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  title: {
-    fontSize: 30,
-    color: '#146B70',
-    fontWeight: '600',
-    marginRight: 10,
-  },
   inputTitle: {
+    borderRadius: 4,
     padding: 2,
     paddingLeft: 5,
     width: '90%',
-    borderRadius: 4,
+  },
+  title: {
+    color: COLORS.primary,
+    fontSize: 30,
+    fontWeight: '600',
+    marginRight: 10,
+  },
+  titleWrapper: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
   },
 });
 

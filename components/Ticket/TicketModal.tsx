@@ -3,11 +3,13 @@ import React, { useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from '../../constants/globalStyles';
-import { Ticket } from '../../screens/TicketsScreen';
+import { Ticket, TicketStatus } from '../../src/gql/graphql';
+import COLORS from '../../styles/colors';
 import { getTicketRequestVariables } from '../../utils/functions';
-import { useTicketMutations } from '../../utils/hook';
-import { SelectStatus } from './SelectStatus';
-import { TicketDescription } from './TicketDescription';
+import useTicketMutations from '../../utils/hook';
+import { EditMode } from '../../utils/types';
+import SelectStatus from './SelectStatus';
+import TicketDescription from './TicketDescription';
 import TicketTitle from './TicketTitle';
 
 interface Props {
@@ -15,15 +17,14 @@ interface Props {
   setShow: (show: boolean) => void;
   ticket: Ticket;
 }
-export interface EditMode {
-  title: boolean;
-  status: boolean;
-  description: boolean;
-}
 
-export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
-  const [status, setStatus] = useState(ticket.status); // MANDATORY TO ISOLATE STATE FOR DROPDOWNPICKER
-  const [editStatus, setEditStatus] = useState(false); // MANDATORY TO ISOLATE STATE FOR DROPDOWNPICKER
+const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
+  // MANDATORY TO ISOLATE STATE FOR DROPDOWNPICKER
+  const [status, setStatus] = useState<TicketStatus>(
+    ticket.status as TicketStatus
+  );
+  const [editStatus, setEditStatus] = useState(false);
+
   const [editMode, setEditMode] = useState<Partial<EditMode>>({
     title: false,
     description: false,
@@ -101,7 +102,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
             onUpdateTicket={onUpdateTicket}
           />
           <View style={styles.ticketAttributes}>
-            <View style={[globalStyles.ticketCard]}>
+            <View style={globalStyles.ticketCard}>
               <Ionicons
                 name="bookmarks-outline"
                 size={24}
@@ -146,10 +147,6 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#edf2f3',
-  },
   actionIcons: {
     flex: 1 / 6,
     flexDirection: 'row',
@@ -157,13 +154,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
-  ticketWrapper: {
-    flex: 4,
-    paddingTop: 15,
-  },
-  ticketAttributes: {
+  container: {
+    backgroundColor: COLORS.whiteLightGray,
     flex: 1,
-    marginTop: 20,
   },
   listIcon: {
     marginRight: 10,
@@ -171,9 +164,14 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
   },
-  safeAreaView: {
+  ticketAttributes: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: 20,
+  },
+  ticketWrapper: {
+    flex: 4,
+    paddingTop: 15,
   },
 });
+
+export default TicketModal;

@@ -5,16 +5,6 @@ import { FlatList, ListRenderItem, StyleSheet, Text, View } from 'react-native';
 import TicketList from '../components/Ticket/TicketList';
 import { GET_ALL_TICKETS } from '../lib/queries/ticketRequests';
 
-export interface Ticket {
-  id: string;
-  title: string;
-  description: string;
-  status: string;
-  projectId: string;
-}
-
-export type TicketStatus = 'TODO' | 'DOING' | 'DONE';
-
 const TicketsScreen: React.FC = () => {
   const { data, error, loading } = useQuery(GET_ALL_TICKETS);
 
@@ -61,9 +51,9 @@ const TicketsScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#146B70',
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#146B70',
     paddingBottom: 20,
     paddingTop: 10,
   },

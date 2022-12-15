@@ -6,19 +6,24 @@ import {
   UPDATE_ONE_TICKET,
 } from '../lib/queries/ticketRequests';
 
-export const useTicketMutations = (id?: string) => {
+const useTicketMutations = () => {
   const [createOneTicket] = useMutation(CREATE_ONE_TICKET, {
     refetchQueries: () => [{ query: GET_ALL_TICKETS }],
+    // eslint-disable-next-line no-console
     onError: (e) => console.log(e),
   });
   const [updateOneTicket] = useMutation(UPDATE_ONE_TICKET, {
     refetchQueries: () => [{ query: GET_ALL_TICKETS }],
+    // eslint-disable-next-line no-console
     onError: (e) => console.log(e),
   });
   const [deleteOneTicket] = useMutation(DELETE_ONE_TICKET, {
     refetchQueries: () => [{ query: GET_ALL_TICKETS }],
+    // eslint-disable-next-line no-console
     onError: (e) => console.log(e),
   });
 
   return { createOneTicket, updateOneTicket, deleteOneTicket };
 };
+
+export default useTicketMutations;

@@ -1,4 +1,3 @@
-// permet de customiser la barre de navigation
 import {
   View,
   Text,
@@ -6,21 +5,24 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-} from "react-native";
-import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
+} from 'react-native';
+import { useContext, useState, useEffect } from 'react';
 import {
+  DrawerContentComponentProps,
   DrawerContentScrollView,
   DrawerItemList,
-} from "@react-navigation/drawer";
-import { Ionicons } from "@expo/vector-icons";
-import { useQuery } from "@apollo/client";
-import { GET_ONE_USER } from "../lib/queries/userRequest";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import jwt_decode from "jwt-decode";
+} from '@react-navigation/drawer';
+import { Ionicons } from '@expo/vector-icons';
+import { useQuery } from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwt_decode from 'jwt-decode';
+import { GET_ONE_USER } from '../lib/queries/userRequest';
+import { AuthContext } from '../context/AuthContext';
+import COLORS from '../styles/colors';
+import backgroundImage from '../assets/backgroundImageMenu.jpeg';
+import profileImage from '../assets/profil.png';
 
-const CustomDrawer = (props: any) => {
-  /* Fonction pour se déconnecter */
+const CustomDrawer = (props: DrawerContentComponentProps) => {
   const { signOut } = useContext(AuthContext);
   const onSignOutPress = () => {
     signOut();
@@ -30,7 +32,7 @@ const CustomDrawer = (props: any) => {
 
   useEffect(() => {
     const getToken = async () => {
-      const token = await AsyncStorage.getItem("userToken");
+      const token = await AsyncStorage.getItem('userToken');
       if (token) {
         const jwt = jwt_decode<{ user: string }>(token);
         setUser(jwt.user);
@@ -53,44 +55,40 @@ const CustomDrawer = (props: any) => {
   if (loading) {
     return <Text>Loading</Text>;
   }
-  if (data) {
-    return (
-      <View style={styles.container}>
-        <DrawerContentScrollView
-          {...props}
-          contentContainerStyle={styles.containerStyle}
-        >
-          <ImageBackground
-            source={require("../assets/backgroundImageMenu.jpeg")}
-            style={styles.paddingImageBackground}
-          >
-            <Image
-              source={require("../assets/profil.png")}
-              style={styles.imageCustom}
-            />
-            <Text style={styles.textName}>{data.user.name}</Text>
-            <Text style={styles.textEmail}>{data.user.email}</Text>
-          </ImageBackground>
-          {/* Récupère en props toute la drawerItemList dans navigation/AppStack.tsx */}
-          <View style={styles.drawerItemListCustom}>
-            <DrawerItemList {...props} />
-          </View>
-        </DrawerContentScrollView>
+  if (!data) return null;
 
-        <View style={styles.viewBottom}>
-          <TouchableOpacity
-            onPress={onSignOutPress}
-            style={styles.paddingTouchableOpacity}
-          >
-            <View style={styles.viewLogout}>
-              <Ionicons name="exit-outline" size={20} />
-              <Text style={styles.textLogout}>Logout</Text>
-            </View>
-          </TouchableOpacity>
+  return (
+    <View style={styles.container}>
+      <DrawerContentScrollView
+        {...props}
+        contentContainerStyle={styles.containerStyle}
+      >
+        <ImageBackground
+          source={backgroundImage}
+          style={styles.paddingImageBackground}
+        >
+          <Image source={profileImage} style={styles.imageCustom} />
+          <Text style={styles.textName}>{data.user.name}</Text>
+          <Text style={styles.textEmail}>{data.user.email}</Text>
+        </ImageBackground>
+        <View style={styles.drawerItemListCustom}>
+          <DrawerItemList {...props} />
         </View>
+      </DrawerContentScrollView>
+
+      <View style={styles.viewBottom}>
+        <TouchableOpacity
+          onPress={onSignOutPress}
+          style={styles.paddingTouchableOpacity}
+        >
+          <View style={styles.viewLogout}>
+            <Ionicons name="exit-outline" size={20} />
+            <Text style={styles.textLogout}>Logout</Text>
+          </View>
+        </TouchableOpacity>
       </View>
-    );
-  }
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -98,50 +96,50 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerStyle: {
-    backgroundColor: "#146b70",
+    backgroundColor: COLORS.primary,
+  },
+  drawerItemListCustom: {
+    backgroundColor: COLORS.white,
+    flex: 1,
+    paddingTop: 10,
+  },
+  imageCustom: {
+    borderRadius: 40,
+    height: 80,
+    marginBottom: 10,
+    marginTop: 10,
+    width: 80,
   },
   paddingImageBackground: {
     padding: 20,
   },
-  imageCustom: {
-    height: 80,
-    width: 80,
-    borderRadius: 40,
-    marginBottom: 10,
-    marginTop: 10,
-  },
-  textName: {
-    color: "#FFF",
-    fontSize: 18,
-    paddingLeft: 5,
-  },
-  textEmail: {
-    color: "#FFF",
-    fontSize: 18,
-    paddingLeft: 5,
-    marginTop: 3,
-  },
-  drawerItemListCustom: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingTop: 10,
-  },
-  viewBottom: {
-    borderTopWidth: 1,
-    borderTopColor: "#ccc",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
   paddingTouchableOpacity: {
     paddingVertical: 15,
   },
-  viewLogout: {
-    flexDirection: "row",
-    alignItems: "center",
+  textEmail: {
+    color: COLORS.white,
+    fontSize: 18,
+    marginTop: 3,
+    paddingLeft: 5,
   },
   textLogout: {
     fontSize: 15,
     marginLeft: 10,
+  },
+  textName: {
+    color: COLORS.white,
+    fontSize: 18,
+    paddingLeft: 5,
+  },
+  viewBottom: {
+    borderTopColor: COLORS.lightGray,
+    borderTopWidth: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  viewLogout: {
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });
 

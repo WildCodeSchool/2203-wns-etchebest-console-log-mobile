@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { Ticket } from '../../screens/TicketsScreen';
-import { TicketModal } from './TicketModal';
+import { Ticket } from '../../src/gql/graphql';
+import COLORS from '../../styles/colors';
+import TicketModal from './TicketModal';
 import TicketSwipeView from './TicketSwipeView';
 
 interface Props {
@@ -63,27 +64,23 @@ const TicketCard: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     borderRadius: 3,
-    shadowColor: '#000',
+    elevation: 3,
+    flex: 1,
+    marginTop: 5,
+    margin: 5,
+    padding: 5,
+    shadowColor: COLORS.black,
     shadowOffset: {
       width: 0,
       height: 1,
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-    elevation: 3,
-    marginTop: 5,
-    padding: 5,
-    margin: 5,
-  },
-  userWrapper: {
-    flex: 1,
-    flexDirection: 'row',
   },
   ticketTitle: {
-    color: '#146B70',
+    color: COLORS.primary,
     fontWeight: '600',
   },
 });

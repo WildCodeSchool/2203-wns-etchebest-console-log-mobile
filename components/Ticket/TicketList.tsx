@@ -17,13 +17,14 @@ import {
 } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import { globalStyles } from '../../constants/globalStyles';
-import { Ticket } from '../../screens/TicketsScreen';
+import { Ticket } from '../../src/gql/graphql';
+import COLORS from '../../styles/colors';
 import {
   getTicketRequestVariables,
   ticketStatusLabel,
 } from '../../utils/functions';
-import { useTicketMutations } from '../../utils/hook';
 import TicketCard from './TicketCard';
+import useTicketMutations from '../../utils/hook';
 
 interface Props {
   type: 'TODO' | 'DOING' | 'DONE';
@@ -158,51 +159,47 @@ const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#edf2f3',
-    borderRadius: 10,
-    padding: 8,
-    marginBottom: 20,
-    marginHorizontal: 10,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 8,
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    borderWidth: 1,
-    padding: 10,
-    borderBottomWidth: 2,
-    borderColor: 'green',
-    borderLeftWidth: 0,
-    borderTopWidth: 0,
-    borderRightWidth: 0,
+  addButtonText: {
+    color: COLORS.green,
+    fontSize: 15,
+    fontWeight: '800',
+    letterSpacing: 1,
+    marginLeft: 8,
   },
   cardTitle: {
+    color: COLORS.primary,
     fontSize: 15,
     fontWeight: '700',
     letterSpacing: 1,
-    color: '#146B70',
-    marginLeft: 3,
     marginBottom: 8,
-  },
-  addButton: {
-    color: 'green',
-    fontWeight: '800',
-  },
-  addButtonText: {
-    color: 'green',
-    fontWeight: '800',
-    marginLeft: 8,
-    letterSpacing: 1,
-    fontSize: 15,
+    marginLeft: 3,
   },
   closeInputButton: {
     marginLeft: 5,
+  },
+  container: {
+    backgroundColor: COLORS.whiteGray,
+    borderRadius: 10,
+    flex: 1,
+    marginBottom: 20,
+    marginHorizontal: 10,
+    padding: 8,
+  },
+  input: {
+    borderBottomWidth: 2,
+    borderColor: COLORS.green,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    borderTopWidth: 0,
+    borderWidth: 1,
+    flex: 1,
+    height: 40,
+    padding: 10,
+  },
+  inputContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginHorizontal: 8,
   },
 });
 
