@@ -17,6 +17,12 @@ export interface Ticket {
   title: string;
   description: string;
   status: string;
+  projectId: string;
+}
+
+export interface Project {
+  id: string;
+  name: string;
 }
 
 export type TicketStatus = 'TODO' | 'DOING' | 'DONE';

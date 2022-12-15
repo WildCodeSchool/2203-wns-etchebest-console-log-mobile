@@ -42,12 +42,6 @@ export const getSwipeBgColor = (status: string) => {
   }
 };
 
-const getWhereRequest = (id: string) => ({
-  where: {
-    id,
-  },
-});
-
 /**
  *
  * @param input : data to send to request
@@ -60,7 +54,13 @@ export const getTicketRequestVariables = (
   id?: string,
   setValue?: boolean
 ) => {
-  const where = id ? getWhereRequest(id) : undefined;
+  const where = id
+    ? {
+        where: {
+          id,
+        },
+      }
+    : undefined;
   const data: Record<string, any> = {};
   for (const [key, value] of Object.entries(input)) {
     data[key] = setValue ? { set: value } : value;

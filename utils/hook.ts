@@ -6,7 +6,7 @@ import {
   UPDATE_ONE_TICKET,
 } from '../lib/queries/ticketRequests';
 
-export const useTicketMutations = () => {
+export const useTicketMutations = (id?: string) => {
   const [createOneTicket] = useMutation(CREATE_ONE_TICKET, {
     refetchQueries: () => [{ query: GET_ALL_TICKETS }],
     onError: (e) => console.log(e),

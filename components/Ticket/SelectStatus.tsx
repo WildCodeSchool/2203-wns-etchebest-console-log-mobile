@@ -1,8 +1,9 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
-import { globalStyles } from "../../constants/globalStyles";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { globalStyles } from '../../constants/globalStyles';
+import { EditMode } from './TicketModal';
 
 interface Props {
   status: string;
@@ -12,7 +13,7 @@ interface Props {
   onUpdateTicket: () => void;
 }
 
-export const TicketStatus: React.FC<Props> = ({
+export const SelectStatus: React.FC<Props> = ({
   status,
   setStatus,
   onEdit,
@@ -20,9 +21,9 @@ export const TicketStatus: React.FC<Props> = ({
   onUpdateTicket,
 }) => {
   const [items, setItems] = useState([
-    { label: "To do", value: "TODO" },
-    { label: "In progress", value: "DOING" },
-    { label: "Done", value: "DONE" },
+    { label: 'To do', value: 'TODO' },
+    { label: 'In progress', value: 'DOING' },
+    { label: 'Done', value: 'DONE' },
   ]);
 
   return (
@@ -42,6 +43,7 @@ export const TicketStatus: React.FC<Props> = ({
           items={items}
           multiple={false}
           onChangeValue={onUpdateTicket}
+          setItems={setItems}
         />
       </View>
     </View>
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
   },
   selectView: {
     padding: 3,
-    width: "90%",
+    width: '90%',
   },
   iconDetail: {
     marginRight: 10,

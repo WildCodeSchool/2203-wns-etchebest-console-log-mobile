@@ -1,40 +1,59 @@
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from '../../constants/globalStyles';
-import { Ticket } from '../../screens/TicketsScreen';
+import { Project, Ticket } from '../../screens/TicketsScreen';
 import { getTicketRequestVariables } from '../../utils/functions';
 import { useTicketMutations } from '../../utils/hook';
 import { TicketDescription } from './TicketDescription';
-import { TicketStatus } from './TicketStatus';
+import { SelectStatus } from './SelectStatus';
 import TicketTitle from './TicketTitle';
+import { useQuery } from '@apollo/client';
 
 interface Props {
   show: boolean;
-  setShow: Dispatch<SetStateAction<boolean>>;
+  setShow: (show: boolean) => void;
   ticket: Ticket;
+}
+export interface EditMode {
+  title: boolean;
+  status: boolean;
+  description: boolean;
 }
 
 export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
-  const [onTitleEdit, setOnTitleEdit] = useState(false);
-  const [onStatusEdit, setOnStatusEdit] = useState(false);
-  const [onDescriptionEdit, setOnDescriptionEdit] = useState(false);
-  const [title, setTitle] = useState(ticket.title);
-  const [status, setStatus] = useState(ticket.status);
-  const [description, setDescription] = useState(ticket.description);
+  const [status, setStatus] = useState(ticket.status); // MANDATORY TO ISOLATE STATE FOR DROPDOWNPICKER
+  const [editStatus, setEditStatus] = useState(false); // MANDATORY TO ISOLATE STATE FOR DROPDOWNPICKER
+  const [editMode, setEditMode] = useState<Partial<EditMode>>({
+    title: false,
+    description: false,
+  });
+  const [ticketInput, setTicketInput] = useState<Partial<Ticket>>({
+    title: ticket.title,
+    status,
+    description: ticket.description,
+  });
 
   const { updateOneTicket, deleteOneTicket } = useTicketMutations();
 
+  if (!show) return null;
+
   const resetEditInputs = () => {
-    setOnTitleEdit(false);
-    setOnStatusEdit(false);
-    setOnDescriptionEdit(false);
+    setEditMode({
+      title: false,
+      description: false,
+    });
+    setEditStatus(false);
   };
 
   const onUpdateTicket = () => {
     const variables = getTicketRequestVariables(
-      { title, status, description },
+      {
+        title: ticketInput.title || '',
+        status,
+        description: ticketInput.description || '',
+      },
       ticket.id,
       true
     );
@@ -56,6 +75,7 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
         resetEditInputs();
         setShow(false);
       }}
+      onDismiss={() => setShow(false)}
       statusBarTranslucent
     >
       <SafeAreaView style={styles.container}>
@@ -73,18 +93,16 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
             <Feather name="trash-2" size={24} color="gray" />
           </TouchableOpacity>
         </View>
-
         <View style={styles.ticketWrapper}>
           <TicketTitle
-            onEdit={onTitleEdit}
-            setOnEdit={setOnTitleEdit}
-            title={title}
-            setTitle={setTitle}
+            onEdit={!!editMode.title}
+            setOnEdit={setEditMode}
+            title={ticketInput.title || ''}
+            setTicketInput={setTicketInput}
             onUpdateTicket={onUpdateTicket}
           />
-
           <View style={styles.ticketAttributes}>
-            <View style={globalStyles.ticketCard}>
+            <View style={[globalStyles.ticketCard]}>
               <Ionicons
                 name="bookmarks-outline"
                 size={24}
@@ -94,12 +112,20 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
               <Text style={styles.text}>Project</Text>
             </View>
 
-            <TicketStatus
-              onEdit={onStatusEdit}
-              setOnEdit={setOnStatusEdit}
+            <SelectStatus
+              onEdit={editStatus}
+              setOnEdit={setEditStatus}
               status={status}
               setStatus={setStatus}
               onUpdateTicket={onUpdateTicket}
+            />
+            <TicketDescription
+              onEdit={!!editMode.description}
+              setOnEdit={setEditMode}
+              description={ticketInput.description || ''}
+              setTicketInput={setTicketInput}
+              onUpdateTicket={onUpdateTicket}
+              ticket={ticket}
             />
 
             <View style={globalStyles.ticketCard}>
@@ -113,15 +139,6 @@ export const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
               <AntDesign name="user" size={16} color="black" />
               <Text>Username</Text>
             </View>
-
-            <TicketDescription
-              onEdit={onDescriptionEdit}
-              setOnEdit={setOnDescriptionEdit}
-              description={description}
-              setDescription={setDescription}
-              onUpdateTicket={onUpdateTicket}
-              ticket={ticket}
-            />
           </View>
         </View>
       </SafeAreaView>
@@ -146,7 +163,7 @@ const styles = StyleSheet.create({
     paddingTop: 15,
   },
   ticketAttributes: {
-    flex: 2,
+    flex: 1,
     marginTop: 20,
   },
   listIcon: {

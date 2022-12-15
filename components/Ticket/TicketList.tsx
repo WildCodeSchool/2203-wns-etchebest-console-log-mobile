@@ -122,6 +122,7 @@ const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
           {isAddingTicket ? (
             <View style={styles.inputContainer}>
               <TextInput
+                autoFocus
                 style={styles.input}
                 value={ticket.title}
                 onChangeText={(newValue) =>

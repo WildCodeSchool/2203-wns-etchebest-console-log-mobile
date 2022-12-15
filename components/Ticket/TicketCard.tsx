@@ -49,7 +49,9 @@ const TicketCard: React.FC<Props> = ({
     >
       <TicketModal show={showModal} setShow={setShowModal} ticket={ticket} />
       <TouchableOpacity
-        onPress={() => setShowModal(true)}
+        onPress={() => {
+          setShowModal(true);
+        }}
         style={styles.container}
       >
         <Text style={styles.ticketTitle}>{ticket.title}</Text>
@@ -83,19 +85,6 @@ const styles = StyleSheet.create({
   ticketTitle: {
     color: '#146B70',
     fontWeight: '600',
-  },
-  swipeWrapper: {
-    width: 90,
-    justifyContent: 'center',
-    backgroundColor: 'pink',
-    marginVertical: 4,
-  },
-  swipeText: {
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    textAlign: 'center',
-    color: 'gray',
-    fontSize: 15,
   },
 });
 
