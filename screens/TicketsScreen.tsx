@@ -20,19 +20,10 @@ export interface Ticket {
   projectId: string;
 }
 
-export interface Project {
-  id: string;
-  name: string;
-}
-
 export type TicketStatus = 'TODO' | 'DOING' | 'DONE';
 
 const TicketsScreen: React.FC = () => {
   const { data, error, loading } = useQuery(GET_ALL_TICKETS);
-
-  useEffect(() => {
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested']); // TODO: FIX
-  }, []);
 
   if (error) return <Text>Error</Text>;
 
@@ -60,13 +51,17 @@ const TicketsScreen: React.FC = () => {
         <AntDesign name="infocirlce" size={18} color="white" />
         <Text style={styles.infoText}>Long press to swipe</Text>
       </View>
-      <FlatList
-        horizontal
-        data={ticketsByStatus}
-        renderItem={onRenderItem}
-        keyExtractor={(item) => item.type}
-        nestedScrollEnabled={true}
-      />
+      {loading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <FlatList
+          horizontal
+          data={ticketsByStatus}
+          renderItem={onRenderItem}
+          keyExtractor={(item) => item.type}
+          nestedScrollEnabled={true}
+        />
+      )}
     </View>
   );
 };

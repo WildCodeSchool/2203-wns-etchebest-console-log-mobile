@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from '../../constants/globalStyles';
-import { Project, Ticket } from '../../screens/TicketsScreen';
+import { Ticket } from '../../screens/TicketsScreen';
 import { getTicketRequestVariables } from '../../utils/functions';
 import { useTicketMutations } from '../../utils/hook';
 import { TicketDescription } from './TicketDescription';
