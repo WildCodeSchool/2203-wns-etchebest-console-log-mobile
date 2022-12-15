@@ -9,7 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthProvider } from './context/AuthContext';
 import AppNav from './navigation/AppNav';
 import Env from './Env';
-import { graphql } from './src/gql/gql';
 
 const App = () => {
   const uri = Env.API_URL;

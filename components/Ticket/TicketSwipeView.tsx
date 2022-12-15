@@ -47,7 +47,7 @@ const TicketSwipeView: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   swipeText: {
-    color: COLORS.lightGray,
+    color: COLORS.gray,
     fontSize: 15,
     fontWeight: 'bold',
     textAlign: 'center',

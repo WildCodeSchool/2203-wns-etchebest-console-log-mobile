@@ -24,7 +24,7 @@ const AuthForm = (props: AuthFormInterface) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: COLORS.lightTurquoise,
+    backgroundColor: COLORS.secondary,
     flex: 1,
     justifyContent: 'center',
   },

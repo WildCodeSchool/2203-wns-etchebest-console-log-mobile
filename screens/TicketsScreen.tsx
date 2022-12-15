@@ -4,6 +4,8 @@ import React from 'react';
 import { FlatList, ListRenderItem, StyleSheet, Text, View } from 'react-native';
 import TicketList from '../components/Ticket/TicketList';
 import { GET_ALL_TICKETS } from '../lib/queries/ticketRequests';
+import { Ticket, TicketStatus } from '../src/gql/graphql';
+import COLORS from '../styles/colors';
 
 const TicketsScreen: React.FC = () => {
   const { data, error, loading } = useQuery(GET_ALL_TICKETS);
@@ -18,9 +20,9 @@ const TicketsScreen: React.FC = () => {
   const doneTickets = tickets.filter((ticket) => ticket.status === 'DONE');
 
   const ticketsByStatus: { type: TicketStatus; tickets: Ticket[] }[] = [
-    { type: 'TODO', tickets: toDoTickets },
-    { type: 'DOING', tickets: inProgressTickets },
-    { type: 'DONE', tickets: doneTickets },
+    { type: TicketStatus.Todo, tickets: toDoTickets },
+    { type: TicketStatus.Doing, tickets: inProgressTickets },
+    { type: TicketStatus.Done, tickets: doneTickets },
   ];
 
   const onRenderItem: ListRenderItem<{
@@ -51,21 +53,21 @@ const TicketsScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#146B70',
+    backgroundColor: COLORS.primary,
     flex: 1,
     justifyContent: 'center',
     paddingBottom: 20,
     paddingTop: 10,
   },
   infoContainer: {
+    alignItems: 'center',
     flex: 0,
     flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 8,
     marginBottom: 8,
+    marginLeft: 8,
   },
   infoText: {
-    color: '#fff',
+    color: COLORS.white,
     fontStyle: 'italic',
     paddingLeft: 5,
   },

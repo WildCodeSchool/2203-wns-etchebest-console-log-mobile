@@ -1,3 +1,5 @@
+import COLORS from '../styles/colors';
+
 export const getTicketStatusOptions = (status: string) => {
   switch (status) {
     case 'TODO':
@@ -32,15 +34,15 @@ export const ticketStatusLabel = {
 export const getSwipeBgColor = (status: string) => {
   switch (status) {
     case 'TODO':
-      return 'rgba(178, 143, 219, 0.5)';
+      return COLORS.pastelPurple;
     case 'DOING':
-      return 'rgba(130, 180, 250, 0.5)';
+      return COLORS.pastelBlue;
     case 'DONE':
-      return 'rgba(149, 245, 195, 0.5)';
+      return COLORS.pastelGreen;
     case 'DELETE':
-      return 'rgba(255, 136, 128, 0.5)';
+      return COLORS.pastelRed;
     default:
-      return 'rgba(178, 143, 219, 0.5)';
+      return COLORS.pastelPurple;
   }
 };
 
@@ -51,9 +53,9 @@ export const getSwipeBgColor = (status: string) => {
  * @param setValue : use set syntaxe ({set: value})
  * @returns
  */
-export const getTicketRequestVariables = <T extends object>(
+export const getRequestVariables = <T extends object>(
   input: T,
-  id?: string,
+  id?: string | number,
   setValue?: boolean
 ) => {
   const where = id

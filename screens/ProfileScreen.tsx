@@ -7,10 +7,11 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode from 'jwt-decode';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -21,8 +22,11 @@ import avatar3 from '../assets/profilWoman.png';
 import avatar4 from '../assets/profilWoman2.png';
 import backgroundImage from '../assets/backgroundImageMenu.jpeg';
 import COLORS from '../styles/colors';
+import { getRequestVariables } from '../utils/functions';
+import { AuthContext } from '../context/AuthContext';
 
 const ProfileScreen = () => {
+  const { userToken } = useContext(AuthContext);
   const [user, setUser] = useState<string | null>(null);
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
@@ -43,14 +47,10 @@ const ProfileScreen = () => {
   };
 
   useEffect(() => {
-    const getToken = async () => {
-      const token = await AsyncStorage.getItem('userToken');
-      if (token) {
-        const jwt = jwt_decode<{ user: string }>(token);
-        setUser(jwt.user);
-      }
-    };
-    getToken();
+    if (userToken) {
+      const jwt = jwt_decode<{ user: string }>(userToken);
+      setUser(jwt.user);
+    }
   }, []);
 
   const [updateOneUser] = useMutation(UPDATE_ONE_USER, {
@@ -58,16 +58,9 @@ const ProfileScreen = () => {
   });
 
   const onUpdateOneUser = (id: number) => {
+    const variables = getRequestVariables({ name }, id, true);
     updateOneUser({
-      variables: {
-        where: {
-          id,
-        },
-        data: {
-          name: { set: name },
-          avatar: { set: avatar },
-        },
-      },
+      ...variables,
     });
   };
   const { data, error, loading } = useQuery(GET_ONE_USER, {
@@ -88,7 +81,10 @@ const ProfileScreen = () => {
   if (!data) return null;
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+    >
       <View style={styles.item}>
         <View style={styles.itemContainerBackgroundImage}>
           <ImageBackground
@@ -187,12 +183,12 @@ const ProfileScreen = () => {
                 size={30}
                 color="#fff"
               />
-              <Text style={styles.textInButton}>Post</Text>
+              <Text style={styles.textInButton}>Submit</Text>
             </View>
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -204,7 +200,7 @@ const styles = StyleSheet.create({
     width: 80,
   },
   borderPicker: {
-    borderColor: COLORS.darkTurquoise,
+    borderColor: COLORS.primary,
   },
   buttonRow: {
     alignItems: 'center',
@@ -233,15 +229,15 @@ const styles = StyleSheet.create({
     width: 200,
   },
   input: {
-    borderColor: COLORS.darkTurquoise,
+    borderColor: COLORS.primary,
     borderRadius: 10,
     borderWidth: 0.8,
-    color: COLORS.darkTurquoise,
+    color: COLORS.primary,
     margin: 12,
     padding: 10,
   },
   item: {
-    backgroundColor: COLORS.whiteLightGray,
+    backgroundColor: COLORS.whiteLightBlue,
     borderRadius: 10,
     height: '80%',
     width: '80%',
@@ -253,14 +249,14 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   paddingTouchableOpacity: {
-    backgroundColor: COLORS.darkTurquoise,
+    backgroundColor: COLORS.primary,
     borderRadius: 40,
     paddingHorizontal: 15,
     paddingVertical: 8,
   },
   rowViewPicker: {
     alignItems: 'center',
-    borderColor: COLORS.darkTurquoise,
+    borderColor: COLORS.primary,
     borderRadius: 40,
     borderWidth: 2,
     flexDirection: 'row',
@@ -268,7 +264,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   textChoiseAvatar: {
-    color: COLORS.darkBlueish,
+    color: COLORS.darkGray,
     fontSize: 15,
     marginBottom: 10,
     marginLeft: 4,
@@ -287,7 +283,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   textLabelChangeName: {
-    color: COLORS.darkBlueish,
+    color: COLORS.darkGray,
     fontSize: 15,
     marginBottom: -5,
 
@@ -308,8 +304,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   viewAvatarBottom: {
-    borderColor: COLORS.whiteGray,
-    shadowColor: COLORS.darkTurquoise,
+    borderColor: COLORS.lightGray,
+    shadowColor: COLORS.primary,
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,

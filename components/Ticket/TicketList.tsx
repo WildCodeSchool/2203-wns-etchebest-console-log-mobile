@@ -19,10 +19,7 @@ import { Swipeable } from 'react-native-gesture-handler';
 import { globalStyles } from '../../constants/globalStyles';
 import { Ticket } from '../../src/gql/graphql';
 import COLORS from '../../styles/colors';
-import {
-  getTicketRequestVariables,
-  ticketStatusLabel,
-} from '../../utils/functions';
+import { getRequestVariables, ticketStatusLabel } from '../../utils/functions';
 import TicketCard from './TicketCard';
 import useTicketMutations from '../../utils/hook';
 
@@ -62,7 +59,7 @@ const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
   };
 
   const onSubmitEditing = () => {
-    const variables = getTicketRequestVariables({
+    const variables = getRequestVariables({
       title: ticket.title,
       status: ticket.status,
     });
@@ -72,7 +69,7 @@ const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
   };
 
   const onUpdateTicket = (id: string, status: string) => {
-    const variables = getTicketRequestVariables({ status }, id, true);
+    const variables = getRequestVariables({ status }, id, true);
     updateOneTicket({ ...variables });
   };
 
@@ -83,7 +80,7 @@ const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
   };
 
   const onDelete = (id: string) => {
-    const variables = getTicketRequestVariables({}, id);
+    const variables = getRequestVariables({}, id);
     deleteOneTicket({ ...variables });
   };
 
@@ -178,7 +175,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   container: {
-    backgroundColor: COLORS.whiteGray,
+    backgroundColor: COLORS.lightGray,
     borderRadius: 10,
     flex: 1,
     marginBottom: 20,

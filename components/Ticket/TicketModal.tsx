@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from '../../constants/globalStyles';
 import { Ticket, TicketStatus } from '../../src/gql/graphql';
 import COLORS from '../../styles/colors';
-import { getTicketRequestVariables } from '../../utils/functions';
+import { getRequestVariables } from '../../utils/functions';
 import useTicketMutations from '../../utils/hook';
 import { EditMode } from '../../utils/types';
 import SelectStatus from './SelectStatus';
@@ -48,7 +48,7 @@ const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
   };
 
   const onUpdateTicket = () => {
-    const variables = getTicketRequestVariables(
+    const variables = getRequestVariables(
       {
         title: ticketInput.title || '',
         status,
@@ -61,7 +61,7 @@ const TicketModal: React.FC<Props> = ({ show, setShow, ticket }) => {
     resetEditInputs();
   };
   const onDeleteTicket = () => {
-    const variables = getTicketRequestVariables({}, ticket.id);
+    const variables = getRequestVariables({}, ticket.id);
     deleteOneTicket({ ...variables });
     setShow(false);
   };
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   container: {
-    backgroundColor: COLORS.whiteLightGray,
+    backgroundColor: COLORS.whiteLightBlue,
     flex: 1,
   },
   listIcon: {
