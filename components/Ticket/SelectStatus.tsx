@@ -3,7 +3,6 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { globalStyles } from '../../constants/globalStyles';
-import { EditMode } from './TicketModal';
 
 interface Props {
   status: string;

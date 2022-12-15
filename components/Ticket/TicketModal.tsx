@@ -6,10 +6,9 @@ import { globalStyles } from '../../constants/globalStyles';
 import { Ticket } from '../../screens/TicketsScreen';
 import { getTicketRequestVariables } from '../../utils/functions';
 import { useTicketMutations } from '../../utils/hook';
-import { TicketDescription } from './TicketDescription';
 import { SelectStatus } from './SelectStatus';
+import { TicketDescription } from './TicketDescription';
 import TicketTitle from './TicketTitle';
-import { useQuery } from '@apollo/client';
 
 interface Props {
   show: boolean;

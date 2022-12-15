@@ -1,14 +1,7 @@
 import { useQuery } from '@apollo/client';
 import AntDesign from '@expo/vector-icons/build/AntDesign';
-import React, { useEffect } from 'react';
-import {
-  FlatList,
-  ListRenderItem,
-  LogBox,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React from 'react';
+import { FlatList, ListRenderItem, StyleSheet, Text, View } from 'react-native';
 import TicketList from '../components/Ticket/TicketList';
 import { GET_ALL_TICKETS } from '../lib/queries/ticketRequests';
 

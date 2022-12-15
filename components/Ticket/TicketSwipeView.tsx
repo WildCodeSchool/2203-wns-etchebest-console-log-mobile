@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ticket } from '../../screens/TicketsScreen';
 import { getSwipeBgColor, getTicketStatusOptions } from '../../utils/functions';
 
