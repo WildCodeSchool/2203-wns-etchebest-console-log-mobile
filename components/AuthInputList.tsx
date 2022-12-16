@@ -13,7 +13,8 @@ export type ListFieldsRegisterType = {
 
 export type AuthInputListType = {
   listFields: ListFieldsSignInType[] | ListFieldsRegisterType[];
-  control: any; // TODO : REGLER CE ****** DE TYPE
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control: any;
 };
 
 const AuthInputList = (props: AuthInputListType) => {
