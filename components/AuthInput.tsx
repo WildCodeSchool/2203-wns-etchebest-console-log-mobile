@@ -44,6 +44,7 @@ const AuthInput = (props: AuthInputType) => {
       }) => (
         <>
           <TextInput
+            testID="my-input"
             style={styles.input}
             onBlur={onBlur}
             onChangeText={onChange}
