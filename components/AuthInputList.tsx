@@ -13,6 +13,7 @@ export type ListFieldsRegisterType = {
 
 export type AuthInputListType = {
   listFields: ListFieldsSignInType[] | ListFieldsRegisterType[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: any;
 };
 

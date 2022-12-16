@@ -1,4 +1,5 @@
 import { Text, View, StyleSheet } from 'react-native';
+import COLORS from '../styles/colors';
 import AuthButton, { type AuthButtonProps } from './AuthButton';
 import AuthInputList, { type AuthInputListType } from './AuthInputList';
 
@@ -23,7 +24,7 @@ const AuthForm = (props: AuthFormInterface) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: '#73c6ce4d',
+    backgroundColor: COLORS.secondary,
     flex: 1,
     justifyContent: 'center',
   },
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   title: {
-    color: '#146B70',
+    color: COLORS.primary,
     fontSize: 30,
     fontWeight: 'bold',
     padding: 10,

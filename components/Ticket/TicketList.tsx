@@ -1,7 +1,7 @@
-import { useMutation } from '@apollo/client';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
+  Dimensions,
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
@@ -15,44 +15,62 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {
-  CREATE_ONE_TICKET,
-  GET_ALL_TICKETS,
-} from '../lib/queries/ticketRequests';
-import { Ticket } from '../screens/TicketsScreen';
+import { Swipeable } from 'react-native-gesture-handler';
+import { globalStyles } from '../../constants/globalStyles';
+import { Ticket } from '../../src/gql/graphql';
+import COLORS from '../../styles/colors';
+import { getRequestVariables, ticketStatusLabel } from '../../utils/functions';
 import TicketCard from './TicketCard';
+import useTicketMutations from '../../utils/hook';
 
 interface Props {
   type: 'TODO' | 'DOING' | 'DONE';
-  title: string;
   tickets: Ticket[];
 }
 
-const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
+const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
+  const title = ticketStatusLabel[type];
   const [isAddingTicket, setIsAddingTicket] = useState(false);
   const [ticket, setTicket] = useState({
     title: '',
     status: type,
   });
+  const cardDimension = Dimensions.get('window').width * 0.8;
 
-  const [createOneticket, { data, error }] = useMutation(CREATE_ONE_TICKET, {
-    refetchQueries: () => [{ query: GET_ALL_TICKETS }],
-  });
+  const { createOneTicket, updateOneTicket, deleteOneTicket } =
+    useTicketMutations();
 
-  const onPressAddTicket = () => {
-    setIsAddingTicket(true);
+  const swipeRows: { rows: Swipeable[]; prevOpenedRow: Swipeable | undefined } =
+    {
+      rows: [],
+      prevOpenedRow: undefined,
+    };
+  const updateSwipeRows = (swipeRef: Swipeable, index: number) => {
+    swipeRows.rows[index] = swipeRef;
   };
+  const closePreviousRow = (index: number) => {
+    if (
+      swipeRows.prevOpenedRow &&
+      swipeRows.prevOpenedRow !== swipeRows.rows[index]
+    ) {
+      swipeRows.prevOpenedRow.close();
+    }
+    swipeRows.prevOpenedRow = swipeRows.rows[index];
+  };
+
   const onSubmitEditing = () => {
-    createOneticket({
-      variables: {
-        data: {
-          title: ticket.title,
-          status: ticket.status,
-        },
-      },
+    const variables = getRequestVariables({
+      title: ticket.title,
+      status: ticket.status,
     });
+    createOneTicket({ ...variables });
     setTicket({ title: '', status: type });
     setIsAddingTicket(false);
+  };
+
+  const onUpdateTicket = (id: string, status: string) => {
+    const variables = getRequestVariables({ status }, id, true);
+    updateOneTicket({ ...variables });
   };
 
   const onBlur = () => {
@@ -61,8 +79,20 @@ const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
     setTicket((current) => ({ ...current, title: '' }));
   };
 
-  const renderTicket: ListRenderItem<Ticket> = ({ item }) => (
-    <TicketCard ticket={item} />
+  const onDelete = (id: string) => {
+    const variables = getRequestVariables({}, id);
+    deleteOneTicket({ ...variables });
+  };
+
+  const renderTicket: ListRenderItem<Ticket> = ({ item, index }) => (
+    <TicketCard
+      ticket={item}
+      onUpdateTicket={onUpdateTicket}
+      onDeleteTicket={onDelete}
+      closePreviousRow={closePreviousRow}
+      index={index}
+      updateSwipeRows={updateSwipeRows}
+    />
   );
   return (
     <KeyboardAvoidingView
@@ -74,20 +104,23 @@ const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
         <SafeAreaView
           style={[
             styles.container,
-            title === 'DONE' ? styles.lastContainer : undefined,
+            globalStyles.ticketListShadow,
+            { width: cardDimension },
           ]}
         >
-          <View>
-            <Text style={styles.cardTitle}>{title}</Text>
-          </View>
+          <Text style={styles.cardTitle}>{title}</Text>
           <FlatList
             data={tickets}
             renderItem={renderTicket}
             keyExtractor={(item) => item.id.toString()}
+            style={{
+              height: 300,
+            }}
           />
           {isAddingTicket ? (
             <View style={styles.inputContainer}>
               <TextInput
+                autoFocus
                 style={styles.input}
                 value={ticket.title}
                 onChangeText={(newValue) =>
@@ -112,7 +145,7 @@ const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
               </TouchableOpacity>
             </View>
           ) : (
-            <TouchableOpacity onPress={onPressAddTicket}>
+            <TouchableOpacity onPress={() => setIsAddingTicket(true)}>
               <Text style={styles.addButtonText}>+ Add ticket</Text>
             </TouchableOpacity>
           )}
@@ -123,55 +156,35 @@ const AllTicketsCard: React.FC<Props> = ({ title, tickets, type }) => {
 };
 
 const styles = StyleSheet.create({
-  addButton: {
-    color: 'green',
-    fontWeight: '800',
-  },
   addButtonText: {
-    color: 'green',
+    color: COLORS.green,
     fontSize: 15,
     fontWeight: '800',
     letterSpacing: 1,
     marginLeft: 8,
   },
   cardTitle: {
+    color: COLORS.primary,
     fontSize: 15,
     fontWeight: '700',
     letterSpacing: 1,
-    color: '#146B70',
-    // color: "#787c7d",
-    marginLeft: 3,
     marginBottom: 8,
+    marginLeft: 3,
   },
   closeInputButton: {
     marginLeft: 5,
   },
   container: {
-    backgroundColor: '#edf2f3',
+    backgroundColor: COLORS.lightGray,
     borderRadius: 10,
-    elevation: 5,
     flex: 1,
-    height: 580,
-    marginLeft: 20,
-    paddingBottom: 10,
-    paddingLeft: 8,
-    paddingRight: 8,
-    paddingTop: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    width: 250,
-  },
-  globalContainer: {
-    flex: 1,
+    marginBottom: 20,
+    marginHorizontal: 10,
+    padding: 8,
   },
   input: {
     borderBottomWidth: 2,
-    borderColor: 'green',
+    borderColor: COLORS.green,
     borderLeftWidth: 0,
     borderRightWidth: 0,
     borderTopWidth: 0,
@@ -185,9 +198,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: 8,
   },
-  lastContainer: {
-    marginRight: 20,
-  },
 });
 
-export default AllTicketsCard;
+export default TicketListCard;

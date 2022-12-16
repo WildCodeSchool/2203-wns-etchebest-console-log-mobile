@@ -1,10 +1,12 @@
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useContext } from 'react';
 import { StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
+import logoImage from '../assets/logoHomePage.png';
+import COLORS from '../styles/colors';
 
 interface RouterProps {
-  navigation: NavigationProp<any, any>;
+  navigation: NavigationProp<ParamListBase>;
 }
 
 const HomeScreen = ({ navigation }: RouterProps) => {
@@ -13,7 +15,7 @@ const HomeScreen = ({ navigation }: RouterProps) => {
   return (
     <View style={[styles.container, { flexDirection: 'column' }]}>
       <Image
-        source={require('../assets/logoHomePage.png')}
+        source={logoImage}
         style={{
           width: 350,
           height: 200,
@@ -35,7 +37,7 @@ const HomeScreen = ({ navigation }: RouterProps) => {
 };
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#F6FDFE',
+    backgroundColor: COLORS.whiteLightBlue,
     borderRadius: 10,
     marginTop: 40,
     padding: 20,
@@ -43,24 +45,10 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
-    backgroundColor: '#146b70',
+    backgroundColor: COLORS.primary,
     flexDirection: 'column',
     flex: 1,
     justifyContent: 'center',
-  },
-  logoutBtn: {
-    alignItems: 'center',
-    backgroundColor: '#146B70',
-    borderRadius: 5,
-    fontWeight: 'bold',
-    height: 40,
-    justifyContent: 'center',
-    marginHorizontal: 10,
-    marginVertical: 10,
-    paddingHorizontal: 10,
-  },
-  logoutText: {
-    color: 'white',
   },
   textInButton: {
     fontSize: 18,

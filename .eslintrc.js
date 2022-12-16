@@ -31,6 +31,7 @@ module.exports = {
   },
   rules: {
     'arrow-body-style': 'warn',
+    'react-native/no-inline-styles': 0,
     '@typescript-eslint/no-use-before-define': [
       'error',
       { functions: true, classes: true, variables: false },

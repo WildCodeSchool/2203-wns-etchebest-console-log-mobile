@@ -1,9 +1,10 @@
-import { Controller } from 'react-hook-form';
+import { Control, Controller } from 'react-hook-form';
 import { Text, TextInput, StyleSheet } from 'react-native';
+import COLORS from '../styles/colors';
 
 type AuthInputType = {
   index: number;
-  control: any;
+  control: Control;
   placeholder: string;
   name: string;
 };
@@ -16,10 +17,9 @@ const AuthInput = (props: AuthInputType) => {
       value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
       message: 'Email adress is incorrect',
     },
+    // '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
     password: {
-      value: new RegExp(
-        '^(?=.{1,})' // '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
-      ),
+      value: /^(?=.{1,})/,
       message: 'Password should contain at least 1 character', // 'Password should contain at least 1 lowercase, 1 uppercase, 1 numeric and 1 special characters',
     },
   };
@@ -36,9 +36,7 @@ const AuthInput = (props: AuthInputType) => {
         pattern:
           name === 'email'
             ? validationForm.email
-            : name === 'password'
-            ? validationForm.password
-            : undefined,
+            : validationForm.password || undefined,
       }}
       render={({
         field: { onChange, onBlur, value },
@@ -66,7 +64,7 @@ const AuthInput = (props: AuthInputType) => {
 
 const styles = StyleSheet.create({
   input: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     borderRadius: 5,
     border: '1px solid white',
     height: 40,
@@ -74,7 +72,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   textRequired: {
-    color: '#808080',
+    color: COLORS.gray,
     fontSize: 12,
     marginTop: -6,
     paddingHorizontal: 20,

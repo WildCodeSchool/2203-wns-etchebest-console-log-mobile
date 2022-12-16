@@ -1,13 +1,13 @@
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { NavigationProp } from '@react-navigation/native';
-import { AuthContext, SignInInterface } from '../context/AuthContext';
+import { type AuthButtonType } from '../components/AuthButton';
 import AuthForm from '../components/AuthForm';
 import { type ListFieldsSignInType } from '../components/AuthInputList';
-import { type AuthButtonType } from '../components/AuthButton';
+import { AuthContext, SignInInterface } from '../context/AuthContext';
 
 interface RouterProps {
-  navigation: NavigationProp<any, any>;
+  navigation: NavigationProp<ParamListBase>;
 }
 
 const LoginScreen = ({ navigation }: RouterProps) => {

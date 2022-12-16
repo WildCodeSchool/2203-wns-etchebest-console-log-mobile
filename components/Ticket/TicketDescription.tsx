@@ -7,21 +7,23 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { globalStyles } from '../constants/globalStyles';
-import { Ticket } from '../screens/TicketsScreen';
+import { globalStyles } from '../../constants/globalStyles';
+import { Ticket } from '../../src/gql/graphql';
+import COLORS from '../../styles/colors';
+import { EditMode } from '../../utils/types';
 
 interface Props {
   description: string;
-  setDescription: Dispatch<SetStateAction<string>>;
+  setTicketInput: Dispatch<SetStateAction<Partial<Ticket>>>;
   onEdit: boolean;
-  setOnEdit: Dispatch<SetStateAction<boolean>>;
+  setOnEdit: Dispatch<SetStateAction<Partial<EditMode>>>;
   onUpdateTicket: () => void;
   ticket: Ticket;
 }
 
-export const TicketDescription: React.FC<Props> = ({
+const TicketDescription: React.FC<Props> = ({
   description,
-  setDescription,
+  setTicketInput,
   onEdit,
   setOnEdit,
   onUpdateTicket,
@@ -31,18 +33,27 @@ export const TicketDescription: React.FC<Props> = ({
     {onEdit ? (
       <View style={[styles.descriptionWrapper, styles.descriptionInputWrapper]}>
         <TextInput
+          autoFocus
           value={description}
-          onChangeText={(newValue) => setDescription(newValue)}
+          onChangeText={(newValue) =>
+            setTicketInput((prevState) => ({
+              ...prevState,
+              description: newValue,
+            }))
+          }
           onSubmitEditing={onUpdateTicket}
-          blurOnSubmit
-          multiline
-          onBlur={() => setOnEdit(false)}
+          onBlur={() => {
+            setOnEdit({ description: false });
+            setTicketInput((prevState) => ({
+              ...prevState,
+              description: ticket.description,
+            }));
+          }}
           style={styles.descriptionInput}
         />
         <TouchableOpacity
           onPress={() => {
-            setOnEdit(false);
-            setDescription(ticket.description);
+            setOnEdit({ description: false });
           }}
         >
           <AntDesign name="close" size={24} color="black" />
@@ -50,7 +61,7 @@ export const TicketDescription: React.FC<Props> = ({
       </View>
     ) : (
       <TouchableOpacity
-        onPress={() => setOnEdit(!onEdit)}
+        onPress={() => setOnEdit({ description: true })}
         style={[styles.descriptionWrapper, styles.description]}
       >
         <Text>{description || 'No description'}</Text>
@@ -62,7 +73,7 @@ export const TicketDescription: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   description: {
-    color: '#4C4C4C',
+    color: COLORS.darkGray,
     flex: 1,
     flexDirection: 'row',
     fontStyle: 'italic',
@@ -70,7 +81,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   descriptionInput: {
-    borderBottomColor: 'gray',
+    borderBottomColor: COLORS.lightGray,
     borderBottomWidth: 1,
     flex: 1,
   },
@@ -86,3 +97,5 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
 });
+
+export default TicketDescription;

@@ -2,17 +2,18 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { globalStyles } from '../constants/globalStyles';
+import { globalStyles } from '../../constants/globalStyles';
+import { TicketStatus } from '../../src/gql/graphql';
 
 interface Props {
   status: string;
-  setStatus: Dispatch<SetStateAction<string>>;
+  setStatus: Dispatch<SetStateAction<TicketStatus>>;
   onEdit: boolean;
   setOnEdit: Dispatch<SetStateAction<boolean>>;
   onUpdateTicket: () => void;
 }
 
-export const TicketStatus: React.FC<Props> = ({
+const SelectStatus: React.FC<Props> = ({
   status,
   setStatus,
   onEdit,
@@ -42,6 +43,7 @@ export const TicketStatus: React.FC<Props> = ({
           items={items}
           multiple={false}
           onChangeValue={onUpdateTicket}
+          setItems={setItems}
         />
       </View>
     </View>
@@ -60,3 +62,5 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
 });
+
+export default SelectStatus;

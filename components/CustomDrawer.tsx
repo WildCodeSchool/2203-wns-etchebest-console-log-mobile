@@ -1,4 +1,3 @@
-// permet de customiser la barre de navigation
 import {
   View,
   Text,
@@ -9,6 +8,7 @@ import {
 } from 'react-native';
 import { useContext, useState, useEffect } from 'react';
 import {
+  DrawerContentComponentProps,
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
@@ -18,9 +18,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode from 'jwt-decode';
 import { GET_ONE_USER } from '../lib/queries/userRequest';
 import { AuthContext } from '../context/AuthContext';
+import COLORS from '../styles/colors';
+import backgroundImage from '../assets/backgroundImageMenu.jpeg';
+import profileImage from '../assets/profil.png';
 
-const CustomDrawer = (props: any) => {
-  /* Fonction pour se déconnecter */
+const CustomDrawer = (props: DrawerContentComponentProps) => {
   const { signOut } = useContext(AuthContext);
   const onSignOutPress = () => {
     signOut();
@@ -53,44 +55,40 @@ const CustomDrawer = (props: any) => {
   if (loading) {
     return <Text>Loading</Text>;
   }
-  if (data) {
-    return (
-      <View style={styles.container}>
-        <DrawerContentScrollView
-          {...props}
-          contentContainerStyle={styles.containerStyle}
-        >
-          <ImageBackground
-            source={require('../assets/backgroundImageMenu.jpeg')}
-            style={styles.paddingImageBackground}
-          >
-            <Image
-              source={require('../assets/profil.png')}
-              style={styles.imageCustom}
-            />
-            <Text style={styles.textName}>{data.user.name}</Text>
-            <Text style={styles.textEmail}>{data.user.email}</Text>
-          </ImageBackground>
-          {/* Récupère en props toute la drawerItemList dans navigation/AppStack.tsx */}
-          <View style={styles.drawerItemListCustom}>
-            <DrawerItemList {...props} />
-          </View>
-        </DrawerContentScrollView>
+  if (!data) return null;
 
-        <View style={styles.viewBottom}>
-          <TouchableOpacity
-            onPress={onSignOutPress}
-            style={styles.paddingTouchableOpacity}
-          >
-            <View style={styles.viewLogout}>
-              <Ionicons name="exit-outline" size={20} />
-              <Text style={styles.textLogout}>Logout</Text>
-            </View>
-          </TouchableOpacity>
+  return (
+    <View style={styles.container}>
+      <DrawerContentScrollView
+        {...props}
+        contentContainerStyle={styles.containerStyle}
+      >
+        <ImageBackground
+          source={backgroundImage}
+          style={styles.paddingImageBackground}
+        >
+          <Image source={profileImage} style={styles.imageCustom} />
+          <Text style={styles.textName}>{data.user.name}</Text>
+          <Text style={styles.textEmail}>{data.user.email}</Text>
+        </ImageBackground>
+        <View style={styles.drawerItemListCustom}>
+          <DrawerItemList {...props} />
         </View>
+      </DrawerContentScrollView>
+
+      <View style={styles.viewBottom}>
+        <TouchableOpacity
+          onPress={onSignOutPress}
+          style={styles.paddingTouchableOpacity}
+        >
+          <View style={styles.viewLogout}>
+            <Ionicons name="exit-outline" size={20} />
+            <Text style={styles.textLogout}>Logout</Text>
+          </View>
+        </TouchableOpacity>
       </View>
-    );
-  }
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -98,10 +96,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerStyle: {
-    backgroundColor: '#146b70',
+    backgroundColor: COLORS.primary,
   },
   drawerItemListCustom: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     flex: 1,
     paddingTop: 10,
   },
@@ -119,7 +117,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   textEmail: {
-    color: '#FFF',
+    color: COLORS.white,
     fontSize: 18,
     marginTop: 3,
     paddingLeft: 5,
@@ -129,12 +127,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   textName: {
-    color: '#FFF',
+    color: COLORS.white,
     fontSize: 18,
     paddingLeft: 5,
   },
   viewBottom: {
-    borderTopColor: '#ccc',
+    borderTopColor: COLORS.lightGray,
     borderTopWidth: 1,
     paddingHorizontal: 20,
     paddingVertical: 10,

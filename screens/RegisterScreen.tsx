@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { AuthContext, RegisterInterface } from '../context/AuthContext';
+import { type AuthButtonType } from '../components/AuthButton';
 import AuthForm from '../components/AuthForm';
 import { type ListFieldsRegisterType } from '../components/AuthInputList';
-import { type AuthButtonType } from '../components/AuthButton';
+import { AuthContext, RegisterInterface } from '../context/AuthContext';
 
 const RegisterScreen = () => {
   const { registerUser } = useContext(AuthContext);

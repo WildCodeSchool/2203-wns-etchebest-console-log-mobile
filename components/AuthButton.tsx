@@ -5,6 +5,7 @@ import {
   StyleSheet,
   GestureResponderEvent,
 } from 'react-native';
+import COLORS from '../styles/colors';
 
 export type AuthButtonType = {
   text: string;
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     alignItems: 'center',
-    backgroundColor: '#146B70',
+    backgroundColor: COLORS.primary,
     borderRadius: 5,
     fontWeight: 'bold',
     height: 40,
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     width: 160,
   },
   btnText: {
-    color: 'white',
+    color: COLORS.white,
   },
 });
 
