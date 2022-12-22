@@ -16,12 +16,19 @@ const App = () => {
     uri: `${uri}/graphql`,
   });
 
-  const authLink = setContext((_, { headers }) => {
-    const token = AsyncStorage.getItem('token');
+  const authLink = setContext(async (_, { headers }) => {
+    const token = await AsyncStorage.getItem('userToken');
+    if (token) {
+      return {
+        headers: {
+          ...headers,
+          authorization: token,
+        },
+      };
+    }
     return {
       headers: {
         ...headers,
-        authorization: token,
       },
     };
   });
