@@ -41,12 +41,8 @@ export const AuthProvider: React.FC<ChildrenProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState<string | null>(null);
   const [isLogged, setIsLogged] = useState(false);
-  const [login, { data: loginData }] = useMutation(LOGIN);
+  const [login] = useMutation(LOGIN);
   const [register] = useMutation(REGISTER);
-
-  if (loginData) {
-    AsyncStorage.setItem('userToken', loginData.login);
-  }
 
   const registerUser = async (data: RegisterInterface) => {
     try {

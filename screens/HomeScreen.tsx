@@ -5,11 +5,11 @@ import { AuthContext } from '../context/AuthContext';
 import logoImage from '../assets/logoHomePage.png';
 import COLORS from '../styles/colors';
 
-interface RouterProps {
-  navigation: NavigationProp<ParamListBase>;
+export interface RouterProps {
+  navigation?: NavigationProp<ParamListBase>;
 }
 
-const HomeScreen = ({ navigation }: RouterProps) => {
+const HomeScreen: React.FC<RouterProps> = ({ navigation }: RouterProps) => {
   const { isLogged } = useContext(AuthContext);
 
   return (
@@ -26,9 +26,11 @@ const HomeScreen = ({ navigation }: RouterProps) => {
         <View>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation?.navigate('Login')}
           >
-            <Text style={styles.textInButton}>Sign in</Text>
+            <Text testID="my-button" style={styles.textInButton}>
+              Sign in
+            </Text>
           </TouchableOpacity>
         </View>
       ) : null}
