@@ -118,10 +118,8 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   container: {
-    alignItems: 'center',
     backgroundColor: COLORS.primary,
     flex: 1,
-    justifyContent: 'center',
   },
   input: {
     borderBottomWidth: 2,
