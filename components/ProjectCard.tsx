@@ -1,33 +1,20 @@
 import { Text, StyleSheet } from 'react-native';
 import { FragmentType, useFragment } from '../src/gql/fragment-masking';
-import { graphql } from '../src/gql/gql';
-import color from '../styles/colors';
-
-const ProjectFragment = graphql(/* GraphQL */ `
-  fragment ProjectItem on Project {
-    _count {
-      tickets
-    }
-    createdAt
-    id
-    limitDate
-    name
-    progress
-  }
-`);
+import { ProjectCardFragment } from '../lib/queries/projects';
+import COLORS from '../styles/colors';
 
 type ProjectProps = {
-  item: FragmentType<typeof ProjectFragment>;
+  item: FragmentType<typeof ProjectCardFragment>;
 };
 
 const ProjectCard = (props: ProjectProps) => {
-  const projectData = useFragment(ProjectFragment, props.item);
-  return <Text style={styles.project}>{projectData.name}</Text>;
+  const data = useFragment(ProjectCardFragment, props.item);
+  return <Text style={styles.project}>{data.name}</Text>;
 };
 
 const styles = StyleSheet.create({
   project: {
-    backgroundColor: color.lightGray,
+    backgroundColor: COLORS.lightGray,
   },
 });
 
