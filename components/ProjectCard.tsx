@@ -23,19 +23,22 @@ type ProjectProps = {
 const ProjectCard = (props: ProjectProps) => {
   const data = useFragment(ProjectCardFragment, props.item);
   return (
-    <View style={styles.project}>
+    <View style={styles.projectCard}>
       <Text>Name: {data.name}</Text>
       <Text>Created at: {new Date(data.createdAt).toLocaleDateString()}</Text>
       <Text>Target Date: {new Date(data.limitDate).toLocaleDateString()}</Text>
-      <Text>{data.progress ? data.progress : 'no progress yet'}</Text>
+      <Text>Progress: {data.progress ? data.progress : 'none yet'}</Text>
       <Text>Tickets: {data?._count?.tickets}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  project: {
+  projectCard: {
     backgroundColor: COLORS.lightGray,
+    borderRadius: 4,
+    marginVertical: 4,
+    padding: 8,
   },
 });
 
