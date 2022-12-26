@@ -1,5 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Dimensions,
   FlatList,
@@ -10,35 +9,28 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
 } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import { globalStyles } from '../../constants/globalStyles';
-import { Ticket } from '../../src/gql/graphql';
+import { Ticket, TicketStatus } from '../../src/gql/graphql';
 import COLORS from '../../styles/colors';
-import { getRequestVariables, ticketStatusLabel } from '../../utils/functions';
+import { getRequestVariables, statusLabel } from '../../utils/functions';
 import TicketCard from './TicketCard';
 import useTicketMutations from '../../utils/hook';
+import QuickAddInput, { Entity } from '../QuickAddInput';
 
 interface Props {
-  type: 'TODO' | 'DOING' | 'DONE';
+  status: TicketStatus;
   tickets: Ticket[];
 }
 
-const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
-  const title = ticketStatusLabel[type];
-  const [isAddingTicket, setIsAddingTicket] = useState(false);
-  const [ticket, setTicket] = useState({
-    title: '',
-    status: type,
-  });
+const TicketListCard: React.FC<Props> = ({ tickets, status }) => {
+  const title = statusLabel[status];
+
   const cardDimension = Dimensions.get('window').width * 0.8;
 
-  const { createOneTicket, updateOneTicket, deleteOneTicket } =
-    useTicketMutations();
+  const { updateOneTicket, deleteOneTicket } = useTicketMutations();
 
   const swipeRows: { rows: Swipeable[]; prevOpenedRow: Swipeable | undefined } =
     {
@@ -58,25 +50,9 @@ const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
     swipeRows.prevOpenedRow = swipeRows.rows[index];
   };
 
-  const onSubmitEditing = () => {
-    const variables = getRequestVariables({
-      title: ticket.title,
-      status: ticket.status,
-    });
-    createOneTicket({ ...variables });
-    setTicket({ title: '', status: type });
-    setIsAddingTicket(false);
-  };
-
-  const onUpdateTicket = (id: string, status: string) => {
-    const variables = getRequestVariables({ status }, id, true);
+  const onUpdateTicket = (id: string, newStatus: TicketStatus) => {
+    const variables = getRequestVariables({ status: newStatus }, id, true);
     updateOneTicket({ ...variables });
-  };
-
-  const onBlur = () => {
-    Keyboard.dismiss();
-    setIsAddingTicket(false);
-    setTicket((current) => ({ ...current, title: '' }));
   };
 
   const onDelete = (id: string) => {
@@ -117,38 +93,7 @@ const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
               height: 300,
             }}
           />
-          {isAddingTicket ? (
-            <View style={styles.inputContainer}>
-              <TextInput
-                autoFocus
-                style={styles.input}
-                value={ticket.title}
-                onChangeText={(newValue) =>
-                  setTicket((current) => ({ ...current, title: newValue }))
-                }
-                placeholder="Ticket name"
-                onSubmitEditing={onSubmitEditing}
-                onBlur={onBlur}
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  setTicket((current) => ({ ...current, title: '' }));
-                  setIsAddingTicket(false);
-                }}
-              >
-                <AntDesign
-                  name="close"
-                  size={24}
-                  color="black"
-                  style={styles.closeInputButton}
-                />
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <TouchableOpacity onPress={() => setIsAddingTicket(true)}>
-              <Text style={styles.addButtonText}>+ Add ticket</Text>
-            </TouchableOpacity>
-          )}
+          <QuickAddInput entity={Entity.Ticket} status={status} />
         </SafeAreaView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -156,13 +101,6 @@ const TicketListCard: React.FC<Props> = ({ tickets, type }) => {
 };
 
 const styles = StyleSheet.create({
-  addButtonText: {
-    color: COLORS.green,
-    fontSize: 15,
-    fontWeight: '800',
-    letterSpacing: 1,
-    marginLeft: 8,
-  },
   cardTitle: {
     color: COLORS.primary,
     fontSize: 15,
@@ -171,9 +109,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     marginLeft: 3,
   },
-  closeInputButton: {
-    marginLeft: 5,
-  },
   container: {
     backgroundColor: COLORS.lightGray,
     borderRadius: 10,
@@ -181,22 +116,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: 10,
     padding: 8,
-  },
-  input: {
-    borderBottomWidth: 2,
-    borderColor: COLORS.green,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    borderTopWidth: 0,
-    borderWidth: 1,
-    flex: 1,
-    height: 40,
-    padding: 10,
-  },
-  inputContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginHorizontal: 8,
   },
 });
 

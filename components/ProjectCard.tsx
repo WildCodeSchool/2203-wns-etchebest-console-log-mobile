@@ -2,6 +2,7 @@ import { Text, StyleSheet, View } from 'react-native';
 import { FragmentType, useFragment } from '../src/gql/fragment-masking';
 import { graphql } from '../src/gql/gql';
 import COLORS from '../styles/colors';
+import { handleDate } from '../utils/functions';
 
 const ProjectCardFragment = graphql(/* GraphQL */ `
   fragment ProjectItem on Project {
@@ -21,14 +22,14 @@ type ProjectProps = {
 };
 
 const ProjectCard = (props: ProjectProps) => {
-  const data = useFragment(ProjectCardFragment, props.item);
+  const item = useFragment(ProjectCardFragment, props.item);
   return (
     <View style={styles.projectCard}>
-      <Text>Name: {data.name}</Text>
-      <Text>Created at: {new Date(data.createdAt).toLocaleDateString()}</Text>
-      <Text>Target Date: {new Date(data.limitDate).toLocaleDateString()}</Text>
-      <Text>Progress: {data.progress ? data.progress : 'none yet'}</Text>
-      <Text>Tickets: {data?._count?.tickets}</Text>
+      <Text>Name: {item.name}</Text>
+      <Text>Creation Date: {handleDate(item.createdAt)}</Text>
+      <Text>Target Date: {handleDate(item.limitDate)}</Text>
+      <Text>Progress: {item.progress ? item.progress : 'none yet'}</Text>
+      <Text>Tickets: {item?._count?.tickets}</Text>
     </View>
   );
 };

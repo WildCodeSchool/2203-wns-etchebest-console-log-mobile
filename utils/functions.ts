@@ -1,45 +1,60 @@
+import moment from 'moment';
 import COLORS from '../styles/colors';
+import { TicketStatus } from '../src/gql/graphql';
 
-export const getTicketStatusOptions = (status: string) => {
-  switch (status) {
-    case 'TODO':
-      return {
-        a: { label: 'Done', value: 'DONE' },
-        b: { label: 'In progress', value: 'DOING' },
-      };
-    case 'DOING':
-      return {
-        a: { label: 'To do', value: 'TODO' },
-        b: { label: 'Done', value: 'DONE' },
-      };
-    case 'DONE':
-      return {
-        a: { label: 'In progress', value: 'DOING' },
-        b: { label: 'Delete', value: 'DELETE' },
-      };
-    default:
-      return {
-        a: { label: 'In progress', value: 'DOING' },
-        b: { label: 'Done', value: 'DONE' },
-      };
-  }
-};
+const { Todo, Doing, Done } = TicketStatus;
+const Delete = 'DELETE';
 
-export const ticketStatusLabel = {
+export const statusLabel = {
   TODO: 'To do',
   DOING: 'In progress',
   DONE: 'Done',
 };
 
-export const getSwipeBgColor = (status: string) => {
+const formattedLabels = {
+  Todo: { label: statusLabel[Todo], value: Todo },
+  Doing: { label: statusLabel[Doing], value: Doing },
+  Done: { label: statusLabel[Done], value: Done },
+  Delete: { label: 'Delete', value: 'DELETE' },
+};
+
+export const handleDate = (dateISO: string) =>
+  moment(dateISO).format('DD/MM/YYYY HH:mm');
+
+export const getTicketStatusOptions = (status: TicketStatus) => {
   switch (status) {
-    case 'TODO':
+    case Todo:
+      return {
+        a: formattedLabels.Done,
+        b: formattedLabels.Doing,
+      };
+    case Doing:
+      return {
+        a: formattedLabels.Todo,
+        b: formattedLabels.Done,
+      };
+    case Done:
+      return {
+        a: formattedLabels.Doing,
+        b: formattedLabels.Delete,
+      };
+    default:
+      return {
+        a: formattedLabels.Doing,
+        b: formattedLabels.Done,
+      };
+  }
+};
+
+export const getSwipeBgColor = (option: string) => {
+  switch (option) {
+    case Todo:
       return COLORS.pastelPurple;
-    case 'DOING':
+    case Doing:
       return COLORS.pastelBlue;
-    case 'DONE':
+    case Done:
       return COLORS.pastelGreen;
-    case 'DELETE':
+    case Delete:
       return COLORS.pastelRed;
     default:
       return COLORS.pastelPurple;

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { Ticket } from '../../src/gql/graphql';
+import { Ticket, TicketStatus } from '../../src/gql/graphql';
 import COLORS from '../../styles/colors';
 import TicketModal from './TicketModal';
 import TicketSwipeView from './TicketSwipeView';
 
 interface Props {
   ticket: Ticket;
-  onUpdateTicket: (id: string, status: string) => void;
+  onUpdateTicket: (id: string, status: TicketStatus) => void;
   onDeleteTicket: (id: string) => void;
   index: number;
   closePreviousRow: (index: number) => void;

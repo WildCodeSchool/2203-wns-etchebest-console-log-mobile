@@ -7,7 +7,7 @@ import { getSwipeBgColor, getTicketStatusOptions } from '../../utils/functions';
 interface Props {
   ticket: Ticket;
   type: string;
-  onUpdateTicket: (id: string, status: string) => void;
+  onUpdateTicket: (id: string, status: TicketStatus) => void;
   onDeleteTicket?: (id: string) => void;
 }
 
@@ -35,8 +35,9 @@ const TicketSwipeView: React.FC<Props> = ({
         onPress={() => {
           if (option.value === 'DELETE' && onDeleteTicket) {
             onDeleteTicket(ticket.id);
+          } else {
+            onUpdateTicket(ticket.id, option.value as TicketStatus);
           }
-          onUpdateTicket(ticket.id, option.value);
         }}
       >
         <Text style={styles.swipeText}>{option.label}</Text>

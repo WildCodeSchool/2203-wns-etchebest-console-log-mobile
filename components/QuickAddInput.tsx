@@ -9,62 +9,88 @@ import {
 import { useMutation } from '@apollo/client';
 import AntDesign from '@expo/vector-icons/build/AntDesign';
 import { CREATE_ONE_PROJECT, GET_ALL_PROJECTS } from '../lib/queries/projects';
+import { CREATE_ONE_TICKET, GET_ALL_TICKETS } from '../lib/queries/tickets';
 import COLORS from '../styles/colors';
+import { TicketStatus } from '../src/gql/graphql';
 
-const AddProject: React.FC = () => {
+export enum Entity {
+  Project = 'PROJECT',
+  Ticket = 'TICKET',
+}
+
+interface Props {
+  entity: Entity;
+  status?: TicketStatus;
+}
+
+const placeholderValue = (entity: Entity) => {
+  if (entity === Entity.Project) return `Enter a name for your new project`;
+  if (entity === Entity.Ticket) return `Enter a title for your new ticket`;
+  return 'enter a new name';
+};
+
+const QuickAddInput: React.FC<Props> = ({ entity, status }) => {
   const [createProject] = useMutation(CREATE_ONE_PROJECT, {
     refetchQueries: [GET_ALL_PROJECTS],
   });
+  const [createTicket] = useMutation(CREATE_ONE_TICKET, {
+    refetchQueries: [GET_ALL_TICKETS],
+  });
 
-  const [isAddingProject, setIsAddingProject] = useState(false);
-  const [projectName, setProjectName] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
+  const [name, setName] = useState('');
 
-  const onPressAddProject = () => {
-    setIsAddingProject(true);
-    setProjectName('');
+  const onPressAdd = () => {
+    setIsFocused(true);
+    setName('');
   };
 
   const onSubmitEditing = () => {
-    createProject({
-      variables: {
-        data: { name: projectName },
-      },
-    });
-    setIsAddingProject(false);
+    if (entity === Entity.Project)
+      createProject({
+        variables: {
+          data: { name },
+        },
+      });
+    if (entity === Entity.Ticket)
+      createTicket({
+        variables: {
+          data: { title: name, status },
+        },
+      });
+
+    setIsFocused(false);
   };
   const onBlur = () => {
-    setIsAddingProject(false);
+    setIsFocused(false);
   };
 
   return (
     <View style={styles.container}>
-      {isAddingProject ? (
+      {isFocused ? (
         <View style={styles.inputContainer}>
           <TextInput
             autoFocus
             style={styles.input}
-            value={projectName}
-            onChangeText={(newValue) => setProjectName(newValue)}
-            placeholder="Enter a name for your new project"
+            value={name}
+            onChangeText={(newValue) => setName(newValue)}
+            placeholder={placeholderValue(entity)}
             placeholderTextColor={COLORS.pastelGreen}
             onSubmitEditing={onSubmitEditing}
             onBlur={onBlur}
           />
           <TouchableOpacity
             onPress={() => {
-              setProjectName('');
-              setIsAddingProject(false);
+              setName('');
+              setIsFocused(false);
             }}
           >
             <AntDesign name="close" size={24} style={styles.closeButton} />
           </TouchableOpacity>
         </View>
       ) : (
-        <TouchableOpacity
-          style={styles.addContainer}
-          onPress={onPressAddProject}
-        >
-          <Text style={styles.addButtonText}>+ New Project</Text>
+        <TouchableOpacity style={styles.addContainer} onPress={onPressAdd}>
+          <Text style={styles.addText}>+ New {entity}</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -72,16 +98,16 @@ const AddProject: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  addButtonText: {
-    color: COLORS.white,
-    fontSize: 15,
-    fontWeight: '800',
-    letterSpacing: 1,
-  },
   addContainer: {
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 8,
+  },
+  addText: {
+    color: COLORS.white,
+    fontSize: 15,
+    fontWeight: '800',
+    letterSpacing: 1,
   },
   closeButton: {
     color: COLORS.pastelGreen,
@@ -107,4 +133,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddProject;
+export default QuickAddInput;

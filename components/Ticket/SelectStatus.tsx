@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { globalStyles } from '../../constants/globalStyles';
 import { TicketStatus } from '../../src/gql/graphql';
+import { statusLabel } from '../../utils/functions';
 
 interface Props {
   status: string;
@@ -21,9 +22,9 @@ const SelectStatus: React.FC<Props> = ({
   onUpdateTicket,
 }) => {
   const [items, setItems] = useState([
-    { label: 'To do', value: 'TODO' },
-    { label: 'In progress', value: 'DOING' },
-    { label: 'Done', value: 'DONE' },
+    { label: statusLabel.TODO, value: TicketStatus.Todo },
+    { label: statusLabel.DOING, value: TicketStatus.Doing },
+    { label: statusLabel.DONE, value: TicketStatus.Done },
   ]);
 
   return (

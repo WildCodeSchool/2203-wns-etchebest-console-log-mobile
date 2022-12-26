@@ -3,7 +3,7 @@ import AntDesign from '@expo/vector-icons/build/AntDesign';
 import React from 'react';
 import { FlatList, ListRenderItem, StyleSheet, Text, View } from 'react-native';
 import TicketList from '../components/Ticket/TicketList';
-import { GET_ALL_TICKETS } from '../lib/queries/ticketRequests';
+import { GET_ALL_TICKETS } from '../lib/queries/tickets';
 import { Ticket, TicketStatus } from '../src/gql/graphql';
 import COLORS from '../styles/colors';
 
@@ -13,22 +13,26 @@ const TicketsScreen: React.FC = () => {
   if (error) return <Text>Error</Text>;
 
   const tickets: Ticket[] = data?.tickets || [];
-  const toDoTickets = tickets.filter((ticket) => ticket.status === 'TODO');
-  const inProgressTickets = tickets.filter(
-    (ticket) => ticket.status === 'DOING'
+  const toDoTickets = tickets.filter(
+    (ticket) => ticket.status === TicketStatus.Todo
   );
-  const doneTickets = tickets.filter((ticket) => ticket.status === 'DONE');
+  const inProgressTickets = tickets.filter(
+    (ticket) => ticket.status === TicketStatus.Doing
+  );
+  const doneTickets = tickets.filter(
+    (ticket) => ticket.status === TicketStatus.Done
+  );
 
-  const ticketsByStatus: { type: TicketStatus; tickets: Ticket[] }[] = [
-    { type: TicketStatus.Todo, tickets: toDoTickets },
-    { type: TicketStatus.Doing, tickets: inProgressTickets },
-    { type: TicketStatus.Done, tickets: doneTickets },
+  const ticketsByStatus: { status: TicketStatus; tickets: Ticket[] }[] = [
+    { status: TicketStatus.Todo, tickets: toDoTickets },
+    { status: TicketStatus.Doing, tickets: inProgressTickets },
+    { status: TicketStatus.Done, tickets: doneTickets },
   ];
 
   const onRenderItem: ListRenderItem<{
-    type: TicketStatus;
+    status: TicketStatus;
     tickets: Ticket[];
-  }> = ({ item }) => <TicketList type={item.type} tickets={item.tickets} />;
+  }> = ({ item }) => <TicketList status={item.status} tickets={item.tickets} />;
 
   return (
     <View style={styles.container}>
@@ -43,7 +47,7 @@ const TicketsScreen: React.FC = () => {
           horizontal
           data={ticketsByStatus}
           renderItem={onRenderItem}
-          keyExtractor={(item) => item.type}
+          keyExtractor={(item) => item.status}
           nestedScrollEnabled={true}
         />
       )}

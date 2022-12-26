@@ -65,7 +65,7 @@ const AppStackScreen = () => (
       />
       <Drawer.Screen
         options={{
-          title: 'Ticket',
+          title: 'Tickets',
           drawerIcon: ({ focused, size }) => (
             <Ionicons
               name={focused ? 'bookmarks' : 'bookmarks-outline'}
