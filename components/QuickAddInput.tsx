@@ -25,12 +25,6 @@ interface Props {
   color?: 'primary' | undefined;
 }
 
-const placeholderValue = (entity: Entity) => {
-  if (entity === Entity.Project) return `Enter a name for your new project`;
-  if (entity === Entity.Ticket) return `Enter a title for your new ticket`;
-  return 'enter a new name';
-};
-
 const QuickAddInput: React.FC<Props> = (props: Props) => {
   const { entity, status } = props;
   const color = props?.color;
@@ -71,6 +65,12 @@ const QuickAddInput: React.FC<Props> = (props: Props) => {
     setIsFocused(false);
   };
 
+  const placeholderValue = () => {
+    if (entity === Entity.Project) return `Enter a name for your new project`;
+    if (entity === Entity.Ticket) return `Enter a title for your new ticket`;
+    return 'enter a new name';
+  };
+
   return (
     <View style={styles.container}>
       {isFocused ? (
@@ -80,7 +80,7 @@ const QuickAddInput: React.FC<Props> = (props: Props) => {
             style={styles.input}
             value={name}
             onChangeText={(newValue) => setName(newValue)}
-            placeholder={placeholderValue(entity)}
+            placeholder={placeholderValue()}
             placeholderTextColor={
               color === 'primary' ? COLORS.gray : COLORS.pastelGreen
             }
