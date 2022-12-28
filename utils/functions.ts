@@ -18,6 +18,12 @@ const formattedLabels = {
   Delete: { label: 'Delete', value: 'DELETE' },
 };
 
+export const capitalizeFirstLetter = (str: string) =>
+  str.charAt(0).toUpperCase() + str.slice(1);
+
+export const formatText = (str: string) =>
+  capitalizeFirstLetter(str.toLowerCase());
+
 export const handleDate = (dateISO: string) =>
   moment(dateISO).format('DD/MM/YYYY HH:mm');
 

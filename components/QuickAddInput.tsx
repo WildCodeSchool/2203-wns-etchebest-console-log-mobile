@@ -12,6 +12,7 @@ import { CREATE_ONE_PROJECT, GET_ALL_PROJECTS } from '../lib/queries/projects';
 import { CREATE_ONE_TICKET, GET_ALL_TICKETS } from '../lib/queries/tickets';
 import COLORS from '../styles/colors';
 import { TicketStatus } from '../src/gql/graphql';
+import { formatText } from '../utils/functions';
 
 export enum Entity {
   Project = 'PROJECT',
@@ -97,7 +98,7 @@ const QuickAddInput: React.FC<Props> = (props: Props) => {
         </View>
       ) : (
         <TouchableOpacity style={styles.addContainer} onPress={onPressAdd}>
-          <Text style={styles.addText}>+ New {entity}</Text>
+          <Text style={styles.addText}>+ New {formatText(entity)}</Text>
         </TouchableOpacity>
       )}
     </View>
