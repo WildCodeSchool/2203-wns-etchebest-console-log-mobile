@@ -93,7 +93,11 @@ const TicketListCard: React.FC<Props> = ({ tickets, status }) => {
               height: 300,
             }}
           />
-          <QuickAddInput entity={Entity.Ticket} status={status} />
+          <QuickAddInput
+            entity={Entity.Ticket}
+            status={status}
+            color="primary"
+          />
         </SafeAreaView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

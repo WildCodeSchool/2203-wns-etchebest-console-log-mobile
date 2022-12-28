@@ -1,5 +1,5 @@
 const COLORS = {
-  primary: '#146B70',
+  primary: '#146B70', // teal
   secondary: '#c8e7ea', // light blue
   lightGray: '#eeeeee',
   whiteLightBlue: '#f9feff',

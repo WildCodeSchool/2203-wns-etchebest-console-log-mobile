@@ -21,6 +21,7 @@ export enum Entity {
 interface Props {
   entity: Entity;
   status?: TicketStatus;
+  color?: 'primary' | undefined;
 }
 
 const placeholderValue = (entity: Entity) => {
@@ -29,7 +30,9 @@ const placeholderValue = (entity: Entity) => {
   return 'enter a new name';
 };
 
-const QuickAddInput: React.FC<Props> = ({ entity, status }) => {
+const QuickAddInput: React.FC<Props> = (props: Props) => {
+  const { entity, status } = props;
+  const color = props?.color;
   const [createProject] = useMutation(CREATE_ONE_PROJECT, {
     refetchQueries: [GET_ALL_PROJECTS],
   });
@@ -39,6 +42,8 @@ const QuickAddInput: React.FC<Props> = ({ entity, status }) => {
 
   const [isFocused, setIsFocused] = useState(false);
   const [name, setName] = useState('');
+
+  const styles = createStyles(color);
 
   const onPressAdd = () => {
     setIsFocused(true);
@@ -75,7 +80,9 @@ const QuickAddInput: React.FC<Props> = ({ entity, status }) => {
             value={name}
             onChangeText={(newValue) => setName(newValue)}
             placeholder={placeholderValue(entity)}
-            placeholderTextColor={COLORS.pastelGreen}
+            placeholderTextColor={
+              color === 'primary' ? COLORS.gray : COLORS.pastelGreen
+            }
             onSubmitEditing={onSubmitEditing}
             onBlur={onBlur}
           />
@@ -97,40 +104,43 @@ const QuickAddInput: React.FC<Props> = ({ entity, status }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  addContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 8,
-  },
-  addText: {
-    color: COLORS.white,
-    fontSize: 15,
-    fontWeight: '800',
-    letterSpacing: 1,
-  },
-  closeButton: {
-    color: COLORS.pastelGreen,
-    padding: 5,
-  },
-  container: {
-    height: 40,
-  },
-  input: {
-    borderBottomWidth: 2,
-    borderColor: COLORS.pastelGreen,
-    color: COLORS.white,
-    flex: 1,
-    fontSize: 15,
-    fontWeight: '800',
-    height: 40,
-    letterSpacing: 1,
-    paddingLeft: 10,
-  },
-  inputContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-});
+const createStyles = (color: 'primary' | undefined) => {
+  const styles = StyleSheet.create({
+    addContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      paddingHorizontal: 8,
+    },
+    addText: {
+      color: color === 'primary' ? COLORS.primary : COLORS.white,
+      fontSize: 15,
+      fontWeight: '800',
+      letterSpacing: 1,
+    },
+    closeButton: {
+      color: color === 'primary' ? COLORS.primary : COLORS.pastelGreen,
+      padding: 5,
+    },
+    container: {
+      height: 40,
+    },
+    input: {
+      borderBottomWidth: 2,
+      borderColor: color === 'primary' ? COLORS.primary : COLORS.pastelGreen,
+      color: color === 'primary' ? COLORS.primary : COLORS.white,
+      flex: 1,
+      fontSize: 15,
+      fontWeight: '800',
+      height: 40,
+      letterSpacing: 1,
+      paddingLeft: 10,
+    },
+    inputContainer: {
+      alignItems: 'center',
+      flexDirection: 'row',
+    },
+  });
+  return styles;
+};
 
 export default QuickAddInput;
