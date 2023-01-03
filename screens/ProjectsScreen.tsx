@@ -1,34 +1,28 @@
+import React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import { useQuery } from '@apollo/client';
 import ProjectCard from '../components/ProjectCard';
-import { graphql } from '../src/gql/gql';
+import { GET_ALL_PROJECTS } from '../lib/queries/projects';
 import COLORS from '../styles/colors';
-
-const allProjectsQueryDocument = graphql(`
-  query Projects($where: ProjectWhereInput) {
-    projects(where: $where) {
-      ...ProjectItem
-    }
-  }
-`);
+import QuickAddInput, { Entity } from '../components/QuickAddInput';
 
 const ProjectsScreen: React.FC = () => {
-  const { data } = useQuery(allProjectsQueryDocument);
+  const { data: projectsData } = useQuery(GET_ALL_PROJECTS);
 
   return (
     <View style={styles.container}>
-      <FlatList data={data?.projects ?? []} renderItem={ProjectCard} />
+      <QuickAddInput entity={Entity.Project} />
+      <FlatList data={projectsData?.projects ?? []} renderItem={ProjectCard} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     backgroundColor: COLORS.primary,
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'column',
+    paddingHorizontal: 8,
   },
 });
-
 export default ProjectsScreen;

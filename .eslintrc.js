@@ -28,10 +28,16 @@ module.exports = {
     react: {
       version: 'detect',
     },
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
   },
   rules: {
     'arrow-body-style': 'warn',
     'react-native/no-inline-styles': 0,
+    'no-underscore-dangle': 0,
     '@typescript-eslint/no-use-before-define': [
       'error',
       { functions: true, classes: true, variables: false },

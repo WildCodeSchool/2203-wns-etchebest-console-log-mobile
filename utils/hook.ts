@@ -4,7 +4,7 @@ import {
   DELETE_ONE_TICKET,
   GET_ALL_TICKETS,
   UPDATE_ONE_TICKET,
-} from '../lib/queries/ticketRequests';
+} from '../lib/queries/tickets';
 
 const useTicketMutations = () => {
   const [createOneTicket] = useMutation(CREATE_ONE_TICKET, {
