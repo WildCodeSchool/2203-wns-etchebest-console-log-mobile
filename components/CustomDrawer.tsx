@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import { useContext, useState, useEffect } from 'react';
+import { useContext } from 'react';
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
@@ -14,38 +14,17 @@ import {
 } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import jwt_decode from 'jwt-decode';
 import { GET_ONE_USER } from '../lib/queries/userRequest';
 import { AuthContext } from '../context/AuthContext';
 import COLORS from '../styles/colors';
 import backgroundImage from '../assets/backgroundImageMenu.jpeg';
 import profileImage from '../assets/profil.png';
 
-interface TokenUser {
-  id: string;
-  name: string;
-  email: string;
-}
-
 const CustomDrawer = (props: DrawerContentComponentProps) => {
-  const { signOut } = useContext(AuthContext);
+  const { signOut, user } = useContext(AuthContext);
   const onSignOutPress = () => {
     signOut();
   };
-
-  const [user, setUser] = useState<TokenUser | null>(null);
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await AsyncStorage.getItem('userToken');
-      if (token) {
-        const jwt = jwt_decode<{ user: TokenUser }>(token);
-        setUser(jwt.user);
-      }
-    };
-    getToken();
-  }, []);
 
   const { data, error, loading } = useQuery(GET_ONE_USER, {
     variables: {

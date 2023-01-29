@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import { useQuery } from '@apollo/client';
 import ProjectCard from '../components/ProjectCard';
 import { GET_ALL_PROJECTS } from '../lib/queries/projects';
+import { AuthContext } from '../context/AuthContext';
 import COLORS from '../styles/colors';
 import QuickAddInput, { Entity } from '../components/QuickAddInput';
 
 const ProjectsScreen: React.FC = () => {
-  const { data: projectsData } = useQuery(GET_ALL_PROJECTS);
+  const { user } = useContext(AuthContext);
+
+  const { data: projectsData } = useQuery(GET_ALL_PROJECTS, {
+    variables: {
+      where: {
+        email: user?.email,
+      },
+    },
+    skip: !user,
+  });
 
   return (
     <View style={styles.container}>
