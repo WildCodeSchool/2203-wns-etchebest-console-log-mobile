@@ -1,13 +1,9 @@
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useContext } from 'react';
 import { StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import logoImage from '../assets/logoHomePage.png';
 import COLORS from '../styles/colors';
-
-export interface RouterProps {
-  navigation?: NavigationProp<ParamListBase>;
-}
+import { RouterProps } from '../utils/types';
 
 const HomeScreen: React.FC<RouterProps> = ({ navigation }: RouterProps) => {
   const { isLogged } = useContext(AuthContext);

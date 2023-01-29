@@ -1,7 +1,13 @@
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
+
 export interface EditMode {
   title: boolean;
   status: boolean;
   description: boolean;
+}
+
+export interface RouterProps {
+  navigation?: NavigationProp<ParamListBase>;
 }
 
 export interface LoginForm {

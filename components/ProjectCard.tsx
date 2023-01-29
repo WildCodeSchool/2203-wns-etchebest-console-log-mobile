@@ -19,18 +19,13 @@ export const ProjectCardFragment = graphql(/* GraphQL */ `
 
 export type ProjectProps = {
   project: FragmentType<typeof ProjectCardFragment>;
-  activeProjectId: string | null;
+  isActive: boolean;
 };
 
 const ProjectCard = (props: ProjectProps) => {
   const project = useFragment(ProjectCardFragment, props.project);
   return (
-    <View
-      style={[
-        styles.projectCard,
-        props.activeProjectId === project.id ? styles.active : null,
-      ]}
-    >
+    <View style={[styles.projectCard, props.isActive ? styles.active : null]}>
       <Text>Name: {project.name}</Text>
       <Text>Creation Date: {handleDate(project.createdAt)}</Text>
       <Text>Target Date: {handleDate(project.limitDate)}</Text>

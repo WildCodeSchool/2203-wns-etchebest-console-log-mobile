@@ -8,8 +8,9 @@ import { ProjectContext } from '../context/ProjectContext';
 import COLORS from '../styles/colors';
 import { useFragment } from '../src/gql/fragment-masking';
 import QuickAddInput, { Entity } from '../components/QuickAddInput';
+import { RouterProps } from '../utils/types';
 
-const ProjectsScreen: React.FC = () => {
+const ProjectsScreen: React.FC<RouterProps> = ({ navigation }: RouterProps) => {
   const { projectId, setProjectId } = useContext(ProjectContext);
   const { user } = useContext(AuthContext);
   const { data } = useQuery(GET_ALL_PROJECTS, {
@@ -35,8 +36,13 @@ const ProjectsScreen: React.FC = () => {
         renderItem={({ item }) => {
           const project = useFragment(ProjectCardFragment, item);
           return (
-            <TouchableOpacity onPress={() => setProjectId(project.id)}>
-              <ProjectCard project={item} activeProjectId={projectId} />
+            <TouchableOpacity
+              onPress={() => {
+                setProjectId(project.id);
+                navigation?.navigate('Tickets');
+              }}
+            >
+              <ProjectCard project={item} isActive={projectId === project.id} />
             </TouchableOpacity>
           );
         }}
