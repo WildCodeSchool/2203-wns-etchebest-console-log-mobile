@@ -9,11 +9,16 @@ import QuickAddInput, { Entity } from '../components/QuickAddInput';
 
 const ProjectsScreen: React.FC = () => {
   const { user } = useContext(AuthContext);
-
-  const { data: projectsData } = useQuery(GET_ALL_PROJECTS, {
+  const { data } = useQuery(GET_ALL_PROJECTS, {
     variables: {
       where: {
-        email: user?.email,
+        users: {
+          some: {
+            userId: {
+              equals: user?.id,
+            },
+          },
+        },
       },
     },
     skip: !user,
@@ -22,7 +27,7 @@ const ProjectsScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <QuickAddInput entity={Entity.Project} />
-      <FlatList data={projectsData?.projects ?? []} renderItem={ProjectCard} />
+      <FlatList data={data?.projects ?? []} renderItem={ProjectCard} />
     </View>
   );
 };

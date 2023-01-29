@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useMutation } from '@apollo/client';
 import AntDesign from '@expo/vector-icons/build/AntDesign';
+import { AuthContext } from '../context/AuthContext';
 import { CREATE_ONE_PROJECT, GET_ALL_PROJECTS } from '../lib/queries/projects';
 import { CREATE_ONE_TICKET, GET_ALL_TICKETS } from '../lib/queries/tickets';
 import COLORS from '../styles/colors';
@@ -28,8 +29,24 @@ interface Props {
 const QuickAddInput: React.FC<Props> = (props: Props) => {
   const { entity, status } = props;
   const color = props?.color;
+  const { user } = useContext(AuthContext);
   const [createProject] = useMutation(CREATE_ONE_PROJECT, {
-    refetchQueries: [GET_ALL_PROJECTS],
+    refetchQueries: [
+      {
+        query: GET_ALL_PROJECTS,
+        variables: {
+          where: {
+            users: {
+              some: {
+                userId: {
+                  equals: user?.id,
+                },
+              },
+            },
+          },
+        },
+      },
+    ],
   });
   const [createTicket] = useMutation(CREATE_ONE_TICKET, {
     refetchQueries: [GET_ALL_TICKETS],

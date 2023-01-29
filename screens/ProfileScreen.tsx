@@ -10,9 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import jwt_decode from 'jwt-decode';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { UPDATE_ONE_USER, GET_ONE_USER } from '../lib/queries/userRequest';
@@ -26,8 +25,7 @@ import { getRequestVariables } from '../utils/functions';
 import { AuthContext } from '../context/AuthContext';
 
 const ProfileScreen = () => {
-  const { userToken } = useContext(AuthContext);
-  const [user, setUser] = useState<string | null>(null);
+  const { user } = useContext(AuthContext);
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
   const [avatar, setAvatar] = useState(avatar1);
@@ -46,13 +44,6 @@ const ProfileScreen = () => {
     }
   };
 
-  useEffect(() => {
-    if (userToken) {
-      const jwt = jwt_decode<{ user: string }>(userToken);
-      setUser(jwt.user);
-    }
-  }, []);
-
   const [updateOneUser] = useMutation(UPDATE_ONE_USER, {
     refetchQueries: () => [{ query: GET_ONE_USER }],
   });
@@ -66,7 +57,7 @@ const ProfileScreen = () => {
   const { data, error, loading } = useQuery(GET_ONE_USER, {
     variables: {
       where: {
-        email: user,
+        id: user?.id,
       },
     },
     skip: !user,

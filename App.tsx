@@ -17,7 +17,7 @@ const App = () => {
   });
 
   const authLink = setContext(async (_, { headers }) => {
-    const token = await AsyncStorage.getItem('userToken');
+    const token = await AsyncStorage.getItem('token');
     if (token) {
       return {
         headers: {
