@@ -1,27 +1,14 @@
 import { useQuery } from '@apollo/client';
 import AntDesign from '@expo/vector-icons/build/AntDesign';
-import { FC, useContext } from 'react';
+import React from 'react';
 import { FlatList, ListRenderItem, StyleSheet, Text, View } from 'react-native';
 import TicketList from '../components/Ticket/TicketList';
-import { ProjectContext } from '../context/ProjectContext';
 import { GET_ALL_TICKETS } from '../lib/queries/tickets';
 import { Ticket, TicketStatus } from '../src/gql/graphql';
 import COLORS from '../styles/colors';
 
-const TicketsScreen: FC = () => {
-  const { projectId } = useContext(ProjectContext);
-  console.log('project', projectId);
-  const { data, error, loading } = useQuery(GET_ALL_TICKETS, {
-    variables: {
-      where: projectId
-        ? {
-            projectId: {
-              equals: projectId,
-            },
-          }
-        : {},
-    },
-  });
+const TicketsScreen: React.FC = () => {
+  const { data, error, loading } = useQuery(GET_ALL_TICKETS);
 
   if (error) return <Text>Error</Text>;
 

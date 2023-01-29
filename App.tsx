@@ -7,7 +7,6 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthProvider } from './context/AuthContext';
-import { ProjectProvider } from './context/ProjectContext';
 import AppNav from './navigation/AppNav';
 import Env from './Env';
 
@@ -18,7 +17,7 @@ const App = () => {
   });
 
   const authLink = setContext(async (_, { headers }) => {
-    const token = await AsyncStorage.getItem('token');
+    const token = await AsyncStorage.getItem('userToken');
     if (token) {
       return {
         headers: {
@@ -43,9 +42,7 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <AuthProvider>
-        <ProjectProvider>
-          <AppNav />
-        </ProjectProvider>
+        <AppNav />
       </AuthProvider>
     </ApolloProvider>
   );
