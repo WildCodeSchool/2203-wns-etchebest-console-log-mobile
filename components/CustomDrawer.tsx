@@ -22,19 +22,25 @@ import COLORS from '../styles/colors';
 import backgroundImage from '../assets/backgroundImageMenu.jpeg';
 import profileImage from '../assets/profil.png';
 
+interface TokenUser {
+  id: string;
+  name: string;
+  email: string;
+}
+
 const CustomDrawer = (props: DrawerContentComponentProps) => {
   const { signOut } = useContext(AuthContext);
   const onSignOutPress = () => {
     signOut();
   };
 
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<TokenUser | null>(null);
 
   useEffect(() => {
     const getToken = async () => {
       const token = await AsyncStorage.getItem('userToken');
       if (token) {
-        const jwt = jwt_decode<{ user: string }>(token);
+        const jwt = jwt_decode<{ user: TokenUser }>(token);
         setUser(jwt.user);
       }
     };
@@ -44,7 +50,7 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
   const { data, error, loading } = useQuery(GET_ONE_USER, {
     variables: {
       where: {
-        email: user,
+        email: user?.email,
       },
     },
     skip: !user,
