@@ -4,7 +4,7 @@ import { graphql } from '../src/gql/gql';
 import COLORS from '../styles/colors';
 import { handleDate } from '../utils/functions';
 
-const ProjectCardFragment = graphql(/* GraphQL */ `
+export const ProjectCardFragment = graphql(/* GraphQL */ `
   fragment ProjectItem on Project {
     _count {
       tickets
@@ -17,24 +17,28 @@ const ProjectCardFragment = graphql(/* GraphQL */ `
   }
 `);
 
-type ProjectProps = {
-  item: FragmentType<typeof ProjectCardFragment>;
+export type ProjectProps = {
+  project: FragmentType<typeof ProjectCardFragment>;
+  isActive: boolean;
 };
 
 const ProjectCard = (props: ProjectProps) => {
-  const item = useFragment(ProjectCardFragment, props.item);
+  const project = useFragment(ProjectCardFragment, props.project);
   return (
-    <View style={styles.projectCard}>
-      <Text>Name: {item.name}</Text>
-      <Text>Creation Date: {handleDate(item.createdAt)}</Text>
-      <Text>Target Date: {handleDate(item.limitDate)}</Text>
-      <Text>Progress: {item.progress ? item.progress : 'none yet'}</Text>
-      <Text>Tickets: {item?._count?.tickets}</Text>
+    <View style={[styles.projectCard, props.isActive ? styles.active : null]}>
+      <Text>Name: {project.name}</Text>
+      <Text>Creation Date: {handleDate(project.createdAt)}</Text>
+      <Text>Target Date: {handleDate(project.limitDate)}</Text>
+      <Text>Progress: {project.progress ? project.progress : 'none yet'}</Text>
+      <Text>Tickets: {project?._count?.tickets}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  active: {
+    backgroundColor: COLORS.pastelBlue,
+  },
   projectCard: {
     backgroundColor: COLORS.lightGray,
     borderRadius: 4,
