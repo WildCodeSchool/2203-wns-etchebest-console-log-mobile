@@ -1,52 +1,18 @@
-import React, { useContext } from 'react';
-import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { FlatList, View, StyleSheet } from 'react-native';
 import { useQuery } from '@apollo/client';
-import ProjectCard, { ProjectCardFragment } from '../components/ProjectCard';
+import ProjectCard from '../components/ProjectCard';
 import { GET_ALL_PROJECTS } from '../lib/queries/projects';
-import { AuthContext } from '../context/AuthContext';
-import { ProjectContext } from '../context/ProjectContext';
 import COLORS from '../styles/colors';
-import { useFragment } from '../src/gql/fragment-masking';
 import QuickAddInput, { Entity } from '../components/QuickAddInput';
-import { RouterProps } from '../utils/types';
 
-const ProjectsScreen: React.FC<RouterProps> = ({ navigation }: RouterProps) => {
-  const { projectId, setProjectId } = useContext(ProjectContext);
-  const { user } = useContext(AuthContext);
-  const { data } = useQuery(GET_ALL_PROJECTS, {
-    variables: {
-      where: {
-        users: {
-          some: {
-            userId: {
-              equals: user?.id,
-            },
-          },
-        },
-      },
-    },
-    skip: !user,
-  });
+const ProjectsScreen: React.FC = () => {
+  const { data: projectsData } = useQuery(GET_ALL_PROJECTS);
 
   return (
     <View style={styles.container}>
       <QuickAddInput entity={Entity.Project} />
-      <FlatList
-        data={data?.projects ?? []}
-        renderItem={({ item }) => {
-          const project = useFragment(ProjectCardFragment, item);
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                setProjectId(project.id);
-                navigation?.navigate('Tickets');
-              }}
-            >
-              <ProjectCard project={item} isActive={projectId === project.id} />
-            </TouchableOpacity>
-          );
-        }}
-      />
+      <FlatList data={projectsData?.projects ?? []} renderItem={ProjectCard} />
     </View>
   );
 };
