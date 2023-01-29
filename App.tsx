@@ -7,6 +7,7 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthProvider } from './context/AuthContext';
+import { ProjectProvider } from './context/ProjectContext';
 import AppNav from './navigation/AppNav';
 import Env from './Env';
 
@@ -42,7 +43,9 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <AuthProvider>
-        <AppNav />
+        <ProjectProvider>
+          <AppNav />
+        </ProjectProvider>
       </AuthProvider>
     </ApolloProvider>
   );

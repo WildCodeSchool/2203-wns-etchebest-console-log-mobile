@@ -1,13 +1,16 @@
 import React, { useContext } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useQuery } from '@apollo/client';
-import ProjectCard from '../components/ProjectCard';
+import ProjectCard, { ProjectCardFragment } from '../components/ProjectCard';
 import { GET_ALL_PROJECTS } from '../lib/queries/projects';
 import { AuthContext } from '../context/AuthContext';
+import { ProjectContext } from '../context/ProjectContext';
 import COLORS from '../styles/colors';
+import { useFragment } from '../src/gql/fragment-masking';
 import QuickAddInput, { Entity } from '../components/QuickAddInput';
 
 const ProjectsScreen: React.FC = () => {
+  const { projectId, setProjectId } = useContext(ProjectContext);
   const { user } = useContext(AuthContext);
   const { data } = useQuery(GET_ALL_PROJECTS, {
     variables: {
@@ -27,7 +30,17 @@ const ProjectsScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <QuickAddInput entity={Entity.Project} />
-      <FlatList data={data?.projects ?? []} renderItem={ProjectCard} />
+      <FlatList
+        data={data?.projects ?? []}
+        renderItem={({ item }) => {
+          const project = useFragment(ProjectCardFragment, item);
+          return (
+            <TouchableOpacity onPress={() => setProjectId(project.id)}>
+              <ProjectCard project={item} activeProjectId={projectId} />
+            </TouchableOpacity>
+          );
+        }}
+      />
     </View>
   );
 };
