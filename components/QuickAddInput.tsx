@@ -14,6 +14,7 @@ import { CREATE_ONE_TICKET, GET_ALL_TICKETS } from '../lib/queries/tickets';
 import COLORS from '../styles/colors';
 import { TicketStatus } from '../src/gql/graphql';
 import { formatText } from '../utils/functions';
+import { ProjectContext } from '../context/ProjectContext';
 
 export enum Entity {
   Project = 'PROJECT',
@@ -27,6 +28,7 @@ interface Props {
 }
 
 const QuickAddInput: React.FC<Props> = (props: Props) => {
+  const { projectId } = useContext(ProjectContext);
   const { entity, status } = props;
   const color = props?.color;
   const { user } = useContext(AuthContext);
@@ -72,7 +74,15 @@ const QuickAddInput: React.FC<Props> = (props: Props) => {
     if (entity === Entity.Ticket)
       createTicket({
         variables: {
-          data: { title: name, status },
+          data: {
+            title: name,
+            status,
+            Project: {
+              connect: {
+                id: projectId,
+              },
+            },
+          },
         },
       });
 

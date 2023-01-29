@@ -11,7 +11,17 @@ import COLORS from '../styles/colors';
 const TicketsScreen: FC = () => {
   const { projectId } = useContext(ProjectContext);
   console.log('project', projectId);
-  const { data, error, loading } = useQuery(GET_ALL_TICKETS);
+  const { data, error, loading } = useQuery(GET_ALL_TICKETS, {
+    variables: {
+      where: projectId
+        ? {
+            projectId: {
+              equals: projectId,
+            },
+          }
+        : {},
+    },
+  });
 
   if (error) return <Text>Error</Text>;
 
