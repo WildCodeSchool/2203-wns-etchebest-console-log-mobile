@@ -25,7 +25,7 @@ const HomeScreen: React.FC<RouterProps> = ({ navigation }: RouterProps) => {
             onPress={() => navigation?.navigate('Login')}
           >
             <Text testID="my-button" style={styles.textInButton}>
-              Sign in Something
+              Sign insss Something
             </Text>
           </TouchableOpacity>
         </View>

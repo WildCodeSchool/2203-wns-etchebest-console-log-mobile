@@ -28,7 +28,7 @@ const AppStackScreen = () => (
         drawerInactiveTintColor: '#333',
         drawerLabelStyle: { marginLeft: -25, fontSize: 15 },
       }}
-      initialRouteName="Home"
+      initialRouteName="Hosssme"
     >
       <Drawer.Screen
         options={{

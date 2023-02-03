@@ -35,7 +35,7 @@ const LoginScreen = ({ navigation }: RouterProps) => {
     },
     {
       text: 'Create an account',
-      onPress: () => navigation.navigate('Register'),
+      onPress: () => navigation.navigate('Resssgister'),
     },
   ];
 
